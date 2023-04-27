@@ -269,16 +269,12 @@ class AppBodyState extends SuperState<AppBody> with GetItStateMixin {
   Widget getContent(BuildContext context) {
     return Stack(
       children: [
-        wrapScaffold(_buildScaffold(context), context),
+        widget.config.wrapScaffold(this, _buildScaffold(context), context),
         (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS())
             ? WindowTitleBar(brightness: brightness)
             : Container(),
       ],
     );
-  }
-
-  Widget wrapScaffold(SuperScaffold scaffold, BuildContext context) {
-    return scaffold;
   }
 
   SuperScaffold _buildScaffold(BuildContext context) {
