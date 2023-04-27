@@ -9,10 +9,12 @@ import 'package:flutter_base/ui/widgets/sidemenu/menu_item.dart';
 class SideMenuDrawer extends StatelessWidget {
   final AppRouter router;
   final AppConfig config;
+  final AppBodyState body;
 
   const SideMenuDrawer({
     required this.router,
     required this.config,
+    required this.body,
     Key? key,
   }) : super(key: key);
 
@@ -26,7 +28,7 @@ class SideMenuDrawer extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              config.buildMenuHeader(context) ?? Container(),
+              config.buildMenuHeader(body, context) ?? Container(),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
@@ -41,7 +43,7 @@ class SideMenuDrawer extends StatelessWidget {
                   ),
                 ),
               ),
-              config.buildMenuFooter(context) ?? Container(),
+              config.buildMenuFooter(body, context) ?? Container(),
             ],
           ),
         ),

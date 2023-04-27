@@ -197,7 +197,7 @@ class AppBody extends StatefulWidget with GetItStatefulWidgetMixin {
   final AppConfig config;
 
   @override
-  State<AppBody> createState() => _AppBodyState();
+  State<AppBody> createState() => AppBodyState();
 }
 
 class WindowTitle with ChangeNotifier {
@@ -211,7 +211,7 @@ class WindowTitle with ChangeNotifier {
   }
 }
 
-class _AppBodyState extends SuperState<AppBody> with GetItStateMixin {
+class AppBodyState extends SuperState<AppBody> with GetItStateMixin {
   WindowEffect effect =
       PlatformInfo().getCurrentPlatformType() == PlatformType.windows ? WindowEffect.aero : WindowEffect.acrylic;
   Color color = const Color(0xCC222222);
@@ -257,7 +257,7 @@ class _AppBodyState extends SuperState<AppBody> with GetItStateMixin {
       return SafeArea(
         child: Title(
           color: Theme.of(context).primaryColor,
-          title: widget.config.getWindowTitle(title),
+          title: widget.config.getWindowTitle(this, title),
           child: getContent(context),
         ),
       );
@@ -267,63 +267,72 @@ class _AppBodyState extends SuperState<AppBody> with GetItStateMixin {
   double _endValue = 1.0;
 
   Widget getContent(BuildContext context) {
-    var currentState = watchOnly((ScreenInfo info) => info.currentState);
     return Stack(
       children: [
-        SuperScaffold(
-          drawerEdgeDragWidth: 75,
-          appBar: buildAppBar(context),
-          drawer: SideMenuDrawer(
-            router: widget.router,
-            config: widget.config,
-          ),
-          body: SafeArea(
-            child: Stack(
-              children: [
-                Stack(
-                  alignment: AlignmentDirectional.topCenter,
-                  children: [
-                    if (widget.route.body != null) widget.route.body!,
-                  ],
-                ),
-                if (widget.route.body != null && currentState?.refreshEnabled != null && currentState!.refreshEnabled!)
-                  TweenAnimationBuilder<double>(
-                    tween: Tween<double>(begin: 0.0, end: _endValue),
-                    duration: Duration(seconds: currentState.refreshInterval ?? 30),
-                    builder: (context, value, _) => LinearProgressIndicator(
-                      value: value,
-                      color: Theme.of(context).primaryColor,
-                      minHeight: 1,
-                    ),
-                    onEnd: () {
-                      //log('animated refresh now');
-                      //widget.route.body!.onRefresh();
-                      if (currentState.onRefresh != null) {
-                        currentState.onRefresh!();
-                      }
-                      setState(() {
-                        _endValue = _endValue == 1.0 ? 0 : 1.0;
-                      });
-                    },
-                  ),
-              ],
-            ),
-          ),
-          floatingActionButton: currentState?.fabEnabled ?? false
-              ? Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: FloatingActionButton(
-                    onPressed: currentState?.onFAB,
-                    backgroundColor: Theme.of(context).primaryColor,
-                    child: Icon(currentState?.fabIcon ?? Icons.refresh),
-                  ),
-                )
-              : null,
-        ),
+        wrapScaffold(_buildScaffold(context), context),
         (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS())
             ? WindowTitleBar(brightness: brightness)
             : Container(),
       ],
+    );
+  }
+
+  Widget wrapScaffold(SuperScaffold scaffold, BuildContext context) {
+    return scaffold;
+  }
+
+  SuperScaffold _buildScaffold(BuildContext context) {
+    var currentState = watchOnly((ScreenInfo info) => info.currentState);
+    return SuperScaffold(
+      drawerEdgeDragWidth: 75,
+      appBar: buildAppBar(context),
+      drawer: SideMenuDrawer(
+        router: widget.router,
+        config: widget.config,
+        body: this,
+      ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Stack(
+              alignment: AlignmentDirectional.topCenter,
+              children: [
+                if (widget.route.body != null) widget.route.body!,
+              ],
+            ),
+            if (widget.route.body != null && currentState?.refreshEnabled != null && currentState!.refreshEnabled!)
+              TweenAnimationBuilder<double>(
+                tween: Tween<double>(begin: 0.0, end: _endValue),
+                duration: Duration(seconds: currentState.refreshInterval ?? 30),
+                builder: (context, value, _) => LinearProgressIndicator(
+                  value: value,
+                  color: Theme.of(context).primaryColor,
+                  minHeight: 1,
+                ),
+                onEnd: () {
+                  //log('animated refresh now');
+                  //widget.route.body!.onRefresh();
+                  if (currentState.onRefresh != null) {
+                    currentState.onRefresh!();
+                  }
+                  setState(() {
+                    _endValue = _endValue == 1.0 ? 0 : 1.0;
+                  });
+                },
+              ),
+          ],
+        ),
+      ),
+      floatingActionButton: currentState?.fabEnabled ?? false
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: FloatingActionButton(
+                onPressed: currentState?.onFAB,
+                backgroundColor: Theme.of(context).primaryColor,
+                child: Icon(currentState?.fabIcon ?? Icons.refresh),
+              ),
+            )
+          : null,
     );
   }
 
@@ -336,11 +345,11 @@ class _AppBodyState extends SuperState<AppBody> with GetItStateMixin {
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ...widget.config.buildTitleWidgets(context),
+                  ...widget.config.buildTitleWidgets(this, context),
                 ],
               ),
               actions: [
-                ...widget.config.buildTitleActionButtons(context),
+                ...widget.config.buildTitleActionButtons(this, context),
               ],
             ),
           )
@@ -351,23 +360,27 @@ class _AppBodyState extends SuperState<AppBody> with GetItStateMixin {
 class AppConfig {
   bool get hasTitleBar => true;
 
-  String getWindowTitle(WindowTitle title) {
+  String getWindowTitle(AppBodyState body, WindowTitle title) {
     return title.title;
   }
 
-  List<Widget> buildTitleActionButtons(BuildContext context) {
+  List<Widget> buildTitleActionButtons(AppBodyState body, BuildContext context) {
     return [];
   }
 
-  List<Widget> buildTitleWidgets(BuildContext context) {
+  List<Widget> buildTitleWidgets(AppBodyState body, BuildContext context) {
     return [];
   }
 
-  Widget? buildMenuHeader(BuildContext context) {
+  Widget? buildMenuHeader(AppBodyState body, BuildContext context) {
     return null;
   }
 
-  Widget? buildMenuFooter(BuildContext context) {
+  Widget? buildMenuFooter(AppBodyState body, BuildContext context) {
     return null;
+  }
+
+  Widget wrapScaffold(AppBodyState body, SuperScaffold scaffold, BuildContext context) {
+    return scaffold;
   }
 }
