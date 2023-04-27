@@ -1,6 +1,6 @@
 name: flutter_base
-description: A new Flutter project.
-version: 0.0.3
+description: A base set of UI classes for a consistent look-and-feel across Flutter apps.
+version: 0.0.4
 homepage:
 
 environment:
