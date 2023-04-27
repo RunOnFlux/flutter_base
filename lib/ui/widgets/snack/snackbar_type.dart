@@ -16,4 +16,11 @@ class SnackbarType {
   static SnackbarType failure = SnackbarType('failure', DefaultColors.failureRed);
   static SnackbarType success = SnackbarType('success', DefaultColors.successGreen);
   static SnackbarType warning = SnackbarType('warning', DefaultColors.warningYellow);
+
+  static Map<String, SnackbarType> types = {
+    'success': success,
+    'help': help,
+    'failure': failure,
+    'warning': warning,
+  };
 }
