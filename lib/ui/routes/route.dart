@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 
 import '../widgets/app_screen.dart';
 
@@ -36,6 +38,13 @@ class NavigationRoute implements AbstractRoute {
 
   @override
   Image? image;
+
+  void go(GoRouter router) {
+    Future.microtask(() {
+      router.go(route);
+      GetIt.I<ScreenInfo>().currentState = body!.stateInfo;
+    });
+  }
 }
 
 enum PrivilegeLevel {
