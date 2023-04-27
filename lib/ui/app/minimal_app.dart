@@ -164,14 +164,8 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
       builder: (themeContext) {
         return MaterialApp.router(
           scaffoldMessengerKey: rootScaffoldMessengerKey,
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('en', "US"),
-          ],
+          localizationsDelegates: config.localizationDelegates,
+          supportedLocales: config.supportedLocales,
           debugShowCheckedModeBanner: false,
           title: windowTitle,
           theme: ThemeProvider.themeOf(themeContext).data,
@@ -379,4 +373,14 @@ class AppConfig {
   Widget wrapScaffold(AppBodyState body, SuperScaffold scaffold, BuildContext context) {
     return scaffold;
   }
+
+  List<LocalizationsDelegate> get localizationDelegates => const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ];
+
+  Iterable<Locale> get supportedLocales => const [
+        Locale('en', "US"),
+      ];
 }
