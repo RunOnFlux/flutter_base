@@ -19,6 +19,7 @@ class CustomPaginatedTable extends StatelessWidget {
     this.lmRatio = 1.5,
     this.dataRowHeight,
     this.headingRowHeight,
+    this.controller,
   })  : _source = source,
         _dataColumns = dataColumns,
         _header = header,
@@ -50,6 +51,8 @@ class CustomPaginatedTable extends StatelessWidget {
   final double lmRatio;
 
   final OnRowChange onRowChanged;
+
+  final PaginatorController? controller;
 
   AsyncDataTableSource get _fetchDataTableSource {
     return _source;
@@ -92,6 +95,7 @@ class CustomPaginatedTable extends StatelessWidget {
       dataRowHeight: dataRowHeight ?? kMinInteractiveDimension,
       headingRowHeight: headingRowHeight ?? 56,
       wrapInCard: false,
+      controller: controller,
     );
   }
 }
