@@ -4,8 +4,8 @@ import 'package:i18n_extension/io/import.dart';
 class MyI18n {
   static TranslationsByLocale translations = Translations.byLocale("en");
 
-  static Future<void> loadTranslations() async {
-    translations += await GettextImporter().fromAssetDirectory("assets/locales");
+  static Future<void> loadTranslations({String? assetLocation}) async {
+    translations += await GettextImporter().fromAssetDirectory(assetLocation ?? 'assets/locales');
   }
 }
 
