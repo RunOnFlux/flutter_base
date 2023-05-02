@@ -145,7 +145,6 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
           return AppRoute(
             e.route,
             (GoRouterState state) => I18n(
-              initialLocale: const Locale("en"),
               child: AppBody(
                 route: e,
                 router: widget.router,
