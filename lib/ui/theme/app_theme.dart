@@ -74,17 +74,17 @@ class AppThemeImpl {
               headlineLarge: const TextStyle(
                 fontSize: 28,
                 color: lightText,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
               ),
               headlineMedium: const TextStyle(
                 fontSize: 18,
                 color: lightText,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
               ),
               headlineSmall: const TextStyle(
                 fontSize: 14,
                 color: lightText,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
               ),
               bodyLarge: const TextStyle(
                 fontSize: 18,
@@ -186,17 +186,17 @@ class AppThemeImpl {
               headlineLarge: const TextStyle(
                 fontSize: 28,
                 color: darkText,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
               ),
               headlineMedium: const TextStyle(
                 fontSize: 18,
                 color: darkText,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
               ),
               headlineSmall: const TextStyle(
                 fontSize: 14,
                 color: darkText,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
               ),
               bodyLarge: const TextStyle(
                 fontSize: 18,
