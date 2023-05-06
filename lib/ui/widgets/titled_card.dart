@@ -14,7 +14,7 @@ class TitledCard extends StatefulWidget {
   final Widget child;
   final Widget? backChild;
   final bool internalPadding;
-  final bool gradient;
+  final bool? gradient;
   final Color? outlineColor;
   final Color? cardColor;
   final EdgeInsetsGeometry padding;
@@ -29,7 +29,7 @@ class TitledCard extends StatefulWidget {
     this.backToolTip,
     this.backChild,
     this.internalPadding = true,
-    this.gradient = true,
+    this.gradient,
     this.outlineColor,
     this.cardColor,
     this.padding = const EdgeInsets.all(10.0),
@@ -62,13 +62,16 @@ class TitledCardState extends State<TitledCard> {
         child: Card(
           margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
-            side: BorderSide(color: widget.outlineColor ?? Colors.transparent),
+            side: BorderSide(
+              color: widget.outlineColor ??
+                  (AppThemeImpl.getOptions(context)?.cardOutlineColor(context) ?? Colors.transparent),
+            ),
             borderRadius: BorderRadius.circular(borderRadius),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(borderRadius),
             child: Container(
-              decoration: widget.gradient
+              decoration: widget.gradient ?? false || (AppThemeImpl.getOptions(context)?.cardGradient ?? false)
                   ? BoxDecoration(
                       gradient: buildLinearGradient(context),
                     )
@@ -90,14 +93,7 @@ class TitledCardState extends State<TitledCard> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
                                   color: AppThemeImpl.getOptions(context)?.titledCardIconColor ?? Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      spreadRadius: 2,
-                                      blurRadius: 3,
-                                      offset: const Offset(3, 3),
-                                      color: Theme.of(context).cardTheme.shadowColor!,
-                                    ),
-                                  ],
+                                  boxShadow: AppThemeImpl.getOptions(context)?.getTitledCardIconShadow(context),
                                 ),
                                 child: CircleAvatar(
                                   backgroundColor:
@@ -204,7 +200,10 @@ class UntitledCard extends StatelessWidget {
         child: Card(
           margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
-            side: BorderSide(color: outlineColor ?? Colors.transparent),
+            side: BorderSide(
+              color:
+                  outlineColor ?? (AppThemeImpl.getOptions(context)?.cardOutlineColor(context) ?? Colors.transparent),
+            ),
             borderRadius: BorderRadius.circular(borderRadius),
           ),
           child: ClipRRect(

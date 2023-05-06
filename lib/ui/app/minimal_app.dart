@@ -337,6 +337,7 @@ class AppBodyState extends SuperState<AppBody> with GetItStateMixin {
             tag: "appbar",
             child: SuperAppBar(
               centerTitle: false,
+              elevation: 0,
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -4,7 +4,6 @@ import 'package:flutter_base/ui/utils/bootstrap.dart';
 import 'package:flutter_base/ui/widgets/simple_screen.dart';
 import 'package:flutter_base/ui/widgets/titled_card.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
-import 'package:tinycolor2/tinycolor2.dart';
 
 class HomeScreen extends SimpleScreen with GetItStatefulWidgetMixin {
   HomeScreen({Key? key})
@@ -38,7 +37,6 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
               child: SizedBox(
                 height: 300,
                 child: UntitledCard(
-                  outlineColor: Theme.of(context).cardColor.lighten(20),
                   padding: EdgeInsets.all(bootStrapValueBasedOnSize(sizes: {
                     '': 5.0,
                     'sm': 5.0,
@@ -66,13 +64,13 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'FluxOS',
-                              style: TextStyle(
-                                fontSize: 48,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w800,
-                              ),
+                              style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                                    fontSize: 48,
+                                    fontWeight: FontWeight.w800,
+                                    color: Colors.white,
+                                  ),
                             ),
                             ShaderMask(
                               blendMode: BlendMode.modulate,
@@ -87,13 +85,13 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                               ).createShader(
                                 Rect.fromLTWH(0, 0, size.width, size.height),
                               ),
-                              child: const AutoSizeText(
+                              child: AutoSizeText(
                                 'Example App',
-                                style: TextStyle(
-                                  fontSize: 48,
-                                  fontWeight: FontWeight.w800,
-                                  fontFamily: 'Montserrat',
-                                ),
+                                style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                                      fontSize: 48,
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.white,
+                                    ),
                                 maxLines: 1,
                               ),
                             ),
@@ -101,7 +99,9 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                               onPressed: () {},
                               child: Text(
                                 'Click Here',
-                                style: Theme.of(context).textTheme.bodyMedium,
+                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                      color: Colors.white,
+                                    ),
                               ),
                             ),
                           ],
@@ -120,8 +120,6 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                 child: TitledCard(
                   title: 'A TitledCard',
                   icon: Icons.access_alarm,
-                  outlineColor: Theme.of(context).cardColor.lighten(20),
-                  gradient: false,
                   padding: EdgeInsets.all(
                     bootStrapValueBasedOnSize(sizes: {
                       '': 5.0,

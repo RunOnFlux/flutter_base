@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:theme_provider/theme_provider.dart';
 
 class AppThemeImpl {
-  Color get primaryColorLight {
-    print('get base primaryColorLight');
-    return const Color.fromARGB(255, 43, 97, 209);
-  }
-
+  Color get primaryColorLight => const Color.fromARGB(255, 43, 97, 209);
   Color get lightText => const Color.fromARGB(255, 48, 59, 82);
+  Color get scaffoldBackgroundLight => const Color.fromARGB(255, 252, 253, 255);
+  Color get cardColorLight => const Color.fromARGB(255, 255, 255, 255);
 
   static ThemeOptions? getOptions(BuildContext context) {
     var options = ThemeProvider.themeOf(context).options;
@@ -36,27 +34,27 @@ class AppThemeImpl {
             ),
           ),
         ),
-        scaffoldBackgroundColor: const Color.fromARGB(255, 252, 253, 255),
+        scaffoldBackgroundColor: scaffoldBackgroundLight,
         splashFactory: InkRipple.splashFactory,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color.fromARGB(255, 252, 253, 255),
+        appBarTheme: AppBarTheme(
+          backgroundColor: scaffoldBackgroundLight,
         ),
         bottomNavigationBarTheme: ThemeData.light().bottomNavigationBarTheme.copyWith(
               selectedItemColor: primaryColor,
-              backgroundColor: const Color.fromARGB(255, 248, 248, 248),
+              backgroundColor: scaffoldBackgroundLight,
               selectedIconTheme: IconThemeData(color: primaryColor),
             ),
         shadowColor: Colors.black,
         expansionTileTheme: ThemeData.light().expansionTileTheme.copyWith(
-              backgroundColor: const Color.fromARGB(255, 248, 248, 248),
-              collapsedBackgroundColor: const Color.fromARGB(255, 240, 240, 240),
+              backgroundColor: scaffoldBackgroundLight,
+              collapsedBackgroundColor: cardColorLight,
               iconColor: darkText,
               textColor: darkText,
             ),
-        cardColor: const Color.fromARGB(255, 255, 255, 255),
+        cardColor: cardColorLight,
         cardTheme: ThemeData.light().cardTheme.copyWith(
               shadowColor: const Color.fromARGB(20, 43, 97, 209),
-              color: Colors.white,
+              color: cardColorLight,
             ),
         indicatorColor: primaryColorDark,
         textTheme: ThemeData.light().textTheme.copyWith(
@@ -113,21 +111,25 @@ class AppThemeImpl {
               color: primaryColor,
             ),
           ),
-          contentPadding: EdgeInsets.all(5),
+          contentPadding: const EdgeInsets.all(5),
           isDense: true,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(backgroundColor: primaryColorDark),
+          style: ElevatedButton.styleFrom(backgroundColor: primaryColorLight),
         ),
-        floatingActionButtonTheme:
-            FloatingActionButtonThemeData(backgroundColor: primaryColorDark, foregroundColor: darkText),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: primaryColorDark,
+          foregroundColor: darkText,
+        ),
       ),
-      options: ThemeOptions(titledCardIconColor: Colors.white, cardBorderRadius: 18.7),
+      options: themeOptions,
     );
   }
 
   Color get primaryColorDark => const Color.fromARGB(255, 38, 86, 198);
   Color get darkText => const Color.fromARGB(255, 208, 210, 214);
+  Color get scaffoldBackgroundDark => const Color.fromARGB(255, 20, 22, 41);
+  Color get cardColorDark => const Color.fromARGB(255, 14, 16, 33);
 
   AppTheme get dark {
     var primaryColor = primaryColorDark;
@@ -148,27 +150,27 @@ class AppThemeImpl {
             ),
           ),
         ),
-        scaffoldBackgroundColor: const Color.fromARGB(255, 20, 22, 41),
+        scaffoldBackgroundColor: scaffoldBackgroundDark,
         splashFactory: InkRipple.splashFactory,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color.fromARGB(255, 20, 22, 41),
+        appBarTheme: AppBarTheme(
+          backgroundColor: scaffoldBackgroundDark,
         ),
         bottomNavigationBarTheme: ThemeData.dark().bottomNavigationBarTheme.copyWith(
               selectedItemColor: primaryColorDark,
-              backgroundColor: const Color.fromARGB(255, 20, 22, 41),
+              backgroundColor: scaffoldBackgroundDark,
               selectedIconTheme: IconThemeData(color: primaryColor),
             ),
         shadowColor: Colors.black,
         expansionTileTheme: ThemeData.dark().expansionTileTheme.copyWith(
-              backgroundColor: const Color.fromARGB(255, 20, 22, 41),
-              collapsedBackgroundColor: const Color.fromARGB(255, 14, 16, 33),
+              backgroundColor: scaffoldBackgroundDark,
+              collapsedBackgroundColor: cardColorDark,
               iconColor: darkText,
               textColor: darkText,
             ),
-        cardColor: const Color.fromARGB(255, 14, 16, 33),
+        cardColor: cardColorDark,
         cardTheme: ThemeData.light().cardTheme.copyWith(
               shadowColor: const Color.fromARGB(40, 8, 8, 18),
-              color: const Color.fromARGB(255, 14, 16, 33),
+              color: cardColorDark,
             ),
         indicatorColor: primaryColorDark,
         textTheme: ThemeData.dark().textTheme.copyWith(
@@ -240,12 +242,43 @@ class AppThemeImpl {
     );
   }
 
-  ThemeOptions get themeOptions => ThemeOptions(titledCardIconColor: Colors.white, cardBorderRadius: 18.7);
+  ThemeOptions get themeOptions => ThemeOptions(
+        titledCardIconColor: Colors.white,
+        cardBorderRadius: 18.7,
+      );
 }
 
 class ThemeOptions implements AppThemeOptions {
   final Color? titledCardIconColor;
   final double cardBorderRadius;
+  final Color? cardOutlineColorDark;
+  final Color? cardOutlineColorLight;
+  final bool? cardGradient;
+  final bool? titledCardIconShadow;
 
-  ThemeOptions({this.titledCardIconColor, required this.cardBorderRadius});
+  Color? cardOutlineColor(BuildContext context) {
+    return ThemeProvider.themeOf(context).id == 'dark' ? cardOutlineColorDark : cardOutlineColorLight;
+  }
+
+  List<BoxShadow>? getTitledCardIconShadow(BuildContext context) {
+    return (titledCardIconShadow ?? true)
+        ? [
+            BoxShadow(
+              spreadRadius: 2,
+              blurRadius: 3,
+              offset: const Offset(3, 3),
+              color: ThemeProvider.themeOf(context).data.cardTheme.shadowColor!,
+            ),
+          ]
+        : null;
+  }
+
+  ThemeOptions({
+    required this.cardBorderRadius,
+    this.titledCardIconColor,
+    this.cardOutlineColorLight,
+    this.cardOutlineColorDark,
+    this.cardGradient,
+    this.titledCardIconShadow,
+  });
 }
