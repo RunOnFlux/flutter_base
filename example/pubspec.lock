@@ -217,12 +217,10 @@ packages:
   flutter_base:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: a7bceefcebdf2e49d37589a2d8bb27d8a2d82a83
-      url: "https://github.com/RunOnFlux/flutter_base"
-    source: git
-    version: "0.0.5"
+      path: ".."
+      relative: true
+    source: path
+    version: "0.0.6"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -279,7 +277,7 @@ packages:
     source: hosted
     version: "4.6.5"
   get_it:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: get_it
       sha256: f9982979e3d2f286a957c04d2c3a98f55b0f0a06ffd6c5c4abbb96f06937f463
@@ -717,7 +715,7 @@ packages:
     source: hosted
     version: "0.4.16"
   theme_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: theme_provider
       sha256: "0f1d7235bf1b0b09a6b4c0dbefddab0309323c04d4ae8cd2f0e9178be85f8ae4"

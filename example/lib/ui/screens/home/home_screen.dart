@@ -4,6 +4,7 @@ import 'package:flutter_base/ui/utils/bootstrap.dart';
 import 'package:flutter_base/ui/widgets/simple_screen.dart';
 import 'package:flutter_base/ui/widgets/titled_card.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
+import 'package:tinycolor2/tinycolor2.dart';
 
 class HomeScreen extends SimpleScreen with GetItStatefulWidgetMixin {
   HomeScreen({Key? key})
@@ -37,6 +38,7 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
               child: SizedBox(
                 height: 300,
                 child: UntitledCard(
+                  outlineColor: Theme.of(context).cardColor.lighten(20),
                   padding: EdgeInsets.all(bootStrapValueBasedOnSize(sizes: {
                     '': 5.0,
                     'sm': 5.0,
@@ -118,6 +120,8 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                 child: TitledCard(
                   title: 'A TitledCard',
                   icon: Icons.access_alarm,
+                  outlineColor: Theme.of(context).cardColor.lighten(20),
+                  gradient: false,
                   padding: EdgeInsets.all(
                     bootStrapValueBasedOnSize(sizes: {
                       '': 5.0,

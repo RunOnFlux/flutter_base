@@ -1,9 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
+import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/sidemenu/menu_item.dart';
 import 'package:flutter_base_example/ui/routes/routes.dart';
+import 'package:flutter_base_example/ui/theme/app_theme.dart';
 import 'package:flutter_base_example/utils/settings.dart';
+import 'package:get_it/get_it.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tinycolor2/tinycolor2.dart';
 
@@ -16,6 +19,11 @@ class FlutterBaseExampleApp extends MinimalApp {
           router: ExampleAppRouter(),
           settings: ExampleSettings(),
         );
+
+  @override
+  registerTheme() {
+    GetIt.I.registerSingleton<AppThemeImpl>(ExampleAppTheme());
+  }
 
   @override
   State<FlutterBaseExampleApp> createState() => _FlutterBaseExampleAppState();
