@@ -58,6 +58,11 @@ abstract class MinimalApp extends StatefulWidget {
     Key? key,
   }) : super(key: key) {
     GetIt.I.registerSingleton<ScreenInfo>(ScreenInfo());
+    registerTheme();
+  }
+
+  registerTheme() {
+    GetIt.I.registerSingleton<AppThemeImpl>(AppThemeImpl());
   }
 }
 
@@ -70,6 +75,9 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
   String get initialWindowTitle => 'FluxOS - checking access...';
   String get windowTitle => 'Window Title';
 
+  AppTheme get light => GetIt.I<AppThemeImpl>().light;
+  AppTheme get dark => GetIt.I<AppThemeImpl>().dark;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<LoadingNotifier>(
@@ -78,12 +86,10 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
           final loading = Provider.of<LoadingNotifier>(context);
           debugPrint('${loading.loadingComplete}');
           return ThemeProvider(
-            defaultThemeId: widget.settings.getBool(Setting.darkMode.name, defaultValue: true)
-                ? AppThemeImpl.dark.id
-                : AppThemeImpl.light.id,
+            defaultThemeId: widget.settings.getBool(Setting.darkMode.name, defaultValue: true) ? dark.id : light.id,
             themes: <AppTheme>[
-              AppThemeImpl.light,
-              AppThemeImpl.dark,
+              light,
+              dark,
             ],
             child: ThemeConsumer(
               child: (loading.loadingComplete) ? buildMainApp(context) : buildLoadingApp(context),

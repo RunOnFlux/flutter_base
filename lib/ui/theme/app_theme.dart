@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:theme_provider/theme_provider.dart';
 
 class AppThemeImpl {
-  static const primaryColorLight = Color.fromARGB(255, 43, 97, 209);
-  static const lightText = Color.fromARGB(255, 48, 59, 82);
+  Color get primaryColorLight {
+    print('get base primaryColorLight');
+    return const Color.fromARGB(255, 43, 97, 209);
+  }
+
+  Color get lightText => const Color.fromARGB(255, 48, 59, 82);
 
   static ThemeOptions? getOptions(BuildContext context) {
     var options = ThemeProvider.themeOf(context).options;
@@ -13,8 +17,8 @@ class AppThemeImpl {
     return null;
   }
 
-  static AppTheme get light {
-    const primaryColor = AppThemeImpl.primaryColorLight;
+  AppTheme get light {
+    var primaryColor = primaryColorLight;
     return AppTheme(
       id: 'light',
       description: 'Light Mode',
@@ -40,7 +44,7 @@ class AppThemeImpl {
         bottomNavigationBarTheme: ThemeData.light().bottomNavigationBarTheme.copyWith(
               selectedItemColor: primaryColor,
               backgroundColor: const Color.fromARGB(255, 248, 248, 248),
-              selectedIconTheme: const IconThemeData(color: primaryColor),
+              selectedIconTheme: IconThemeData(color: primaryColor),
             ),
         shadowColor: Colors.black,
         expansionTileTheme: ThemeData.light().expansionTileTheme.copyWith(
@@ -52,54 +56,54 @@ class AppThemeImpl {
         cardColor: const Color.fromARGB(255, 255, 255, 255),
         cardTheme: ThemeData.light().cardTheme.copyWith(
               shadowColor: const Color.fromARGB(20, 43, 97, 209),
-              color: const Color.fromARGB(255, 255, 255, 255),
+              color: Colors.white,
             ),
         indicatorColor: primaryColorDark,
         textTheme: ThemeData.light().textTheme.copyWith(
-              titleLarge: const TextStyle(
+              titleLarge: TextStyle(
                 decorationColor: Colors.white,
                 fontSize: 24,
                 color: lightText,
               ),
-              titleMedium: const TextStyle(
+              titleMedium: TextStyle(
                 decorationColor: Colors.white,
                 fontSize: 20,
                 color: lightText,
               ),
-              titleSmall: const TextStyle(
+              titleSmall: TextStyle(
                 decorationColor: Colors.white,
                 fontSize: 16,
                 color: lightText,
               ),
-              headlineLarge: const TextStyle(
+              headlineLarge: TextStyle(
                 fontSize: 28,
                 color: lightText,
                 fontWeight: FontWeight.w600,
               ),
-              headlineMedium: const TextStyle(
+              headlineMedium: TextStyle(
                 fontSize: 18,
                 color: lightText,
                 fontWeight: FontWeight.w600,
               ),
-              headlineSmall: const TextStyle(
+              headlineSmall: TextStyle(
                 fontSize: 14,
                 color: lightText,
                 fontWeight: FontWeight.w600,
               ),
-              bodyLarge: const TextStyle(
+              bodyLarge: TextStyle(
                 fontSize: 18,
                 color: lightText,
               ),
-              bodyMedium: const TextStyle(
+              bodyMedium: TextStyle(
                 fontSize: 14,
                 color: lightText,
               ),
-              bodySmall: const TextStyle(
+              bodySmall: TextStyle(
                 fontSize: 12,
                 color: lightText,
               ),
             ),
-        inputDecorationTheme: const InputDecorationTheme(
+        inputDecorationTheme: InputDecorationTheme(
           labelStyle: TextStyle(
             fontSize: 13,
             color: darkText,
@@ -113,27 +117,27 @@ class AppThemeImpl {
           isDense: true,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(backgroundColor: AppThemeImpl.primaryColorDark),
+          style: ElevatedButton.styleFrom(backgroundColor: primaryColorDark),
         ),
-        floatingActionButtonTheme: const FloatingActionButtonThemeData(
-            backgroundColor: AppThemeImpl.primaryColorDark, foregroundColor: darkText),
+        floatingActionButtonTheme:
+            FloatingActionButtonThemeData(backgroundColor: primaryColorDark, foregroundColor: darkText),
       ),
       options: ThemeOptions(titledCardIconColor: Colors.white, cardBorderRadius: 18.7),
     );
   }
 
-  static const primaryColorDark = Color.fromARGB(255, 38, 86, 198);
-  static const darkText = Color.fromARGB(255, 208, 210, 214);
+  Color get primaryColorDark => const Color.fromARGB(255, 38, 86, 198);
+  Color get darkText => const Color.fromARGB(255, 208, 210, 214);
 
-  static AppTheme get dark {
-    const primaryColor = AppThemeImpl.primaryColorDark;
+  AppTheme get dark {
+    var primaryColor = primaryColorDark;
     return AppTheme(
       id: 'dark',
       description: 'Dark Mode',
       data: ThemeData(
         brightness: Brightness.dark,
         fontFamily: 'Montserrat',
-        primaryColor: primaryColor,
+        primaryColor: primaryColorDark,
         iconTheme: ThemeData.dark().iconTheme.copyWith(color: darkText),
         iconButtonTheme: IconButtonThemeData(
           style: ButtonStyle(
@@ -150,9 +154,9 @@ class AppThemeImpl {
           backgroundColor: Color.fromARGB(255, 20, 22, 41),
         ),
         bottomNavigationBarTheme: ThemeData.dark().bottomNavigationBarTheme.copyWith(
-              selectedItemColor: primaryColor,
+              selectedItemColor: primaryColorDark,
               backgroundColor: const Color.fromARGB(255, 20, 22, 41),
-              selectedIconTheme: const IconThemeData(color: primaryColor),
+              selectedIconTheme: IconThemeData(color: primaryColor),
             ),
         shadowColor: Colors.black,
         expansionTileTheme: ThemeData.dark().expansionTileTheme.copyWith(
@@ -168,50 +172,50 @@ class AppThemeImpl {
             ),
         indicatorColor: primaryColorDark,
         textTheme: ThemeData.dark().textTheme.copyWith(
-              titleLarge: const TextStyle(
+              titleLarge: TextStyle(
                 decorationColor: Colors.white,
                 fontSize: 24,
                 color: darkText,
               ),
-              titleMedium: const TextStyle(
+              titleMedium: TextStyle(
                 decorationColor: Colors.white,
                 fontSize: 20,
                 color: darkText,
               ),
-              titleSmall: const TextStyle(
+              titleSmall: TextStyle(
                 decorationColor: Colors.white,
                 fontSize: 16,
                 color: darkText,
               ),
-              headlineLarge: const TextStyle(
+              headlineLarge: TextStyle(
                 fontSize: 28,
                 color: darkText,
                 fontWeight: FontWeight.w600,
               ),
-              headlineMedium: const TextStyle(
+              headlineMedium: TextStyle(
                 fontSize: 18,
                 color: darkText,
                 fontWeight: FontWeight.w600,
               ),
-              headlineSmall: const TextStyle(
+              headlineSmall: TextStyle(
                 fontSize: 14,
                 color: darkText,
                 fontWeight: FontWeight.w600,
               ),
-              bodyLarge: const TextStyle(
+              bodyLarge: TextStyle(
                 fontSize: 18,
                 color: darkText,
               ),
-              bodyMedium: const TextStyle(
+              bodyMedium: TextStyle(
                 fontSize: 14,
                 color: darkText,
               ),
-              bodySmall: const TextStyle(
+              bodySmall: TextStyle(
                 fontSize: 12,
                 color: darkText,
               ),
             ),
-        inputDecorationTheme: const InputDecorationTheme(
+        inputDecorationTheme: InputDecorationTheme(
           labelStyle: TextStyle(
             fontSize: 13,
             color: darkText,
@@ -221,20 +225,22 @@ class AppThemeImpl {
               color: primaryColor,
             ),
           ),
-          contentPadding: EdgeInsets.all(5),
+          contentPadding: const EdgeInsets.all(5),
           isDense: true,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(backgroundColor: AppThemeImpl.primaryColorDark),
+          style: ElevatedButton.styleFrom(backgroundColor: primaryColorDark),
         ),
-        floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: AppThemeImpl.primaryColorDark,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: primaryColorDark,
           foregroundColor: darkText,
         ),
       ),
-      options: ThemeOptions(titledCardIconColor: Colors.white, cardBorderRadius: 18.7),
+      options: themeOptions,
     );
   }
+
+  ThemeOptions get themeOptions => ThemeOptions(titledCardIconColor: Colors.white, cardBorderRadius: 18.7);
 }
 
 class ThemeOptions implements AppThemeOptions {
