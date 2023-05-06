@@ -1,6 +1,6 @@
 name: flutter_base
 description: A base set of UI classes for a consistent look-and-feel across Flutter apps.
-version: 0.0.6
+version: 0.0.7
 homepage:
 
 environment:
@@ -89,7 +89,7 @@ flutter:
       fonts:
         - asset: assets/fonts/Montserrat-Regular.ttf
         - asset: assets/fonts/Montserrat-SemiBold.ttf
-          weight: 700
+          weight: 600
         - asset: assets/fonts/Montserrat-MediumItalic.ttf
           style: italic
   assets:
