@@ -170,6 +170,7 @@ class UntitledCard extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final Color? outlineColor;
   final Color? cardColor;
+  final bool? gradient;
 
   const UntitledCard({
     super.key,
@@ -177,6 +178,7 @@ class UntitledCard extends StatelessWidget {
     this.outlineColor,
     this.cardColor,
     this.padding,
+    this.gradient,
   });
 
   @override
@@ -210,7 +212,9 @@ class UntitledCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(borderRadius),
             child: Container(
               decoration: BoxDecoration(
-                gradient: buildLinearGradient(context),
+                gradient: gradient ?? false || (AppThemeImpl.getOptions(context)?.cardGradient ?? false)
+                    ? buildLinearGradient(context)
+                    : null,
               ),
               child: child,
             ),
