@@ -14,8 +14,9 @@ class TitledCard extends StatefulWidget {
   final Widget child;
   final Widget? backChild;
   final bool internalPadding;
-  final bool outline;
-  final Color outlineColor;
+  final bool gradient;
+  final Color? outlineColor;
+  final Color? cardColor;
   final EdgeInsetsGeometry padding;
 
   const TitledCard({
@@ -28,8 +29,9 @@ class TitledCard extends StatefulWidget {
     this.backToolTip,
     this.backChild,
     this.internalPadding = true,
-    this.outline = false,
-    this.outlineColor = Colors.red,
+    this.gradient = true,
+    this.outlineColor,
+    this.cardColor,
     this.padding = const EdgeInsets.all(10.0),
   });
 
@@ -47,7 +49,7 @@ class TitledCardState extends State<TitledCard> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadius),
-          color: Theme.of(context).cardColor,
+          color: widget.cardColor ?? Theme.of(context).cardColor,
           boxShadow: [
             BoxShadow(
               spreadRadius: 2,
@@ -60,15 +62,17 @@ class TitledCardState extends State<TitledCard> {
         child: Card(
           margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
-            side: BorderSide(color: widget.outline ? widget.outlineColor : Colors.transparent),
+            side: BorderSide(color: widget.outlineColor ?? Colors.transparent),
             borderRadius: BorderRadius.circular(borderRadius),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(borderRadius),
             child: Container(
-              decoration: BoxDecoration(
-                gradient: buildLinearGradient(context),
-              ),
+              decoration: widget.gradient
+                  ? BoxDecoration(
+                      gradient: buildLinearGradient(context),
+                    )
+                  : null,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -168,10 +172,14 @@ class TitledCardState extends State<TitledCard> {
 class UntitledCard extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry? padding;
+  final Color? outlineColor;
+  final Color? cardColor;
 
   const UntitledCard({
     super.key,
     required this.child,
+    this.outlineColor,
+    this.cardColor,
     this.padding,
   });
 
@@ -183,7 +191,7 @@ class UntitledCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadius),
-          color: Theme.of(context).cardColor,
+          color: cardColor ?? Theme.of(context).cardColor,
           boxShadow: [
             BoxShadow(
               spreadRadius: 2,
@@ -196,7 +204,7 @@ class UntitledCard extends StatelessWidget {
         child: Card(
           margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
-            side: const BorderSide(color: Colors.transparent),
+            side: BorderSide(color: outlineColor ?? Colors.transparent),
             borderRadius: BorderRadius.circular(borderRadius),
           ),
           child: ClipRRect(
