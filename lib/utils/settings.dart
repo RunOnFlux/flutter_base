@@ -50,6 +50,10 @@ abstract class Settings {
     _prefs!.setDouble(_formatKey(setting), value);
   }
 
+  remove(String setting) {
+    _prefs!.remove(_formatKey(setting));
+  }
+
   String _formatKey(String setting) {
     return '$prefix:$setting';
   }
