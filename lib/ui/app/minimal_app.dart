@@ -146,7 +146,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
       routes: widget.router.getNavigationRoutes().map(
         (e) {
           if (e.route == initialRoute) {
-            initialNavRoute = e;
+            initialNavRoute = config.verifyInitialRoute(e);
           }
           return AppRoute(
             e.route,
@@ -378,6 +378,10 @@ class AppConfig {
 
   Widget wrapScaffold(AppBodyState body, SuperScaffold scaffold, BuildContext context) {
     return scaffold;
+  }
+
+  NavigationRoute verifyInitialRoute(NavigationRoute route) {
+    return route;
   }
 
   List<LocalizationsDelegate> get localizationDelegates => const [
