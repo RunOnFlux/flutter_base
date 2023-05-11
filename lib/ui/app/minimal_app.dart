@@ -380,7 +380,7 @@ class AppConfig {
     return scaffold;
   }
 
-  NavigationRoute verifyInitialRoute(NavigationRoute route) {
+  NavigationRoute? verifyInitialRoute(NavigationRoute route) {
     return route;
   }
 
