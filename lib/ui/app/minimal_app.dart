@@ -390,3 +390,14 @@ class AppConfig {
         Locale('en', "US"),
       ];
 }
+
+class LoginState with ChangeNotifier {
+  PrivilegeLevel _privilege = PrivilegeLevel.none;
+
+  PrivilegeLevel get privilege => _privilege;
+
+  set privilege(PrivilegeLevel p) {
+    _privilege = p;
+    notifyListeners();
+  }
+}
