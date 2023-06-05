@@ -15,6 +15,19 @@ class AppThemeImpl {
     return null;
   }
 
+  ChipThemeData chipThemeData({required Color styleBackgroundColor, required Color textColor, required Color shadowColor, Color? selectedColor}) {
+    return ChipThemeData(
+      backgroundColor: styleBackgroundColor,
+      labelStyle: TextStyle(
+        color: textColor, // Set the text color to grey
+      ),
+      shadowColor: shadowColor,
+      elevation: 7.5,
+      padding: const EdgeInsets.symmetric(vertical: 12.5, horizontal: 40),
+      selectedColor: selectedColor,
+    );
+  }
+
   AppTheme get light {
     var primaryColor = primaryColorLight;
     return AppTheme(
@@ -28,7 +41,7 @@ class AppThemeImpl {
         iconButtonTheme: IconButtonThemeData(
           style: ButtonStyle(
             foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) {
+                  (Set<MaterialState> states) {
                 return lightText; //<-- SEE HERE
               },
             ),
@@ -40,67 +53,67 @@ class AppThemeImpl {
           backgroundColor: scaffoldBackgroundLight,
         ),
         bottomNavigationBarTheme: ThemeData.light().bottomNavigationBarTheme.copyWith(
-              selectedItemColor: primaryColor,
-              backgroundColor: scaffoldBackgroundLight,
-              selectedIconTheme: IconThemeData(color: primaryColor),
-            ),
+          selectedItemColor: primaryColor,
+          backgroundColor: scaffoldBackgroundLight,
+          selectedIconTheme: IconThemeData(color: primaryColor),
+        ),
         shadowColor: Colors.black,
         expansionTileTheme: ThemeData.light().expansionTileTheme.copyWith(
-              backgroundColor: scaffoldBackgroundLight,
-              collapsedBackgroundColor: cardColorLight,
-              iconColor: darkText,
-              textColor: darkText,
-            ),
+          backgroundColor: scaffoldBackgroundLight,
+          collapsedBackgroundColor: cardColorLight,
+          iconColor: darkText,
+          textColor: darkText,
+        ),
         cardColor: cardColorLight,
         cardTheme: ThemeData.light().cardTheme.copyWith(
-              shadowColor: const Color.fromARGB(20, 43, 97, 209),
-              color: cardColorLight,
-            ),
+          shadowColor: const Color.fromARGB(20, 43, 97, 209),
+          color: cardColorLight,
+        ),
         indicatorColor: primaryColorDark,
         textTheme: ThemeData.light().textTheme.copyWith(
-              titleLarge: TextStyle(
-                decorationColor: Colors.white,
-                fontSize: 24,
-                color: lightText,
-              ),
-              titleMedium: TextStyle(
-                decorationColor: Colors.white,
-                fontSize: 20,
-                color: lightText,
-              ),
-              titleSmall: TextStyle(
-                decorationColor: Colors.white,
-                fontSize: 16,
-                color: lightText,
-              ),
-              headlineLarge: TextStyle(
-                fontSize: 28,
-                color: lightText,
-                fontWeight: FontWeight.w600,
-              ),
-              headlineMedium: TextStyle(
-                fontSize: 18,
-                color: lightText,
-                fontWeight: FontWeight.w600,
-              ),
-              headlineSmall: TextStyle(
-                fontSize: 14,
-                color: lightText,
-                fontWeight: FontWeight.w600,
-              ),
-              bodyLarge: TextStyle(
-                fontSize: 18,
-                color: lightText,
-              ),
-              bodyMedium: TextStyle(
-                fontSize: 14,
-                color: lightText,
-              ),
-              bodySmall: TextStyle(
-                fontSize: 12,
-                color: lightText,
-              ),
-            ),
+          titleLarge: TextStyle(
+            decorationColor: Colors.white,
+            fontSize: 24,
+            color: lightText,
+          ),
+          titleMedium: TextStyle(
+            decorationColor: Colors.white,
+            fontSize: 20,
+            color: lightText,
+          ),
+          titleSmall: TextStyle(
+            decorationColor: Colors.white,
+            fontSize: 16,
+            color: lightText,
+          ),
+          headlineLarge: TextStyle(
+            fontSize: 28,
+            color: lightText,
+            fontWeight: FontWeight.w600,
+          ),
+          headlineMedium: TextStyle(
+            fontSize: 18,
+            color: lightText,
+            fontWeight: FontWeight.w600,
+          ),
+          headlineSmall: TextStyle(
+            fontSize: 14,
+            color: lightText,
+            fontWeight: FontWeight.w600,
+          ),
+          bodyLarge: TextStyle(
+            fontSize: 18,
+            color: lightText,
+          ),
+          bodyMedium: TextStyle(
+            fontSize: 14,
+            color: lightText,
+          ),
+          bodySmall: TextStyle(
+            fontSize: 12,
+            color: lightText,
+          ),
+        ),
         inputDecorationTheme: InputDecorationTheme(
           labelStyle: TextStyle(
             fontSize: 13,
@@ -120,6 +133,11 @@ class AppThemeImpl {
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: primaryColorDark,
           foregroundColor: darkText,
+        ),
+        chipTheme: chipThemeData(
+          styleBackgroundColor: Colors.transparent,
+          textColor: Colors.grey,
+          shadowColor: primaryColorLight.withOpacity(0.35),
         ),
       ),
       options: themeOptions,
@@ -144,7 +162,7 @@ class AppThemeImpl {
         iconButtonTheme: IconButtonThemeData(
           style: ButtonStyle(
             foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) {
+                  (Set<MaterialState> states) {
                 return darkText;
               },
             ),
@@ -156,67 +174,67 @@ class AppThemeImpl {
           backgroundColor: scaffoldBackgroundDark,
         ),
         bottomNavigationBarTheme: ThemeData.dark().bottomNavigationBarTheme.copyWith(
-              selectedItemColor: primaryColorDark,
-              backgroundColor: scaffoldBackgroundDark,
-              selectedIconTheme: IconThemeData(color: primaryColor),
-            ),
+          selectedItemColor: primaryColorDark,
+          backgroundColor: scaffoldBackgroundDark,
+          selectedIconTheme: IconThemeData(color: primaryColor),
+        ),
         shadowColor: Colors.black,
         expansionTileTheme: ThemeData.dark().expansionTileTheme.copyWith(
-              backgroundColor: scaffoldBackgroundDark,
-              collapsedBackgroundColor: cardColorDark,
-              iconColor: darkText,
-              textColor: darkText,
-            ),
+          backgroundColor: scaffoldBackgroundDark,
+          collapsedBackgroundColor: cardColorDark,
+          iconColor: darkText,
+          textColor: darkText,
+        ),
         cardColor: cardColorDark,
         cardTheme: ThemeData.light().cardTheme.copyWith(
-              shadowColor: const Color.fromARGB(40, 8, 8, 18),
-              color: cardColorDark,
-            ),
+          shadowColor: const Color.fromARGB(40, 8, 8, 18),
+          color: cardColorDark,
+        ),
         indicatorColor: primaryColorDark,
         textTheme: ThemeData.dark().textTheme.copyWith(
-              titleLarge: TextStyle(
-                decorationColor: Colors.white,
-                fontSize: 24,
-                color: darkText,
-              ),
-              titleMedium: TextStyle(
-                decorationColor: Colors.white,
-                fontSize: 20,
-                color: darkText,
-              ),
-              titleSmall: TextStyle(
-                decorationColor: Colors.white,
-                fontSize: 16,
-                color: darkText,
-              ),
-              headlineLarge: TextStyle(
-                fontSize: 28,
-                color: darkText,
-                fontWeight: FontWeight.w600,
-              ),
-              headlineMedium: TextStyle(
-                fontSize: 18,
-                color: darkText,
-                fontWeight: FontWeight.w600,
-              ),
-              headlineSmall: TextStyle(
-                fontSize: 14,
-                color: darkText,
-                fontWeight: FontWeight.w600,
-              ),
-              bodyLarge: TextStyle(
-                fontSize: 18,
-                color: darkText,
-              ),
-              bodyMedium: TextStyle(
-                fontSize: 14,
-                color: darkText,
-              ),
-              bodySmall: TextStyle(
-                fontSize: 12,
-                color: darkText,
-              ),
-            ),
+          titleLarge: TextStyle(
+            decorationColor: Colors.white,
+            fontSize: 24,
+            color: darkText,
+          ),
+          titleMedium: TextStyle(
+            decorationColor: Colors.white,
+            fontSize: 20,
+            color: darkText,
+          ),
+          titleSmall: TextStyle(
+            decorationColor: Colors.white,
+            fontSize: 16,
+            color: darkText,
+          ),
+          headlineLarge: TextStyle(
+            fontSize: 28,
+            color: darkText,
+            fontWeight: FontWeight.w600,
+          ),
+          headlineMedium: TextStyle(
+            fontSize: 18,
+            color: darkText,
+            fontWeight: FontWeight.w600,
+          ),
+          headlineSmall: TextStyle(
+            fontSize: 14,
+            color: darkText,
+            fontWeight: FontWeight.w600,
+          ),
+          bodyLarge: TextStyle(
+            fontSize: 18,
+            color: darkText,
+          ),
+          bodyMedium: TextStyle(
+            fontSize: 14,
+            color: darkText,
+          ),
+          bodySmall: TextStyle(
+            fontSize: 12,
+            color: darkText,
+          ),
+        ),
         inputDecorationTheme: InputDecorationTheme(
           labelStyle: TextStyle(
             fontSize: 13,
@@ -237,15 +255,21 @@ class AppThemeImpl {
           backgroundColor: primaryColorDark,
           foregroundColor: darkText,
         ),
+        chipTheme: chipThemeData(
+          styleBackgroundColor: scaffoldBackgroundDark,
+          textColor: darkText,
+          shadowColor: Colors.black.withOpacity(0.35),
+          selectedColor: primaryColorDark,
+        ),
       ),
       options: themeOptions,
     );
   }
 
   ThemeOptions get themeOptions => ThemeOptions(
-        titledCardIconColor: Colors.white,
-        cardBorderRadius: 18.7,
-      );
+    titledCardIconColor: Colors.white,
+    cardBorderRadius: 18.7,
+  );
 }
 
 class ThemeOptions implements AppThemeOptions {
