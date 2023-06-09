@@ -56,12 +56,11 @@ class AppThemeImpl {
         appBarTheme: AppBarTheme(
           backgroundColor: scaffoldBackgroundLight,
         ),
-        bottomNavigationBarTheme:
-            ThemeData.light().bottomNavigationBarTheme.copyWith(
-                  selectedItemColor: primaryColor,
-                  backgroundColor: scaffoldBackgroundLight,
-                  selectedIconTheme: IconThemeData(color: primaryColor),
-                ),
+        bottomNavigationBarTheme: ThemeData.light().bottomNavigationBarTheme.copyWith(
+              selectedItemColor: primaryColor,
+              backgroundColor: scaffoldBackgroundLight,
+              selectedIconTheme: IconThemeData(color: primaryColor),
+            ),
         shadowColor: Colors.black,
         expansionTileTheme: ThemeData.light().expansionTileTheme.copyWith(
               backgroundColor: scaffoldBackgroundLight,
@@ -178,12 +177,11 @@ class AppThemeImpl {
         appBarTheme: AppBarTheme(
           backgroundColor: scaffoldBackgroundDark,
         ),
-        bottomNavigationBarTheme:
-            ThemeData.dark().bottomNavigationBarTheme.copyWith(
-                  selectedItemColor: primaryColorDark,
-                  backgroundColor: scaffoldBackgroundDark,
-                  selectedIconTheme: IconThemeData(color: primaryColor),
-                ),
+        bottomNavigationBarTheme: ThemeData.dark().bottomNavigationBarTheme.copyWith(
+              selectedItemColor: primaryColorDark,
+              backgroundColor: scaffoldBackgroundDark,
+              selectedIconTheme: IconThemeData(color: primaryColor),
+            ),
         shadowColor: Colors.black,
         expansionTileTheme: ThemeData.dark().expansionTileTheme.copyWith(
               backgroundColor: scaffoldBackgroundDark,
@@ -287,9 +285,7 @@ class ThemeOptions implements AppThemeOptions {
   final bool? titledCardIconShadow;
 
   Color? cardOutlineColor(BuildContext context) {
-    return ThemeProvider.themeOf(context).id == 'dark'
-        ? cardOutlineColorDark
-        : cardOutlineColorLight;
+    return ThemeProvider.themeOf(context).id == 'dark' ? cardOutlineColorDark : cardOutlineColorLight;
   }
 
   List<BoxShadow>? getTitledCardIconShadow(BuildContext context) {
