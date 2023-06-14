@@ -5,13 +5,15 @@ import 'package:flutter_base/ui/routes/routes.dart';
 import 'package:flutter_base/ui/widgets/scaffold/superscaffold.dart';
 import 'package:flutter_base/ui/widgets/sidemenu/menu_category.dart';
 import 'package:flutter_base/ui/widgets/sidemenu/menu_item.dart';
+import 'package:get_it/get_it.dart';
+import 'package:get_it_mixin/get_it_mixin.dart';
 
-class SideMenuDrawer extends StatelessWidget {
+class SideMenuDrawer extends StatelessWidget with GetItMixin {
   final AppRouter router;
   final AppConfig config;
   final AppBodyState body;
 
-  const SideMenuDrawer({
+  SideMenuDrawer({
     required this.router,
     required this.config,
     required this.body,
@@ -20,6 +22,10 @@ class SideMenuDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    PrivilegeLevel? privilege;
+    if (GetIt.instance.isRegistered<LoginState>()) {
+      privilege = watchOnly((LoginState state) => state.privilege);
+    }
     return SizedBox(
       width: kDrawerWidth,
       child: Drawer(
@@ -37,7 +43,7 @@ class SideMenuDrawer extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ..._buildMenu(context),
+                        ..._buildMenu(context, privilege ?? PrivilegeLevel.none),
                       ],
                     ),
                   ),
@@ -51,11 +57,11 @@ class SideMenuDrawer extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildMenu(BuildContext context) {
+  List<Widget> _buildMenu(BuildContext context, PrivilegeLevel privilegeLevel) {
     List<AbstractRoute> routes = router.buildRoutes();
     List<Widget> menu = <Widget>[];
     for (AbstractRoute r in routes) {
-      _buildMenuForRoute(r, menu, 0, PrivilegeLevel.none);
+      _buildMenuForRoute(r, menu, 0, privilegeLevel);
     }
     return menu;
   }
