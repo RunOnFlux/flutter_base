@@ -116,10 +116,11 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
           if (settings.name != null) {
             initialRoute = settings.name!;
             if (PlatformInfo().getCurrentPlatformType() == PlatformType.android) {
-              debugPrint('Android - check initial route: ${widget.settings.getString(Setting.initialRoute.name)}');
-              if (widget.settings.getString(Setting.initialRoute.name) != '/') {
-                initialRoute = widget.settings.getString(Setting.initialRoute.name);
-                widget.settings.setString(Setting.initialRoute.name, '/');
+              var route = config.getInitialRoute(widget.settings);
+              debugPrint('Android - check initial route: $route');
+              if (route != '/') {
+                initialRoute = route;
+                config.setInitialRoute('/', widget.settings);
               }
             }
             return MaterialPageRoute(builder: (context) {
@@ -355,6 +356,14 @@ class AppBodyState extends SuperState<AppBody> with GetItStateMixin {
 
 class AppConfig {
   bool get hasTitleBar => true;
+
+  String getInitialRoute(Settings settings) {
+    return settings.getString(Setting.initialRoute.name);
+  }
+
+  setInitialRoute(String route, Settings settings) {
+    settings.setString(Setting.initialRoute.name, route);
+  }
 
   String getWindowTitle(AppBodyState body, WindowTitle title) {
     return title.title;
