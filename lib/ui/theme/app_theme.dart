@@ -15,6 +15,23 @@ class AppThemeImpl {
     return null;
   }
 
+  ChipThemeData chipThemeData(
+      {required Color styleBackgroundColor,
+      required Color textColor,
+      required Color shadowColor,
+      Color? selectedColor}) {
+    return ChipThemeData(
+      backgroundColor: styleBackgroundColor,
+      labelStyle: TextStyle(
+        color: textColor, // Set the text color to grey
+      ),
+      shadowColor: shadowColor,
+      elevation: 7.5,
+      padding: const EdgeInsets.symmetric(vertical: 12.5, horizontal: 40),
+      selectedColor: selectedColor,
+    );
+  }
+
   AppTheme get light {
     var primaryColor = primaryColorLight;
     return AppTheme(
@@ -120,6 +137,11 @@ class AppThemeImpl {
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: primaryColorDark,
           foregroundColor: darkText,
+        ),
+        chipTheme: chipThemeData(
+          styleBackgroundColor: Colors.transparent,
+          textColor: Colors.grey,
+          shadowColor: primaryColorLight.withOpacity(0.35),
         ),
       ),
       options: themeOptions,
@@ -236,6 +258,12 @@ class AppThemeImpl {
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: primaryColorDark,
           foregroundColor: darkText,
+        ),
+        chipTheme: chipThemeData(
+          styleBackgroundColor: scaffoldBackgroundDark,
+          textColor: darkText,
+          shadowColor: Colors.black.withOpacity(0.35),
+          selectedColor: primaryColorDark,
         ),
       ),
       options: themeOptions,
