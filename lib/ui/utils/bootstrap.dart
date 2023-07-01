@@ -2,8 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-List<String> _prefixes = ['xl', 'lg', 'md', 'sm', ''];
-List<String> _prefixesReversed = ['', 'sm', 'md', 'lg', 'xl'];
+List<String> _prefixes = ['xxl', 'xl', 'lg', 'md', 'sm', ''];
+List<String> _prefixesReversed = ['', 'sm', 'md', 'lg', 'xl', 'xxl'];
 
 double _oneColumnRatio = 0.083333;
 double _gutterSize = 48.0;
@@ -47,6 +47,10 @@ void bootstrapGridParameters({
 ///
 String bootstrapPrefixBasedOnWidth(double width) {
   String pfx = "";
+
+  if (width > 1920) {
+    return "xxl";
+  }
 
   if (width > 1200) {
     return "xl";
@@ -606,7 +610,7 @@ class BootstrapVisibility extends StatelessWidget {
     'sm': false,
     'xs': false,
   };
-  final List<String> _prefixesVis = ['xl', 'lg', 'md', 'sm', 'xs'];
+  final List<String> _prefixesVis = ['xxl', 'xl', 'lg', 'md', 'sm', 'xs'];
 
   //
   // Defines the Flex ratios, based on the column's
