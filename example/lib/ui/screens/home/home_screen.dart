@@ -43,6 +43,7 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                     'md': 10.0,
                     'lg': 10.0,
                     'xl': 10.0,
+                    'xxl': 10.0,
                   }, context: context)),
                   child: Stack(
                     children: [
@@ -127,6 +128,7 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                       'md': 10.0,
                       'lg': 10.0,
                       'xl': 10.0,
+                      'xxl': 10.0,
                     }, context: context),
                   ),
                   child: Column(
@@ -156,6 +158,7 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                       'md': 10.0,
                       'lg': 10.0,
                       'xl': 10.0,
+                      'xxl': 10.0,
                     }, context: context),
                   ),
                   backChild: Column(

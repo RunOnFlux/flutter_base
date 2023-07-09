@@ -47,6 +47,7 @@ class _ProgressDialogState extends State<ProgressDialog> {
         child: SizedBox(
           width: bootStrapValueBasedOnSize(
             sizes: {
+              'xxl': 600.0,
               'xl': 600.0,
               'lg': 500.0,
               'md': 450.0,
@@ -143,6 +144,7 @@ class _ProgressDialogWithUpdatesState extends State<ProgressDialogWithUpdates> {
         child: SizedBox(
           width: bootStrapValueBasedOnSize(
             sizes: {
+              'xxl': 600.0,
               'xl': 600.0,
               'lg': 500.0,
               'md': 450.0,

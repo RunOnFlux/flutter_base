@@ -334,6 +334,7 @@ class BootstrapCol extends StatelessWidget {
   // Flex ratios per size, based on the column's definition
   //
   final Map<String, int> _ratiosPerSize = {
+    'xxl': 100,
     'xl': 100,
     'lg': 100,
     'md': 100,
@@ -345,6 +346,7 @@ class BootstrapCol extends StatelessWidget {
   // Offsets per size, based on the column's definition
   //
   final Map<String, int> _offsetsPerSize = {
+    'xxl': -100,
     'xl': -100,
     'lg': -100,
     'md': -100,
@@ -356,6 +358,7 @@ class BootstrapCol extends StatelessWidget {
   // Sequence order per size, based on the column's definition
   //
   final Map<String, int> orderPerSize = {
+    'xxl': 0,
     'xl': 0,
     'lg': 0,
     'md': 0,
@@ -367,6 +370,7 @@ class BootstrapCol extends StatelessWidget {
   // Sequence order per size, based on the column's definition
   //
   final Map<String, bool> hiddenPerSize = {
+    'xxl': false,
     'xl': false,
     'lg': false,
     'md': false,
@@ -497,7 +501,7 @@ class BootstrapCol extends StatelessWidget {
         ? []
         : invisibleForSizes!.toLowerCase().split(' ').where((t) => t.trim().isNotEmpty).toList();
     for (var pfx in parts) {
-      if (['xl', 'lg', 'md', 'sm', 'xs'].contains(pfx)) {
+      if (['xxl', 'xl', 'lg', 'md', 'sm', 'xs'].contains(pfx)) {
         hiddenPerSize[pfx == 'xs' ? '' : pfx] = true;
       }
     }
@@ -604,6 +608,7 @@ class BootstrapVisibility extends StatelessWidget {
   // Visibility per size, based on the column's definition
   //
   final Map<String, bool> _visibilityPerSize = {
+    'xxl': false,
     'xl': false,
     'lg': false,
     'md': false,
