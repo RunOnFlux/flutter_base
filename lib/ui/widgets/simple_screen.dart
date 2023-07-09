@@ -49,6 +49,7 @@ abstract class SimpleScreenState<T extends SimpleScreen> extends AppScreenState<
       'md': 20.0,
       'lg': 25.0,
       'xl': 25.0,
+      'xxl': 25.0,
     }, context: context));
   }
 
