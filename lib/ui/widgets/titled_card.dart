@@ -7,14 +7,17 @@ import 'package:tinycolor2/tinycolor2.dart';
 
 class TitledCard extends StatefulWidget {
   final IconData? icon;
+  final Color? iconColor;
   final String? title;
   final String? backTitle;
   final String? backToolTip;
   final Widget? titleWidget;
   final Widget child;
   final Widget? backChild;
+  final bool? boxShadow;
   final bool internalPadding;
   final bool? gradient;
+  final bool? transparent;
   final Color? outlineColor;
   final Color? cardColor;
   final EdgeInsetsGeometry padding;
@@ -22,14 +25,17 @@ class TitledCard extends StatefulWidget {
   const TitledCard({
     super.key,
     this.icon,
+    this.iconColor,
     this.title,
     this.titleWidget,
     required this.child,
     this.backTitle,
     this.backToolTip,
     this.backChild,
+    this.boxShadow = true,
     this.internalPadding = true,
     this.gradient,
+    this.transparent = false,
     this.outlineColor,
     this.cardColor,
     this.padding = const EdgeInsets.all(10.0),
@@ -55,11 +61,12 @@ class TitledCardState extends State<TitledCard> {
               spreadRadius: 2,
               blurRadius: 3,
               offset: const Offset(3, 3),
-              color: Theme.of(context).cardTheme.shadowColor!,
+              color: widget.boxShadow ?? false ? Theme.of(context).cardTheme.shadowColor! : Colors.transparent,
             ),
           ],
         ),
         child: Card(
+          color: widget.transparent ?? true ? Theme.of(context).scaffoldBackgroundColor : Colors.transparent,
           margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             side: BorderSide(
@@ -99,7 +106,7 @@ class TitledCardState extends State<TitledCard> {
                                   backgroundColor:
                                       AppThemeImpl.getOptions(context)?.titledCardIconColor ?? Colors.white,
                                   child: Icon(
-                                    color: Theme.of(context).primaryColor,
+                                    color: widget.iconColor ?? Theme.of(context).primaryColor,
                                     size: 30,
                                     widget.icon,
                                   ),
