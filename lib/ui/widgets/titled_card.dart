@@ -177,7 +177,9 @@ class UntitledCard extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final Color? outlineColor;
   final Color? cardColor;
+  final bool? boxShadow;
   final bool? gradient;
+  final bool? transparent;
 
   const UntitledCard({
     super.key,
@@ -185,7 +187,9 @@ class UntitledCard extends StatelessWidget {
     this.outlineColor,
     this.cardColor,
     this.padding,
+    this.boxShadow = true,
     this.gradient,
+    this.transparent = false,
   });
 
   @override
@@ -202,11 +206,12 @@ class UntitledCard extends StatelessWidget {
               spreadRadius: 2,
               blurRadius: 3,
               offset: const Offset(3, 3),
-              color: Theme.of(context).cardTheme.shadowColor!,
+              color: boxShadow ?? false ? Theme.of(context).cardTheme.shadowColor! : Colors.transparent,
             ),
           ],
         ),
         child: Card(
+          color: transparent ?? true ? Theme.of(context).scaffoldBackgroundColor : Colors.transparent,
           margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             side: BorderSide(
