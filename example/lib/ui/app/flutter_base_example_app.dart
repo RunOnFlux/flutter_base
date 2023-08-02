@@ -45,7 +45,7 @@ class _FlutterBaseExampleAppState extends MinimalAppState<FlutterBaseExampleApp>
   }
 
   @override
-  String get initialWindowTitle => 'Example - checking access...';
+  String get initialWindowTitle => 'Example App';
   @override
   String get windowTitle => 'Example App';
   @override
@@ -76,7 +76,7 @@ class _FlutterBaseExampleAppState extends MinimalAppState<FlutterBaseExampleApp>
 class FlutterBaseAppConfig extends AppConfig {
   @override
   String getWindowTitle(AppBodyState body, WindowTitle title) {
-    return 'Flutter Base - ${title.title}';
+    return 'Example App - ${title.title}';
   }
 
   @override
