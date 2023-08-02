@@ -101,6 +101,28 @@ class SideMenuDrawer extends StatelessWidget with GetItMixin {
           children: children,
         ),
       );
+    } else if (r is ActionRoute) {
+      if (r.privilege != null && r.includeInMenu) {
+        PrivilegeLevel currentLevel = privilege;
+        for (var privilege in r.privilege!) {
+          if (privilege == currentLevel) {
+            menu.add(
+              FunctionMenuItem(
+                route: r,
+                level: level,
+              ),
+            );
+            continue;
+          }
+        }
+      } else {
+        menu.add(
+          FunctionMenuItem(
+            route: r,
+            level: level,
+          ),
+        );
+      }
     }
   }
 }

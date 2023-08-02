@@ -63,10 +63,7 @@ class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles
                 trailing: widget.route.badge != null ? widget.route.badge!(context) : null,
                 horizontalTitleGap: 0,
                 onTap: () {
-                  context.go(widget.route.route);
-                  Future.microtask(() {
-                    GetIt.I<ScreenInfo>().currentState = widget.route.body!.stateInfo;
-                  });
+                  performAction();
                 },
                 visualDensity: VisualDensity(vertical: -(widget.level * 2.0)),
               ),
@@ -75,6 +72,31 @@ class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles
         ),
       ),
     );
+  }
+
+  performAction() {
+    context.go(widget.route.route);
+    Future.microtask(() {
+      GetIt.I<ScreenInfo>().currentState = widget.route.body!.stateInfo;
+    });
+  }
+}
+
+class FunctionMenuItem extends NavigationMenuItem {
+  const FunctionMenuItem({super.key, required super.level, required super.route});
+
+  @override
+  State<StatefulWidget> createState() => _FunctionMenuItemState();
+}
+
+class _FunctionMenuItemState extends _NavigationMenuItemState {
+  @override
+  performAction() {
+    if (widget.route is ActionRoute) {
+      (widget.route as ActionRoute).action();
+    } else {
+      super.performAction();
+    }
   }
 }
 

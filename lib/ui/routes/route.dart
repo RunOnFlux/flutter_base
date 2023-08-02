@@ -10,6 +10,19 @@ abstract class AbstractRoute {
   late Image? image;
 }
 
+class ActionRoute extends NavigationRoute {
+  Function() action;
+
+  ActionRoute({
+    required super.title,
+    required this.action,
+    required super.route,
+    super.icon,
+    super.image,
+    super.privilege,
+  });
+}
+
 class NavigationRoute implements AbstractRoute {
   String route;
   AppScreen? body;

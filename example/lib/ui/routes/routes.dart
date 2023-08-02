@@ -20,6 +20,14 @@ class ExampleAppRouter extends AppRouter {
         icon: Icons.home,
         includeInMenu: true,
       ),
+      ActionRoute(
+        title: 'Action',
+        action: () {
+          debugPrint('do something!!');
+        },
+        route: '/action',
+        icon: Icons.add,
+      )
     ];
     return routes;
   }
