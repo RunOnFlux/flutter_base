@@ -14,9 +14,10 @@ dependencies:
     sdk: flutter
     version: ^0.0.0
 
+  flutter_animate: ^4.1.1+1
   get_storage:
   theme_provider: ^0.6.0
-  go_router: ^5.2.4
+  go_router: ^10.0.0
   i18n_extension: ^7.0.0
   tinycolor2: ^3.0.1
   modal_bottom_sheet:
@@ -43,6 +44,7 @@ dependencies:
       path: plugins/window_size
   flutter_acrylic: ^1.0.0+2
   shared_preferences: ^2.0.18
+  responsive_framework: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -96,3 +98,4 @@ flutter:
   assets:
     - assets/snack/
     - assets/snack/types/
+    - assets/images/
