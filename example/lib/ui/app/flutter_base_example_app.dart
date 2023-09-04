@@ -4,13 +4,11 @@ import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/logo.dart';
 import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
-import 'package:flutter_base/ui/widgets/sidemenu/menu_item.dart';
 import 'package:flutter_base_example/ui/routes/routes.dart';
 import 'package:flutter_base_example/ui/theme/app_theme.dart';
+import 'package:flutter_base_example/ui/widgets/footer.dart';
 import 'package:flutter_base_example/utils/settings.dart';
 import 'package:get_it/get_it.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:tinycolor2/tinycolor2.dart';
 
 import 'loading.dart';
 
@@ -123,7 +121,8 @@ class FlutterBaseAppConfig extends AppConfig {
 
   @override
   Widget? buildMenuFooter(BuildContext context) {
-    return Align(
+    return const SideBarFooter();
+    /*return Align(
       alignment: FractionalOffset.bottomCenter,
       child: Column(
         children: [
@@ -160,6 +159,6 @@ class FlutterBaseAppConfig extends AppConfig {
           ),
         ],
       ),
-    );
+    );*/
   }
 }
