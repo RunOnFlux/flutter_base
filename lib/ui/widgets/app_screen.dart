@@ -1,44 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
+import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:get_it/get_it.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-abstract class AppScreen extends StatefulWidget {
+abstract class AppContentScreen extends StatefulWidget {
   final AppScreenStateInfo? stateInfo;
-  const AppScreen({
+  const AppContentScreen({
     Key? key,
     this.stateInfo,
   }) : super(key: key);
 }
 
-class ScreenInfo with ChangeNotifier {
-  AppScreenStateInfo? get currentState => _currentState;
-
-  set currentState(AppScreenStateInfo? state) {
-    _currentState = state;
-    notifyListeners();
-  }
-
-  AppScreenStateInfo? _currentState;
-}
-
-class AppScreenStateInfo {
-  final bool? refreshEnabled;
-  final int? refreshInterval;
-  final bool? fabEnabled;
-  final IconData? fabIcon;
-  Function()? onRefresh;
-  Function()? onFAB;
-
-  AppScreenStateInfo({
-    this.refreshEnabled,
-    this.refreshInterval,
-    this.fabEnabled,
-    this.fabIcon,
-  });
-}
-
-abstract class AppScreenState<T extends AppScreen> extends State<T> {
+abstract class AppScreenState<T extends AppContentScreen> extends State<T> {
   @override
   void initState() {
     if (widget.stateInfo != null) {

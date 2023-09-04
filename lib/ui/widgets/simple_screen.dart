@@ -3,7 +3,7 @@ import 'package:flutter_base/ui/utils/bootstrap.dart';
 import 'package:flutter_base/ui/widgets/app_screen.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
-abstract class SimpleScreen extends AppScreen {
+abstract class SimpleScreen extends AppContentScreen {
   final String title;
   const SimpleScreen({
     Key? key,

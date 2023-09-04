@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:flutter_base/ui/app/app_route.dart';
+import 'package:flutter_base/ui/app/app_screen.dart';
 import 'package:flutter_base/ui/app/loading_notifier.dart';
 import 'package:flutter_base/ui/app/menu_drawer.dart';
 import 'package:flutter_base/ui/routes/route.dart';
@@ -11,10 +12,13 @@ import 'package:flutter_base/ui/routes/routes.dart';
 import 'package:flutter_base/ui/screens/loading_screen.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/theme/interface_brightness.dart';
-import 'package:flutter_base/ui/widgets/app_screen.dart';
+import 'package:flutter_base/ui/widgets/logo.dart';
+import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
+import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/ui/widgets/scaffold/scaffoldstate.dart';
 import 'package:flutter_base/ui/widgets/scaffold/superappbar_widget.dart';
 import 'package:flutter_base/ui/widgets/scaffold/superscaffold.dart';
+import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/snack.dart';
 import 'package:flutter_base/ui/widgets/window_title_bar.dart';
 import 'package:flutter_base/utils/platform_info.dart';
@@ -144,23 +148,40 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
     NavigationRoute? initialNavRoute;
     router = GoRouter(
       initialLocation: initialRoute,
-      routes: widget.router.getNavigationRoutes().map(
-        (e) {
-          if (e.route == initialRoute) {
-            initialNavRoute = e;
-          }
-          return AppRoute(
-            e.route,
-            (GoRouterState state) => I18n(
-              child: AppBody(
-                route: e,
-                router: widget.router,
+      routes: [
+        StatefulShellRoute.indexedStack(
+          builder: (context, state, navigationShell) {
+            return AppRouterScope(
+              router: widget.router,
+              child: AppScreen(
                 config: config,
+                child: navigationShell,
               ),
-            ),
-          );
-        },
-      ).toList(),
+            );
+          },
+          branches: widget.router.getNavigationRoutes().map(
+            (e) {
+              if (e.route == initialRoute) {
+                initialNavRoute = e;
+              }
+
+              return StatefulShellBranch(routes: [
+                AppRoute(
+                  path: e.route,
+                  builder: (GoRouterState state) => I18n(
+                    child: /*AppBody(
+                      route: e,
+                      router: widget.router,
+                      config: config,
+                    ),*/
+                        e.body!,
+                  ),
+                )
+              ]);
+            },
+          ).toList(),
+        ),
+      ],
     );
     if (initialNavRoute != null) {
       Future.microtask(() => GetIt.I<ScreenInfo>().currentState = initialNavRoute!.body!.stateInfo);
@@ -175,9 +196,10 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
           debugShowCheckedModeBanner: false,
           title: windowTitle,
           theme: ThemeProvider.themeOf(themeContext).data,
-          routerDelegate: router.routerDelegate,
-          routeInformationParser: router.routeInformationParser,
-          routeInformationProvider: router.routeInformationProvider,
+          builder: (context, child) {
+            return ResponsiveBuilder(child: child!);
+          },
+          routerConfig: router,
         );
       },
     );
@@ -339,12 +361,7 @@ class AppBodyState extends SuperState<AppBody> with GetItStateMixin {
             child: SuperAppBar(
               centerTitle: false,
               elevation: 0,
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ...widget.config.buildTitleWidgets(this, context),
-                ],
-              ),
+              title: widget.config.buildAppBarTitle(context),
               actions: [
                 ...widget.config.buildTitleActionButtons(this, context),
               ],
@@ -373,15 +390,40 @@ class AppConfig {
     return [];
   }
 
-  List<Widget> buildTitleWidgets(AppBodyState body, BuildContext context) {
+  /*List<Widget> buildTitleWidgets(AppBodyState body, BuildContext context) {
     return [];
-  }
+  }*/
 
-  Widget? buildMenuHeader(AppBodyState body, BuildContext context) {
+  Widget? buildAppBarTitle(BuildContext context) {
     return null;
   }
 
-  Widget? buildMenuFooter(AppBodyState body, BuildContext context) {
+  Widget? buildMenuHeader(BuildContext context) {
+    return const Column(
+      children: [
+        SizedBox(
+          height: 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Logo(clickRedirectHomePage: true),
+              SideBarButton(),
+            ],
+          ),
+        ),
+        Divider(),
+        SizedBox(
+          height: 8,
+        ),
+        //SideBarStatus(),
+        //SizedBox(
+        //  height: 16,
+        //),
+      ],
+    );
+  }
+
+  Widget? buildMenuFooter(BuildContext context) {
     return null;
   }
 
@@ -408,5 +450,41 @@ class LoginState with ChangeNotifier {
   set privilege(PrivilegeLevel p) {
     _privilege = p;
     notifyListeners();
+  }
+}
+
+class AppConfigScope extends InheritedWidget {
+  const AppConfigScope({
+    Key? key,
+    required Widget child,
+    required this.config,
+  }) : super(key: key, child: child);
+  final AppConfig config;
+
+  static AppConfig? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<AppConfigScope>()?.config;
+  }
+
+  @override
+  bool updateShouldNotify(covariant AppConfigScope oldWidget) {
+    return false;
+  }
+}
+
+class AppRouterScope extends InheritedWidget {
+  const AppRouterScope({
+    Key? key,
+    required Widget child,
+    required this.router,
+  }) : super(key: key, child: child);
+  final AppRouter router;
+
+  static AppRouter of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<AppRouterScope>()!.router;
+  }
+
+  @override
+  bool updateShouldNotify(covariant AppRouterScope oldWidget) {
+    return false;
   }
 }

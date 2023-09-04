@@ -153,7 +153,67 @@ class AppThemeImpl {
   Color get scaffoldBackgroundDark => const Color.fromARGB(255, 20, 22, 41);
   Color get cardColorDark => const Color.fromARGB(255, 14, 16, 33);
 
-  AppTheme get dark {
+  AppTheme get dark => AppTheme(
+        id: 'dark',
+        description: 'Dark Mode',
+        data: ThemeData(
+          shadowColor: Colors.black,
+          cardTheme: ThemeData.light().cardTheme.copyWith(
+                shadowColor: const Color.fromARGB(40, 8, 8, 18),
+                color: const Color(0xff050B16),
+              ),
+          colorScheme: const ColorScheme.dark(
+              surfaceTint: Colors.transparent,
+              primary: Colors.white,
+              onPrimary: Colors.white,
+              onSecondary: Colors.white,
+              background: Color(0xff070F1E),
+              secondary: Color.fromARGB(255, 13, 126, 255)),
+          checkboxTheme: CheckboxThemeData(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
+            ),
+            fillColor: MaterialStateProperty.all(const Color.fromARGB(255, 13, 126, 255)),
+            checkColor: MaterialStateProperty.all(Colors.white),
+          ),
+          switchTheme: SwitchThemeData(
+              thumbColor: MaterialStateProperty.all(Colors.white),
+              trackColor: MaterialStateProperty.all(const Color.fromARGB(255, 13, 126, 255))),
+          appBarTheme: const AppBarTheme(
+              backgroundColor: Colors.transparent,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              iconTheme: IconThemeData(color: Colors.white),
+              titleTextStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700)),
+          scaffoldBackgroundColor: Colors.transparent,
+          brightness: Brightness.dark,
+          cardColor: const Color(0xff050B16),
+          fontFamily: 'Montserrat',
+          dialogTheme: const DialogTheme(
+              elevation: 2,
+              backgroundColor: Color.fromRGBO(20, 21, 41, 1),
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 0.6, color: Color.fromRGBO(46, 142, 255, 0.20)),
+                  borderRadius: BorderRadius.all(Radius.circular(8)))),
+          drawerTheme: const DrawerThemeData(
+              surfaceTintColor: Colors.black,
+              scrimColor: Colors.transparent,
+              // borderside only right
+
+              shape: Border(
+                  right: BorderSide(width: 1, color: _darkBorderColor),
+                  bottom: BorderSide(width: 1, color: _darkBorderColor)),
+              backgroundColor: Colors.transparent,
+              elevation: 2,
+              width: 300),
+          primaryColor: const Color.fromARGB(255, 27, 103, 255),
+          primaryColorLight: const Color(0xFF1F283A),
+          primaryColorDark: const Color(0xFF2A354E),
+          useMaterial3: true,
+        ),
+      );
+
+  AppTheme get _dark {
     var primaryColor = primaryColorDark;
     return AppTheme(
       id: 'dark',
@@ -265,6 +325,19 @@ class AppThemeImpl {
           shadowColor: Colors.black.withOpacity(0.35),
           selectedColor: primaryColorDark,
         ),
+        drawerTheme: const DrawerThemeData(
+          surfaceTintColor: Colors.black,
+          scrimColor: Colors.transparent,
+          // borderside only right
+
+          shape: Border(
+            right: BorderSide(width: 1, color: _darkBorderColor),
+            bottom: BorderSide(width: 1, color: _darkBorderColor),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 2,
+          width: 300,
+        ),
       ),
       options: themeOptions,
     );
@@ -310,3 +383,90 @@ class ThemeOptions implements AppThemeOptions {
     this.titledCardIconShadow,
   });
 }
+
+extension ThemeBits on ThemeData {
+  bool get isDark => brightness == Brightness.dark;
+  bool get isLight => brightness == Brightness.light;
+  Color get borderColor => isDark ? _darkBorderColor : _lightBorderColor;
+
+  LinearGradient? get backgroundGradient {
+    if (isLight) {
+      return null;
+    }
+    return const LinearGradient(
+        stops: [0.35, 1],
+        tileMode: TileMode.decal,
+        colors: _bgDarkGradientColors,
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter);
+  }
+
+  Gradient ellipsisGradient(Color color) {
+    return RadialGradient(
+        radius: 0.4,
+        tileMode: TileMode.decal,
+        colors: isDark ? [color, Colors.transparent] : _bgLightGradientColors,
+        stops: const [0.25, 1],
+        center: Alignment.center);
+  }
+}
+
+const Color kBestScoreColor = Colors.purpleAccent;
+
+const Color _systemInfoDark = Color.fromARGB(255, 58, 121, 255);
+const Color _systemInfoLight = Colors.black;
+
+const Color _averageLight = Color.fromRGBO(0, 152, 3, 1);
+const Color _yourLight = Color(0xff2B61D1);
+
+const Color _averageDark = Color.fromRGBO(0, 152, 3, 1);
+const Color _yourDark = Color.fromARGB(255, 16, 48, 231);
+
+const Color _headingRowDark = Color.fromARGB(255, 36, 46, 71);
+const Color _headingRownLight = Color(0xFFEBEEFF);
+// const _lightGradient2 = <Color>[
+//   Color.fromARGB(51, 20, 118, 255),
+//   Color.fromARGB(165, 95, 20, 255),
+//   Color.fromARGB(129, 255, 20, 161)
+// ];
+
+const _lightGradient2 = <Color>[
+  Color.fromARGB(230, 43, 98, 209),
+  Color.fromARGB(230, 21, 147, 201),
+  Color.fromARGB(230, 81, 241, 252)
+];
+const _darkGradient2 = <Color>[
+  Color.fromARGB(230, 43, 98, 209),
+  Color.fromARGB(230, 21, 147, 201),
+  Color.fromARGB(230, 81, 241, 252)
+];
+const Color _darkPercentColor = Colors.white;
+const Color _lightPercentColor = Color(0xff747EB6);
+const _bgLightGradientColors = [Colors.white, Colors.white];
+const _bgDarkGradientColors = [Color.fromARGB(255, 9, 19, 43), Color.fromARGB(255, 6, 13, 26)];
+
+const Color _warningColor = Color(0xFFFFCB2D);
+
+const Color _lPositiveColor = Color(0xFF12B76A);
+const Color _dPositiveColor = Color.fromARGB(153, 16, 204, 101);
+
+const Color _dLightPositiveColor = Color.fromARGB(255, 19, 252, 143);
+const Color _lLightPositiveColor = Color(0xFFECFDF3);
+
+const Color _lightBorderColor = Color(0xFFDBE1F0);
+
+const Color _darkBorderColor = Color.fromRGBO(46, 142, 255, 0.20);
+
+const BoxShadow _defaultLightShadowColor = BoxShadow(
+  color: Color.fromARGB(255, 231, 236, 247),
+  offset: Offset(3.7480709552764893, 3.7480709552764893),
+  blurRadius: 18.7403564453125,
+  spreadRadius: 1.8740354776382446,
+);
+
+const BoxShadow _defaultDarkShadowColor = BoxShadow(
+  color: Color.fromARGB(108, 0, 0, 0),
+  offset: Offset(3.7480709552764893, 3.7480709552764893),
+  blurRadius: 18.7403564453125,
+  spreadRadius: 1.8740354776382446,
+);

@@ -1,7 +1,7 @@
-import 'package:auto_size_text/auto_size_text.dart';
+/*import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/ui/app/app_screen.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
-import 'package:flutter_base/ui/widgets/app_screen.dart';
 import 'package:flutter_base/utils/platform_info.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -136,3 +136,4 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
     return tabs.map((e) => e.child).toList();
   }
 }
+*/

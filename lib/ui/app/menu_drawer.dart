@@ -34,7 +34,7 @@ class SideMenuDrawer extends StatelessWidget with GetItMixin {
         child: SafeArea(
           child: Column(
             children: [
-              config.buildMenuHeader(body, context) ?? Container(),
+              config.buildMenuHeader(context) ?? Container(),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
@@ -49,7 +49,7 @@ class SideMenuDrawer extends StatelessWidget with GetItMixin {
                   ),
                 ),
               ),
-              config.buildMenuFooter(body, context) ?? Container(),
+              config.buildMenuFooter(context) ?? Container(),
             ],
           ),
         ),

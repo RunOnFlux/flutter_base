@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/ui/widgets/app_screen.dart';
+import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-
-import '../widgets/app_screen.dart';
 
 abstract class AbstractRoute {
   late String title;
   late IconData? icon;
   late Image? image;
+  late String? asset;
+  late bool? active;
 }
 
 class ActionRoute extends NavigationRoute {
@@ -19,13 +21,15 @@ class ActionRoute extends NavigationRoute {
     required super.route,
     super.icon,
     super.image,
+    super.asset,
     super.privilege,
+    super.active,
   });
 }
 
 class NavigationRoute implements AbstractRoute {
   String route;
-  AppScreen? body;
+  AppContentScreen? body;
   bool includeInMenu = false;
   List<PrivilegeLevel>? privilege;
   int? navBarIndex;
@@ -38,9 +42,11 @@ class NavigationRoute implements AbstractRoute {
     this.includeInMenu = false,
     this.icon,
     this.image,
+    this.asset,
     this.privilege,
     this.navBarIndex,
     this.badge,
+    this.active,
   });
 
   @override
@@ -51,6 +57,12 @@ class NavigationRoute implements AbstractRoute {
 
   @override
   Image? image;
+
+  @override
+  String? asset;
+
+  @override
+  bool? active;
 
   void go(GoRouter router) {
     Future.microtask(() {
@@ -86,6 +98,7 @@ class RouteSet implements AbstractRoute {
     required this.routes,
     this.icon,
     this.image,
+    this.asset,
   });
 
   @override
@@ -96,4 +109,10 @@ class RouteSet implements AbstractRoute {
 
   @override
   Image? image;
+
+  @override
+  String? asset;
+
+  @override
+  bool? active;
 }
