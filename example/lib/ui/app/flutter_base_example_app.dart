@@ -2,6 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
+import 'package:flutter_base/ui/widgets/logo.dart';
+import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
 import 'package:flutter_base/ui/widgets/sidemenu/menu_item.dart';
 import 'package:flutter_base_example/ui/routes/routes.dart';
 import 'package:flutter_base_example/ui/theme/app_theme.dart';
@@ -85,18 +87,42 @@ class FlutterBaseAppConfig extends AppConfig {
   }
 
   @override
-  List<Widget> buildTitleWidgets(AppBodyState body, BuildContext context) {
-    return [
-      AutoSizeText(
-        'Flutter Base',
-        style: Theme.of(context).textTheme.headlineLarge,
-        maxLines: 1,
-      ),
-    ];
+  Widget? buildMenuHeader(BuildContext context) {
+    return const Column(
+      children: [
+        SizedBox(
+          height: 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Logo(title: 'Flutter Base', clickRedirectHomePage: true),
+              SideBarButton(),
+            ],
+          ),
+        ),
+        Divider(),
+        SizedBox(
+          height: 8,
+        ),
+      ],
+    );
   }
 
   @override
-  Widget? buildMenuFooter(AppBodyState body, BuildContext context) {
+  Widget? buildAppBarTitle(BuildContext context) {
+    return Column(
+      children: [
+        AutoSizeText(
+          'Flutter Base',
+          style: Theme.of(context).textTheme.headlineLarge,
+          maxLines: 1,
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget? buildMenuFooter(BuildContext context) {
     return Align(
       alignment: FractionalOffset.bottomCenter,
       child: Column(

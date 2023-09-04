@@ -16,9 +16,44 @@ class ExampleAppRouter extends AppRouter {
       NavigationRoute(
         route: '/',
         body: HomeScreen(),
-        title: 'Home',
+        title: 'Workers',
+        asset: 'assets/images/svg/workers_icon.svg',
+        includeInMenu: true,
+      ),
+      NavigationRoute(
+        route: '/disabled',
+        body: HomeScreen(),
+        title: 'Disabled',
         icon: Icons.home,
         includeInMenu: true,
+        active: false,
+      ),
+      RouteSet(
+        title: 'Workers',
+        asset: 'assets/images/svg/workers_icon.svg',
+        routes: [
+          NavigationRoute(
+            route: '/1',
+            body: HomeScreen(),
+            title: '1',
+            icon: Icons.home,
+            includeInMenu: true,
+          ),
+          NavigationRoute(
+            route: '/2',
+            body: HomeScreen(),
+            title: '2',
+            icon: Icons.home,
+            includeInMenu: true,
+          ),
+          NavigationRoute(
+            route: '/3',
+            body: HomeScreen(),
+            title: '3',
+            icon: Icons.home,
+            includeInMenu: true,
+          ),
+        ],
       ),
       ActionRoute(
         title: 'Action',
@@ -27,7 +62,7 @@ class ExampleAppRouter extends AppRouter {
         },
         route: '/action',
         icon: Icons.add,
-      )
+      ),
     ];
     return routes;
   }
