@@ -389,6 +389,12 @@ extension ThemeBits on ThemeData {
   bool get isLight => brightness == Brightness.light;
   Color get borderColor => isDark ? _darkBorderColor : _lightBorderColor;
 
+  Color get background => isDark ? Colors.transparent : Colors.white;
+  Color get percentColor => isDark ? _darkPercentColor : _lightPercentColor;
+  Color get headingRowColor => isDark ? _headingRowDark : _headingRownLight;
+  Color get tileColor => isDark ? _headingRowDark : const Color(0xFF2463EB);
+  Color get sysInfoColor => isDark ? _systemInfoDark : _systemInfoLight;
+
   LinearGradient? get backgroundGradient {
     if (isLight) {
       return null;
