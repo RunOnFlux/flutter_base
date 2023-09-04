@@ -1,0 +1,17 @@
+<svg width="28" height="30" viewBox="0 0 28 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Flux Logo">
+<path d="M13.823 0.972656C21.4572 0.972656 27.6459 7.25278 27.6459 14.9993C27.6459 22.7464 21.4572 29.0265 13.823 29.0265C6.1887 29.0265 0 22.7464 0 14.9993C0 7.25278 6.1887 0.972656 13.823 0.972656Z" fill="url(#paint0_linear_925_10925)"/>
+<path d="M15.4388 23.1388L13.8668 24.0667L10.4894 22.0744L12.0229 21.1694L12.0613 21.1461L12.1203 21.1804L15.4388 23.1388Z" fill="white"/>
+<path d="M21.4741 10.7096V12.5777L17.2481 10.0839L11.2188 13.642V14.7419L8.69074 13.2499L6.26001 14.684V10.7096L13.867 6.22131L21.4741 10.7096Z" fill="white"/>
+<path d="M21.4739 14.5983V19.5855L17.2479 22.0788L17.2421 22.0756L13.0215 19.5855V14.5983L17.2479 12.1032L21.4739 14.5983Z" fill="white"/>
+<path d="M11.1219 16.7048V19.5724L8.69119 21.0078L6.26001 19.5724V16.7048L8.69119 15.2707L11.1219 16.7048Z" fill="white"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_925_10925" x1="2.90614" y1="10.4824" x2="27.4121" y2="10.5371" gradientUnits="userSpaceOnUse">
+<stop stop-color="#1B1D33"/>
+<stop offset="0.338542" stop-color="#1B5747" stop-opacity="0.986458"/>
+<stop offset="1" stop-color="#1B1D33" stop-opacity="0.96"/>
+<stop offset="1" stop-color="#1AC86F" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>
