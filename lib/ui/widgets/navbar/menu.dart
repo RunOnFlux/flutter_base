@@ -38,10 +38,6 @@ class _SideBarMenuWidgetState extends State<SideBarMenuWidget> with GetItStateMi
 
     /// To rebuild on page change
     final items = _buildMenu(context, privilege ?? PrivilegeLevel.none);
-    //final actives = items.where((e) => e.).toList();
-    //final inactives = items.where((e) => !e.enabled).toList();
-    //final sortedItems = [...actives, ...inactives];
-    // const titleStyle = TextStyle(fontWeight: FontWeight.w700, fontSize: 16);
     return NoScrollGlowWidget(
       child: ScrollbarTheme(
         data: Theme.of(context).scrollbarTheme.copyWith(

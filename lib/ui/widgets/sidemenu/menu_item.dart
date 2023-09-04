@@ -39,68 +39,71 @@ class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles
 
     return Padding(
       padding: EdgeInsets.only(left: widget.level * 20),
-      child: SizedBox(
-        height: kMenuItemHeights[widget.level],
-        child: MouseRegion(
-          onEnter: (_) {
-            setState(() {
-              isHovering = true;
-            });
-          },
-          onExit: (_) {
-            setState(() {
-              isHovering = false;
-            });
-          },
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 100),
-            //padding: EdgeInsets.only(left: isHovering ? 5 : 0),
-            //margin: EdgeInsets.only(left: isHovering ? 5 : 0, right: 0),
-            //color: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
-            child: ListTile(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              selected: isSelected,
-              dense: true,
-              isThreeLine: false,
-              titleTextStyle: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    fontWeight: FontWeight.w500,
-                    fontSize: fontSizeForLevel(widget.level),
-                    letterSpacing: 1,
-                  ),
-              minVerticalPadding: 16,
-              iconColor: unselectedColor,
-              textColor: unselectedColor,
-              selectedTileColor: Theme.of(context).primaryColor,
-              selectedColor: selectedColor,
-              tileColor: Colors.transparent,
-              title: buildTitle(
-                context,
-                widget.route.title,
-                selectedColor,
-                unselectedColor,
-                widget.level,
+      child: Material(
+        color: Colors.transparent,
+        child: SizedBox(
+          height: kMenuItemHeights[widget.level],
+          child: MouseRegion(
+            onEnter: (_) {
+              setState(() {
+                isHovering = true;
+              });
+            },
+            onExit: (_) {
+              setState(() {
+                isHovering = false;
+              });
+            },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 100),
+              //padding: EdgeInsets.only(left: isHovering ? 5 : 0),
+              //margin: EdgeInsets.only(left: isHovering ? 5 : 0, right: 0),
+              //color: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
+              child: ListTile(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 selected: isSelected,
-              ),
-              leading: buildIconWidget(
-                widget.route,
-                context,
-                widget.level,
-                isSelected,
-                selectedColor,
-                unselectedColor,
-              ),
-              trailing: widget.route.badge != null
-                  ? widget.route.badge!(context)
-                  : buildIcon(
-                      context,
-                      Icons.chevron_right_outlined,
-                      selectedColor,
-                      unselectedColor,
+                dense: true,
+                isThreeLine: false,
+                titleTextStyle: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontWeight: FontWeight.w500,
+                      fontSize: fontSizeForLevel(widget.level),
+                      letterSpacing: 1,
                     ),
-              onTap: () {
-                performAction();
-              },
-              enabled: widget.route.active ?? true,
+                minVerticalPadding: 16,
+                iconColor: unselectedColor,
+                textColor: unselectedColor,
+                selectedTileColor: Theme.of(context).primaryColor,
+                selectedColor: selectedColor,
+                tileColor: Colors.transparent,
+                title: buildTitle(
+                  context,
+                  widget.route.title,
+                  selectedColor,
+                  unselectedColor,
+                  widget.level,
+                  selected: isSelected,
+                ),
+                leading: buildIconWidget(
+                  widget.route,
+                  context,
+                  widget.level,
+                  isSelected,
+                  selectedColor,
+                  unselectedColor,
+                ),
+                trailing: widget.route.badge != null
+                    ? widget.route.badge!(context)
+                    : buildIcon(
+                        context,
+                        Icons.chevron_right_outlined,
+                        selectedColor,
+                        unselectedColor,
+                      ),
+                onTap: () {
+                  performAction();
+                },
+                enabled: widget.route.active ?? true,
+              ),
             ),
           ),
         ),

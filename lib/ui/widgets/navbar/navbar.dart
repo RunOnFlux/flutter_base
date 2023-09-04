@@ -23,7 +23,7 @@ class NavBar extends StatelessWidget {
     final isSmallScreen = drawerScope?.isSmallScreen ?? false;
     final theme = Theme.of(context);
 
-    return SizedBox(
+    return Drawer(
       width: 300,
       child: Column(
         mainAxisSize: MainAxisSize.max,
