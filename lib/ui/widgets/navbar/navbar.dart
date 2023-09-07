@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_base/ui/app/app_screen.dart';
+import 'package:flutter_base/ui/app/main_app_screen.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/navbar/footer.dart';
+import 'package:flutter_base/ui/widgets/sidemenu/menu_category.dart';
+import 'package:flutter_base/ui/widgets/sidemenu/menu_item.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 import 'menu.dart';
 
@@ -23,27 +23,30 @@ class NavBar extends StatelessWidget {
     final isSmallScreen = drawerScope?.isSmallScreen ?? false;
     final theme = Theme.of(context);
 
-    return Drawer(
+    return SizedBox(
       width: 300,
       child: Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
+          SizedBox(
+            height: MediaQuery.of(context).size.height,
             child: DecoratedBox(
               decoration: BoxDecoration(gradient: !isCollapsed && isSmallScreen ? theme.backgroundGradient : null),
               child: Drawer(
                 width: 300,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: Column(children: <Widget>[
-                    const SideBarHeader(),
-                    Expanded(child: SideBarMenuWidget()),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    const SideBarFooter(),
-                  ]),
+                  child: Column(
+                    children: <Widget>[
+                      const SideBarHeader(),
+                      Expanded(child: SideBarMenuWidget()),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      const SideBarFooter(),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -59,10 +62,10 @@ class CollapsedSidebar extends StatelessWidget with GetItMixin {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<StatefulNavigationShell>();
-    final currentIndex = state.currentIndex;
+    //final state = context.watch<StatefulNavigationShell>();
+    //final currentIndex = state.currentIndex;
 
-    PrivilegeLevel? privilege;
+    PrivilegeLevel privilege = PrivilegeLevel.none;
     if (GetIt.instance.isRegistered<LoginState>()) {
       privilege = watchOnly((LoginState state) => state.privilege);
     }
@@ -86,20 +89,9 @@ class CollapsedSidebar extends StatelessWidget with GetItMixin {
             child: ListView.separated(
                 itemBuilder: (context, index) {
                   final items = allRoutes[index];
-                  return ListView.builder(
+                  return ListView(
                     shrinkWrap: true,
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      final item = items[index];
-                      final selected = false; //currentIndex == item.index;
-                      return SideBarMenuItem(
-                              selected: selected,
-                              enabled: item.active,
-                              index: index,
-                              iconAsset: item.iconAsset,
-                              onTap: defaultMenuIconTap)
-                          .build(context);
-                    },
+                    children: _buildCollapsedMenuItems(items, privilege),
                   );
                 },
                 separatorBuilder: (context, index) {
@@ -111,6 +103,80 @@ class CollapsedSidebar extends StatelessWidget with GetItMixin {
       ),
     );
   }
+
+  List<Widget> _buildCollapsedMenuItems(List<AbstractRoute> items, PrivilegeLevel privilegeLevel) {
+    List<Widget> menu = <Widget>[];
+    for (AbstractRoute r in items) {
+      _buildMenuForRoute(r, menu, 0, privilegeLevel);
+    }
+
+    return menu;
+  }
+
+  _buildMenuForRoute(AbstractRoute r, List<Widget> menu, int level, PrivilegeLevel privilege) {
+    if (r is NavigationRoute && r.includeInMenu) {
+      if (r.privilege != null) {
+        PrivilegeLevel currentLevel = privilege;
+        for (var privilege in r.privilege!) {
+          if (privilege == currentLevel) {
+            menu.add(
+              NavigationMenuItem(
+                route: r,
+                level: level,
+                collapsed: true,
+              ),
+            );
+            continue;
+          }
+        }
+      } else {
+        menu.add(
+          NavigationMenuItem(
+            route: r,
+            level: level,
+            collapsed: true,
+          ),
+        );
+      }
+    } else if (r is RouteSet) {
+      List<Widget> children = <Widget>[];
+      for (AbstractRoute rr in r.routes) {
+        _buildMenuForRoute(rr, children, level + 1, privilege);
+      }
+      menu.add(
+        SideMenuCategory(
+          route: r,
+          level: level,
+          collapsed: true,
+          children: children,
+        ),
+      );
+    } else if (r is ActionRoute) {
+      if (r.privilege != null && r.includeInMenu) {
+        PrivilegeLevel currentLevel = privilege;
+        for (var privilege in r.privilege!) {
+          if (privilege == currentLevel) {
+            menu.add(
+              FunctionMenuItem(
+                route: r,
+                level: level,
+                collapsed: true,
+              ),
+            );
+            continue;
+          }
+        }
+      } else {
+        menu.add(
+          FunctionMenuItem(
+            route: r,
+            level: level,
+            collapsed: true,
+          ),
+        );
+      }
+    }
+  }
 }
 
 class SideBarButton extends StatelessWidget {
@@ -120,6 +186,7 @@ class SideBarButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final appScope = AppDrawerScope.of(context);
     final isCollapsed = appScope?.isCollapsed ?? true;
+    debugPrint('isCollapsed: $isCollapsed');
     return InkWell(
       customBorder: const CircleBorder(),
       onTap: () {
