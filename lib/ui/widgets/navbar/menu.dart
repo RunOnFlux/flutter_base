@@ -8,8 +8,6 @@ import 'package:flutter_base/ui/widgets/sidemenu/menu_item.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 class SideBarMenuWidget extends StatefulWidget with GetItStatefulWidgetMixin {
   SideBarMenuWidget({super.key});
@@ -61,7 +59,6 @@ class _SideBarMenuWidgetState extends State<SideBarMenuWidget> with GetItStateMi
               child: ListView(
                 controller: _controller,
                 shrinkWrap: true,
-                //children: [for (final item in sortedItems) item.build(context)],
                 children: items,
               ),
             );
@@ -162,7 +159,7 @@ class _SideBarMenuWidgetState extends State<SideBarMenuWidget> with GetItStateMi
   }
 }
 
-void defaultMenuIconTap(int index, BuildContext context) {
+/*void defaultMenuIconTap(int index, BuildContext context) {
   final state = context.read<StatefulNavigationShell>();
   final currentIndex = state.currentIndex;
 
@@ -173,7 +170,7 @@ void defaultMenuIconTap(int index, BuildContext context) {
   //}
 
   state.goBranch(index, initialLocation: active);
-}
+}*/
 
 /// if no title is provided, use an icon button
 class SideBarMenuItem {
