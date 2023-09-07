@@ -9,8 +9,8 @@ import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-class AppScreen extends StatelessWidget {
-  const AppScreen({
+class MainAppScreen extends StatelessWidget {
+  const MainAppScreen({
     super.key,
     required this.child,
     required this.config,
@@ -41,7 +41,7 @@ class AppScreenDelegate extends StatefulWidget {
 }
 
 class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveClientMixin {
-  @override
+  /*@override
   void initState() {
     super.initState();
 
@@ -50,7 +50,7 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
         FlutterWindowClose.setWebReturnValue(context.tr.exitApplicationPrompt);
       }
     });*/
-  }
+  }*/
 
   void openDrawer() {
     if (_isSmallScreen) {
@@ -74,11 +74,11 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
     }
   }
 
-  void closeDrawer() {
+  void closeDrawer([bool close = true]) {
     if (_isSmallScreen) {
       _scaffoldKey.currentState?.closeDrawer();
     } else {
-      if (mounted) {
+      if (mounted && close) {
         setState(() {
           _isCollapsed = true;
         });
@@ -97,42 +97,42 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
     super.build(context);
     _isSmallScreen = context.isSmallWidth();
 
-    var sideBar = const NavBar().animate(target: _isCollapsed ? 1 : 0).fadeOut().slideX(
-          begin: 0,
-          end: -1,
-        );
+    var sideBar = const NavBar().animate(target: _isCollapsed ? 1 : 0)
+      ..fadeOut()
+      ..slideX(
+        begin: 0,
+        end: -1,
+      );
     final child = context.watch<StatefulNavigationShell>();
-    return AppConfigScope(
-      config: widget.config,
-      child: AppDrawerScope(
-        state: this,
-        child: Scaffold(
-            backgroundColor: Colors.transparent,
-            drawerScrimColor: _isSmallScreen ? Colors.black54 : null,
-            key: _scaffoldKey,
-            appBar: _isSmallScreen
-                ? AppBar(
-                    elevation: 0,
-                    centerTitle: false,
-                    // ignore: prefer_const_constructors
-                    leading: SideBarButton(),
-                    title: widget.config.buildAppBarTitle(context),
-                  )
-                : null,
-            body: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (!_isSmallScreen)
-                  sideBar
-                    ..swap(
-                      builder: (context, child) => CollapsedSidebar(),
-                    ),
-                Expanded(
-                  child: _AppScreenChildWrapper(child: child),
+    return AppDrawerScope(
+      state: this,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        drawerScrimColor: _isSmallScreen ? Colors.black54 : null,
+        key: _scaffoldKey,
+        appBar: _isSmallScreen
+            ? AppBar(
+                elevation: 0,
+                centerTitle: false,
+                // ignore: prefer_const_constructors
+                leading: SideBarButton(),
+                title: widget.config.buildAppBarTitle(context),
+              )
+            : null,
+        body: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (!_isSmallScreen)
+              sideBar
+                ..swap(
+                  builder: (context, child) => CollapsedSidebar(),
                 ),
-              ],
+            Expanded(
+              child: _AppScreenChildWrapper(child: child),
             ),
-            drawer: _isSmallScreen ? sideBar : null),
+          ],
+        ),
+        drawer: _isSmallScreen ? sideBar : null,
       ),
     );
   }
@@ -185,6 +185,6 @@ class _AppScreenChildWrapper extends StatelessWidget {
     if (smallScreen) {
       return child;
     }
-    return child.animate(target: isCollapsed ? 0 : 1).scaleX(begin: 1, end: 0.95).scaleY(begin: 1, end: 0.94);
+    return child.animate(target: isCollapsed ? 0 : 1).scaleX(begin: 1, end: 0.97).scaleY(begin: 1, end: 0.97);
   }
 }
