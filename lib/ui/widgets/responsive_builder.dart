@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/widgets/background_theme_builder.dart';
 import 'package:flutter_base/utils/config.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -24,6 +25,7 @@ class ResponsiveBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('responsive builder');
     return ResponsiveBreakpoints.builder(
         debugLog: kDebugMode,
         child: Builder(builder: (context) {
@@ -34,7 +36,12 @@ class ResponsiveBuilder extends StatelessWidget {
           if (_currentDeviceSize!.width > smallScreenWidth) {
             return child;
           } else {
-            return _SmallScreenWrapper(child: child);
+            AppConfig config = AppConfigScope.of(context)!;
+            if (config.smallScreenScroll) {
+              return _SmallScreenWrapper(child: child);
+            } else {
+              return child;
+            }
           }
         }),
         breakpoints: [
