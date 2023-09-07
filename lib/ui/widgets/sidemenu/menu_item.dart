@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/ui/app/main_app_screen.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -14,11 +15,13 @@ const List<double> kMenuItemHeights = [47, 47, 47];
 class NavigationMenuItem extends StatefulWidget {
   final NavigationRoute route;
   final int level;
+  final bool collapsed;
 
   const NavigationMenuItem({
     Key? key,
     required this.route,
     required this.level,
+    this.collapsed = false,
   }) : super(key: key);
 
   @override
@@ -36,6 +39,30 @@ class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles
     }
     final unselectedColor = (widget.route.active ?? true) ? c[0] : c[1];
     Color selectedColor = Colors.white;
+
+    if (widget.collapsed) {
+      return IconButton(
+        tooltip: widget.route.title,
+        style: IconButton.styleFrom(
+          backgroundColor: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
+          shape: const CircleBorder(),
+        ),
+        isSelected: isSelected,
+        onPressed: (widget.route.active ?? true)
+            ? () {
+                performAction();
+              }
+            : null,
+        icon: buildIconWidget(
+          widget.route,
+          context,
+          widget.level,
+          isSelected,
+          selectedColor,
+          unselectedColor,
+        ),
+      );
+    }
 
     return Padding(
       padding: EdgeInsets.only(left: widget.level * 20),
@@ -112,6 +139,7 @@ class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles
   }
 
   performAction() {
+    AppDrawerScope.of(context)?.closeDrawer(false);
     context.go(widget.route.route);
     Future.microtask(() {
       GetIt.I<ScreenInfo>().currentState = widget.route.body!.stateInfo;
@@ -120,7 +148,12 @@ class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles
 }
 
 class FunctionMenuItem extends NavigationMenuItem {
-  const FunctionMenuItem({super.key, required super.level, required super.route});
+  const FunctionMenuItem({
+    super.key,
+    required super.level,
+    required super.route,
+    super.collapsed = false,
+  });
 
   @override
   State<StatefulWidget> createState() => _FunctionMenuItemState();
@@ -130,7 +163,7 @@ class _FunctionMenuItemState extends _NavigationMenuItemState {
   @override
   performAction() {
     if (widget.route is ActionRoute) {
-      (widget.route as ActionRoute).action();
+      (widget.route as ActionRoute).action(context);
     } else {
       super.performAction();
     }

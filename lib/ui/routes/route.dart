@@ -13,7 +13,7 @@ abstract class AbstractRoute {
 }
 
 class ActionRoute extends NavigationRoute {
-  Function() action;
+  Function(BuildContext context) action;
 
   ActionRoute({
     required super.title,
