@@ -1,6 +1,6 @@
 /*import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/ui/app/app_screen.dart';
+import 'package:flutter_base/ui/app/main_app_screen.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/utils/platform_info.dart';
 import 'package:get_it/get_it.dart';
