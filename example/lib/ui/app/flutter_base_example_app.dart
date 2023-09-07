@@ -75,6 +75,9 @@ class _FlutterBaseExampleAppState extends MinimalAppState<FlutterBaseExampleApp>
 
 class FlutterBaseAppConfig extends AppConfig {
   @override
+  bool get smallScreenScroll => false;
+
+  @override
   String getWindowTitle(AppBodyState body, WindowTitle title) {
     return 'Example App - ${title.title}';
   }
@@ -112,7 +115,7 @@ class FlutterBaseAppConfig extends AppConfig {
       children: [
         AutoSizeText(
           'Flutter Base',
-          style: Theme.of(context).textTheme.headlineLarge,
+          style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontSize: 20),
           maxLines: 1,
         ),
       ],
