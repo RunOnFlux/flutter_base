@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:flutter_base/ui/app/app_route.dart';
-import 'package:flutter_base/ui/app/app_screen.dart';
 import 'package:flutter_base/ui/app/loading_notifier.dart';
+import 'package:flutter_base/ui/app/main_app_screen.dart';
 import 'package:flutter_base/ui/app/menu_drawer.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
@@ -88,7 +88,6 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
         create: (_) => loadingNotifier,
         builder: (context, _) {
           final loading = Provider.of<LoadingNotifier>(context);
-          debugPrint('${loading.loadingComplete}');
           return ThemeProvider(
             defaultThemeId: widget.settings.getBool(Setting.darkMode.name, defaultValue: true) ? dark.id : light.id,
             themes: <AppTheme>[
@@ -153,7 +152,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
           builder: (context, state, navigationShell) {
             return AppRouterScope(
               router: widget.router,
-              child: AppScreen(
+              child: MainAppScreen(
                 config: config,
                 child: navigationShell,
               ),
@@ -187,21 +186,24 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
       Future.microtask(() => GetIt.I<ScreenInfo>().currentState = initialNavRoute!.body!.stateInfo);
     }
 
-    return Builder(
-      builder: (themeContext) {
-        return MaterialApp.router(
-          scaffoldMessengerKey: rootScaffoldMessengerKey,
-          localizationsDelegates: config.localizationDelegates,
-          supportedLocales: config.supportedLocales,
-          debugShowCheckedModeBanner: false,
-          title: windowTitle,
-          theme: ThemeProvider.themeOf(themeContext).data,
-          builder: (context, child) {
-            return ResponsiveBuilder(child: child!);
-          },
-          routerConfig: router,
-        );
-      },
+    return AppConfigScope(
+      config: config,
+      child: Builder(
+        builder: (themeContext) {
+          return MaterialApp.router(
+            scaffoldMessengerKey: rootScaffoldMessengerKey,
+            localizationsDelegates: config.localizationDelegates,
+            supportedLocales: config.supportedLocales,
+            debugShowCheckedModeBanner: false,
+            title: windowTitle,
+            theme: ThemeProvider.themeOf(themeContext).data,
+            builder: (context, child) {
+              return ResponsiveBuilder(child: child!);
+            },
+            routerConfig: router,
+          );
+        },
+      ),
     );
   }
 }
@@ -373,6 +375,8 @@ class AppBodyState extends SuperState<AppBody> with GetItStateMixin {
 
 class AppConfig {
   bool get hasTitleBar => true;
+
+  bool get smallScreenScroll => true;
 
   String getInitialRoute(Settings settings) {
     return settings.getString(Setting.initialRoute.name);
