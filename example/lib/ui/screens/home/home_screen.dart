@@ -121,6 +121,7 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                 child: TitledCard(
                   title: 'A TitledCard',
                   icon: Icons.access_alarm,
+                  cardColor: Colors.transparent,
                   padding: EdgeInsets.all(
                     bootStrapValueBasedOnSize(sizes: {
                       '': 5.0,
@@ -131,7 +132,7 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                       'xxl': 10.0,
                     }, context: context),
                   ),
-                  child: Column(
+                  child: const Column(
                     children: [
                       Text('Some text'),
                     ],
@@ -161,14 +162,14 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                       'xxl': 10.0,
                     }, context: context),
                   ),
-                  backChild: Column(
+                  backChild: const Column(
                     children: [
                       Text("Flipped Card"),
                     ],
                   ),
                   backToolTip: 'See you on the flip side',
                   backTitle: 'The flip side is here',
-                  child: Column(
+                  child: const Column(
                     children: [
                       Text('Some text'),
                     ],
