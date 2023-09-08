@@ -6,7 +6,6 @@ import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:flutter_base/ui/app/app_route.dart';
 import 'package:flutter_base/ui/app/loading_notifier.dart';
 import 'package:flutter_base/ui/app/main_app_screen.dart';
-import 'package:flutter_base/ui/app/menu_drawer.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
 import 'package:flutter_base/ui/screens/loading_screen.dart';
@@ -20,7 +19,6 @@ import 'package:flutter_base/ui/widgets/scaffold/superappbar_widget.dart';
 import 'package:flutter_base/ui/widgets/scaffold/superscaffold.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/snack.dart';
-import 'package:flutter_base/ui/widgets/window_title_bar.dart';
 import 'package:flutter_base/utils/platform_info.dart';
 import 'package:flutter_base/utils/settings.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -168,12 +166,9 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                 AppRoute(
                   path: e.route,
                   builder: (GoRouterState state) => I18n(
-                    child: /*AppBody(
+                    child: AppBody(
                       route: e,
-                      router: widget.router,
-                      config: config,
-                    ),*/
-                        e.body!,
+                    ),
                   ),
                 )
               ]);
@@ -212,13 +207,9 @@ class AppBody extends StatefulWidget with GetItStatefulWidgetMixin {
   AppBody({
     Key? key,
     required this.route,
-    required this.router,
-    required this.config,
   }) : super(key: key);
 
   final NavigationRoute route;
-  final AppRouter router;
-  final AppConfig config;
 
   @override
   State<AppBody> createState() => AppBodyState();
@@ -267,7 +258,7 @@ class AppBodyState extends SuperState<AppBody> with GetItStateMixin {
   Widget build(BuildContext context) {
     return (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS())
         ? TitlebarSafeArea(
-            child: getContent(context),
+            child: widget.route.body!,
           )
         : ChangeNotifierProvider<WindowTitle>(
             create: (_) => WindowTitle(title: widget.route.title),
@@ -281,19 +272,20 @@ class AppBodyState extends SuperState<AppBody> with GetItStateMixin {
       return SafeArea(
         child: Title(
           color: Theme.of(context).primaryColor,
-          title: widget.config.getWindowTitle(this, title),
-          child: getContent(context),
+          title: AppConfigScope.of(context)?.getWindowTitle(this, title) ?? '',
+          child: widget.route.body!,
         ),
       );
     });
   }
 
-  double _endValue = 1.0;
+  //double _endValue = 1.0;
 
-  Widget getContent(BuildContext context) {
+  /*Widget getContent(BuildContext context) {
     return Stack(
       children: [
-        widget.config.wrapScaffold(this, _buildScaffold(context), context),
+        if (AppConfigScope.of(context) != null)
+          AppConfigScope.of(context)!.wrapScaffold(this, _buildScaffold(context), context),
         (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS())
             ? WindowTitleBar(brightness: brightness)
             : Container(),
@@ -354,18 +346,18 @@ class AppBodyState extends SuperState<AppBody> with GetItStateMixin {
             )
           : null,
     );
-  }
+  }*/
 
   Hero? buildAppBar(BuildContext context) {
-    return widget.config.hasTitleBar
+    return AppConfigScope.of(context)?.hasTitleBar ?? false
         ? Hero(
             tag: "appbar",
             child: SuperAppBar(
               centerTitle: false,
               elevation: 0,
-              title: widget.config.buildAppBarTitle(context),
+              title: AppConfigScope.of(context)?.buildAppBarTitle(context),
               actions: [
-                ...widget.config.buildTitleActionButtons(this, context),
+                ...AppConfigScope.of(context)?.buildTitleActionButtons(this, context) ?? [],
               ],
             ),
           )

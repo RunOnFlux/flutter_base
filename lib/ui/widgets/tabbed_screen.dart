@@ -1,7 +1,8 @@
-/*import 'package:auto_size_text/auto_size_text.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/ui/app/main_app_screen.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
+import 'package:flutter_base/ui/widgets/app_screen.dart';
+import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/utils/platform_info.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,7 @@ class TabSpec {
   IconData? icon;
   String title;
   String? route;
-  AppScreen child;
+  AppContentScreen child;
 
   TabSpec({
     this.icon,
@@ -22,13 +23,13 @@ class TabSpec {
 }
 
 class TabScreenPage {
-  int page;
-  TabScreenPage({
+  final int page;
+  const TabScreenPage({
     required this.page,
   });
 }
 
-abstract class TabbedScreen extends AppScreen {
+abstract class TabbedScreen extends AppContentScreen {
   final TabScreenPage? initialPage;
   final double? tabsWidth;
   const TabbedScreen({
@@ -136,4 +137,3 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
     return tabs.map((e) => e.child).toList();
   }
 }
-*/

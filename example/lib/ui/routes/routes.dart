@@ -3,6 +3,7 @@ import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
 import 'package:flutter_base/ui/widgets/popup_message.dart';
 import 'package:flutter_base_example/ui/screens/home/home_screen.dart';
+import 'package:flutter_base_example/ui/screens/tabs/tabbed_screen.dart';
 
 class ExampleAppRouter extends AppRouter {
   ExampleAppRouter._p() {
@@ -55,6 +56,34 @@ class ExampleAppRouter extends AppRouter {
             includeInMenu: true,
           ),
         ],
+      ),
+      NavigationRoute(
+        route: '/tabs',
+        title: 'Tabbed',
+        body: const ExampleTabsScreen(),
+        icon: Icons.tab_outlined,
+        includeInMenu: true,
+      ),
+      NavigationRoute(
+        route: '/tabs/1',
+        title: 'Tabbed 1',
+        body: const ExampleTabsScreen(
+          initialPage: ExampleTabsScreen.one,
+        ),
+      ),
+      NavigationRoute(
+        route: '/tabs/2',
+        title: 'Tabbed 2',
+        body: const ExampleTabsScreen(
+          initialPage: ExampleTabsScreen.two,
+        ),
+      ),
+      NavigationRoute(
+        route: '/tabs/3',
+        title: 'Tabbed 3',
+        body: const ExampleTabsScreen(
+          initialPage: ExampleTabsScreen.three,
+        ),
       ),
       ActionRoute(
         title: 'Action',
