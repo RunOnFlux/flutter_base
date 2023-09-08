@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
+import 'package:flutter_base/ui/widgets/popup_message.dart';
+import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/simple_screen.dart';
 import 'package:flutter_base/ui/widgets/titled_card.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
@@ -10,6 +12,12 @@ class HomeScreen extends SimpleScreen with GetItStatefulWidgetMixin {
       : super(
           key: key,
           title: 'Example',
+          stateInfo: AppScreenStateInfo(
+            fabEnabled: true,
+            fabIcon: Icons.add,
+            refreshEnabled: true,
+            refreshInterval: 60,
+          ),
         );
 
   @override
@@ -21,6 +29,11 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
   void initState() {
     super.initState();
     bootstrapGridParameters(gutterSize: 20);
+  }
+
+  @override
+  void onFAB() {
+    const PopupMessage(message: 'FAB was clicked!!').show(context);
   }
 
   @override

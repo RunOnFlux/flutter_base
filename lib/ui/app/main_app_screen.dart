@@ -6,6 +6,7 @@ import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
 import 'package:flutter_base/ui/widgets/popup_message.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
+import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -31,8 +32,11 @@ class MainAppScreen extends StatelessWidget {
   }
 }
 
-class AppScreenDelegate extends StatefulWidget {
-  const AppScreenDelegate({super.key, required this.config});
+class AppScreenDelegate extends StatefulWidget with GetItStatefulWidgetMixin {
+  AppScreenDelegate({
+    super.key,
+    required this.config,
+  });
 
   final AppConfig config;
 
@@ -40,7 +44,7 @@ class AppScreenDelegate extends StatefulWidget {
   State<AppScreenDelegate> createState() => AppScreenState();
 }
 
-class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveClientMixin {
+class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveClientMixin, GetItStateMixin {
   /*@override
   void initState() {
     super.initState();
@@ -96,6 +100,7 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
   Widget build(BuildContext context) {
     super.build(context);
     _isSmallScreen = context.isSmallWidth();
+    var currentState = watchOnly((ScreenInfo info) => info.currentState);
 
     var sideBar = const NavBar().animate(target: _isCollapsed ? 1 : 0)
       ..fadeOut()
@@ -133,6 +138,16 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
           ],
         ),
         drawer: _isSmallScreen ? sideBar : null,
+        floatingActionButton: currentState?.fabEnabled ?? false
+            ? Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: FloatingActionButton(
+                  onPressed: currentState?.onFAB,
+                  backgroundColor: Theme.of(context).primaryColor,
+                  child: Icon(currentState?.fabIcon ?? Icons.refresh),
+                ),
+              )
+            : null,
       ),
     );
   }
