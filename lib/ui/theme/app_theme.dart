@@ -157,18 +157,18 @@ class AppThemeImpl {
         id: 'dark',
         description: 'Dark Mode',
         data: ThemeData(
-          shadowColor: Colors.black,
+          appBarTheme: const AppBarTheme(
+              backgroundColor: Colors.transparent,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              iconTheme: IconThemeData(color: Colors.white),
+              titleTextStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700)),
+          brightness: Brightness.dark,
+          cardColor: const Color(0xff050B16),
           cardTheme: ThemeData.light().cardTheme.copyWith(
                 shadowColor: const Color.fromARGB(40, 8, 8, 18),
                 color: const Color(0xff050B16),
               ),
-          colorScheme: const ColorScheme.dark(
-              surfaceTint: Colors.transparent,
-              primary: Colors.white,
-              onPrimary: Colors.white,
-              onSecondary: Colors.white,
-              background: Color(0xff070F1E),
-              secondary: Color.fromARGB(255, 13, 126, 255)),
           checkboxTheme: CheckboxThemeData(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
@@ -176,19 +176,13 @@ class AppThemeImpl {
             fillColor: MaterialStateProperty.all(const Color.fromARGB(255, 13, 126, 255)),
             checkColor: MaterialStateProperty.all(Colors.white),
           ),
-          switchTheme: SwitchThemeData(
-              thumbColor: MaterialStateProperty.all(Colors.white),
-              trackColor: MaterialStateProperty.all(const Color.fromARGB(255, 13, 126, 255))),
-          appBarTheme: const AppBarTheme(
-              backgroundColor: Colors.transparent,
-              foregroundColor: Colors.white,
-              elevation: 0,
-              iconTheme: IconThemeData(color: Colors.white),
-              titleTextStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700)),
-          scaffoldBackgroundColor: Colors.transparent,
-          brightness: Brightness.dark,
-          cardColor: const Color(0xff050B16),
-          fontFamily: 'Montserrat',
+          colorScheme: const ColorScheme.dark(
+              surfaceTint: Colors.transparent,
+              primary: Colors.white,
+              onPrimary: Colors.white,
+              onSecondary: Colors.white,
+              background: Color(0xff070F1E),
+              secondary: Color.fromARGB(255, 13, 126, 255)),
           dialogTheme: const DialogTheme(
               elevation: 2,
               backgroundColor: Color.fromRGBO(20, 21, 41, 1),
@@ -206,9 +200,60 @@ class AppThemeImpl {
               backgroundColor: Colors.transparent,
               elevation: 2,
               width: 300),
+          fontFamily: 'Montserrat',
           primaryColor: const Color.fromARGB(255, 27, 103, 255),
           primaryColorLight: const Color(0xFF1F283A),
           primaryColorDark: const Color(0xFF2A354E),
+          scaffoldBackgroundColor: Colors.transparent,
+          shadowColor: Colors.black,
+          switchTheme: SwitchThemeData(
+              thumbColor: MaterialStateProperty.all(Colors.white),
+              trackColor: MaterialStateProperty.all(const Color.fromARGB(255, 13, 126, 255))),
+          textTheme: ThemeData.dark().textTheme
+            ..copyWith(
+              titleLarge: TextStyle(
+                decorationColor: Colors.white,
+                fontSize: 24,
+                color: darkText,
+              ),
+              titleMedium: TextStyle(
+                decorationColor: Colors.white,
+                fontSize: 20,
+                color: darkText,
+              ),
+              titleSmall: TextStyle(
+                decorationColor: Colors.white,
+                fontSize: 16,
+                color: darkText,
+              ),
+              headlineLarge: TextStyle(
+                fontSize: 28,
+                color: darkText,
+                fontWeight: FontWeight.w600,
+              ),
+              headlineMedium: TextStyle(
+                fontSize: 18,
+                color: darkText,
+                fontWeight: FontWeight.w600,
+              ),
+              headlineSmall: TextStyle(
+                fontSize: 14,
+                color: darkText,
+                fontWeight: FontWeight.w600,
+              ),
+              bodyLarge: TextStyle(
+                fontSize: 18,
+                color: darkText,
+              ),
+              bodyMedium: TextStyle(
+                fontSize: 14,
+                color: darkText,
+              ),
+              bodySmall: TextStyle(
+                fontSize: 12,
+                color: darkText,
+              ),
+            ),
           useMaterial3: true,
         ),
       );
