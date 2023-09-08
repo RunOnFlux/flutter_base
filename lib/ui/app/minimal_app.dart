@@ -14,9 +14,6 @@ import 'package:flutter_base/ui/theme/interface_brightness.dart';
 import 'package:flutter_base/ui/widgets/logo.dart';
 import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
-import 'package:flutter_base/ui/widgets/scaffold/scaffoldstate.dart';
-import 'package:flutter_base/ui/widgets/scaffold/superappbar_widget.dart';
-import 'package:flutter_base/ui/widgets/scaffold/superscaffold.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/snack.dart';
 import 'package:flutter_base/utils/platform_info.dart';
@@ -226,7 +223,7 @@ class WindowTitle with ChangeNotifier {
   }
 }
 
-class AppBodyState extends SuperState<AppBody> with GetItStateMixin {
+class AppBodyState extends State<AppBody> with GetItStateMixin {
   WindowEffect effect =
       PlatformInfo().getCurrentPlatformType() == PlatformType.windows ? WindowEffect.aero : WindowEffect.acrylic;
   Color color = const Color(0xCC222222);
@@ -352,7 +349,7 @@ class AppBodyState extends SuperState<AppBody> with GetItStateMixin {
     return AppConfigScope.of(context)?.hasTitleBar ?? false
         ? Hero(
             tag: "appbar",
-            child: SuperAppBar(
+            child: AppBar(
               centerTitle: false,
               elevation: 0,
               title: AppConfigScope.of(context)?.buildAppBarTitle(context),
@@ -423,7 +420,7 @@ class AppConfig {
     return null;
   }
 
-  Widget wrapScaffold(AppBodyState body, SuperScaffold scaffold, BuildContext context) {
+  Widget wrapScaffold(AppBodyState body, Scaffold scaffold, BuildContext context) {
     return scaffold;
   }
 

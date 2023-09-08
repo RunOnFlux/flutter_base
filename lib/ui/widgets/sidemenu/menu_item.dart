@@ -5,7 +5,6 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../routes/route.dart';
-import '../scaffold/superscaffold.dart';
 import '../titled_card.dart';
 import 'menu_styles.dart';
 
@@ -202,8 +201,8 @@ class _ActionMenuItemState extends State<ActionMenuItem> with MenuStyles {
         });
       },
       child: SizedBox(
-        width: kDrawerWidth / 3,
-        height: kDrawerWidth / 3,
+        width: 100,
+        height: 100,
         child: GestureDetector(
           onTap: () {
             widget.action();

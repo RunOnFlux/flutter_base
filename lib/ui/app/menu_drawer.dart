@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
@@ -126,3 +126,4 @@ class SideMenuDrawer extends StatelessWidget with GetItMixin {
     }
   }
 }
+*/
