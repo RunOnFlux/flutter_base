@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
@@ -10,7 +9,6 @@ import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
 import 'package:flutter_base/ui/screens/loading_screen.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
-import 'package:flutter_base/ui/theme/interface_brightness.dart';
 import 'package:flutter_base/ui/widgets/logo.dart';
 import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
@@ -224,33 +222,6 @@ class WindowTitle with ChangeNotifier {
 }
 
 class AppBodyState extends State<AppBody> with GetItStateMixin {
-  WindowEffect effect =
-      PlatformInfo().getCurrentPlatformType() == PlatformType.windows ? WindowEffect.aero : WindowEffect.acrylic;
-  Color color = const Color(0xCC222222);
-  InterfaceBrightness brightness = InterfaceBrightness.auto;
-
-  @override
-  void initState() {
-    super.initState();
-    if (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS()) {
-      setWindowEffect(effect);
-    }
-  }
-
-  void setWindowEffect(WindowEffect? value) {
-    Window.setEffect(
-      effect: value!,
-      color: color,
-      dark: brightness == InterfaceBrightness.dark,
-    );
-    if (!PlatformInfo().isWeb() && Platform.isMacOS) {
-      if (brightness != InterfaceBrightness.auto) {
-        Window.overrideMacOSBrightness(dark: brightness == InterfaceBrightness.dark);
-      }
-    }
-    setState(() => effect = value);
-  }
-
   @override
   Widget build(BuildContext context) {
     return (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS())
@@ -345,7 +316,7 @@ class AppBodyState extends State<AppBody> with GetItStateMixin {
     );
   }*/
 
-  Hero? buildAppBar(BuildContext context) {
+  /*Hero? buildAppBar(BuildContext context) {
     return AppConfigScope.of(context)?.hasTitleBar ?? false
         ? Hero(
             tag: "appbar",
@@ -359,11 +330,11 @@ class AppBodyState extends State<AppBody> with GetItStateMixin {
             ),
           )
         : null;
-  }
+  }*/
 }
 
 class AppConfig {
-  bool get hasTitleBar => true;
+  bool get hasTitleBar => false;
 
   bool get smallScreenScroll => true;
 
@@ -379,7 +350,7 @@ class AppConfig {
     return title.title;
   }
 
-  List<Widget> buildTitleActionButtons(AppBodyState body, BuildContext context) {
+  List<Widget> buildTitleActionButtons(BuildContext context) {
     return [];
   }
 
@@ -408,10 +379,6 @@ class AppConfig {
         SizedBox(
           height: 8,
         ),
-        //SideBarStatus(),
-        //SizedBox(
-        //  height: 16,
-        //),
       ],
     );
   }

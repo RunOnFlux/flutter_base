@@ -9,8 +9,12 @@ class BackgroundThemeBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final themeOptions = AppThemeImpl.getOptions(context);
     return DecoratedBox(
-      decoration: BoxDecoration(gradient: theme.backgroundGradient, color: theme.colorScheme.background),
+      decoration: BoxDecoration(
+        gradient: themeOptions?.backgroundGradient(context),
+        color: theme.colorScheme.background,
+      ),
       child: theme.isLight
           ? child
           : Stack(
@@ -28,11 +32,16 @@ class BackgroundThemeBuilder extends StatelessWidget {
   Widget _buildGradientEllipsis(Color color, Offset offset, BuildContext context, [double size = 1200]) {
     final relativeOffset = _getRelativeOffset(offset, context);
     return Positioned(
-        left: relativeOffset.dx,
-        top: relativeOffset.dy,
-        width: size,
-        height: size,
-        child: DecoratedBox(decoration: BoxDecoration(gradient: Theme.of(context).ellipsisGradient(color))));
+      left: relativeOffset.dx,
+      top: relativeOffset.dy,
+      width: size,
+      height: size,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: AppThemeImpl.getOptions(context)?.ellipsisGradient(context, color),
+        ),
+      ),
+    );
   }
 
   Offset _getRelativeOffset(Offset offset, BuildContext context) {

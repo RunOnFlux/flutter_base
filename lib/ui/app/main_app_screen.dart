@@ -1,11 +1,18 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_acrylic/window.dart';
+import 'package:flutter_acrylic/window_effect.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
+import 'package:flutter_base/ui/theme/interface_brightness.dart';
 import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
 import 'package:flutter_base/ui/widgets/popup_message.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
+import 'package:flutter_base/utils/platform_info.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -55,6 +62,33 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
       }
     });*/
   }*/
+
+  WindowEffect effect =
+      PlatformInfo().getCurrentPlatformType() == PlatformType.windows ? WindowEffect.aero : WindowEffect.acrylic;
+  Color color = const Color(0xCC222222);
+  InterfaceBrightness brightness = InterfaceBrightness.auto;
+
+  @override
+  void initState() {
+    super.initState();
+    if (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS()) {
+      setWindowEffect(effect);
+    }
+  }
+
+  void setWindowEffect(WindowEffect? value) {
+    Window.setEffect(
+      effect: value!,
+      color: color,
+      dark: brightness == InterfaceBrightness.dark,
+    );
+    if (!PlatformInfo().isWeb() && Platform.isMacOS) {
+      if (brightness != InterfaceBrightness.auto) {
+        Window.overrideMacOSBrightness(dark: brightness == InterfaceBrightness.dark);
+      }
+    }
+    setState(() => effect = value);
+  }
 
   void openDrawer() {
     if (_isSmallScreen) {
@@ -121,9 +155,21 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
                 centerTitle: false,
                 // ignore: prefer_const_constructors
                 leading: SideBarButton(),
-                title: widget.config.buildAppBarTitle(context),
+                title: AppConfigScope.of(context)?.buildAppBarTitle(context),
+                actions: [
+                  ...AppConfigScope.of(context)?.buildTitleActionButtons(context) ?? [],
+                ],
               )
-            : null,
+            : AppConfigScope.of(context)?.hasTitleBar ?? false
+                ? AppBar(
+                    centerTitle: false,
+                    elevation: 0,
+                    title: AppConfigScope.of(context)?.buildAppBarTitle(context),
+                    actions: [
+                      ...AppConfigScope.of(context)?.buildTitleActionButtons(context) ?? [],
+                    ],
+                  )
+                : null,
         body: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -133,12 +179,15 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
                   builder: (context, child) => CollapsedSidebar(),
                 ),
             Expanded(
-              child: _AppScreenChildWrapper(child: child),
+              child: _AppScreenChildWrapper(
+                child: child,
+                state: currentState,
+              ),
             ),
           ],
         ),
         drawer: _isSmallScreen ? sideBar : null,
-        floatingActionButton: currentState?.fabEnabled ?? false
+        floatingActionButton: (currentState?.fabIcon != null) ?? false
             ? Padding(
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: FloatingActionButton(
@@ -170,32 +219,115 @@ class AppDrawerScope extends InheritedWidget {
   }
 }
 
-class _AppScreenChildWrapper extends StatelessWidget {
-  const _AppScreenChildWrapper({required this.child});
+class _AppScreenChildWrapper extends StatefulWidget {
+  const _AppScreenChildWrapper({
+    required this.child,
+    required this.state,
+  });
   final Widget child;
+  final AppScreenStateInfo? state;
+
+  @override
+  State<_AppScreenChildWrapper> createState() => _AppScreenChildWrapperState();
+}
+
+class _AppScreenChildWrapperState extends State<_AppScreenChildWrapper> {
+  double _endValue = 1.0;
+
+  Timer? _timer;
+  double timerPosition = 0;
+  double timerValue = 0;
+  bool timerCountUp = true;
+
+  @override
+  void initState() {
+    super.initState();
+    if (PlatformInfo().isWeb()) {
+      startTimer();
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    if (widget.state?.refreshInterval != null) {
+      if (_timer != null) {
+        _timer?.cancel();
+      }
+      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        setState(() {
+          timerPosition += (timerCountUp ? 1 : -1);
+          timerValue += 1;
+        });
+        if (timerValue >= widget.state!.refreshInterval!) {
+          if (widget.state?.onRefresh != null) {
+            widget.state?.onRefresh!();
+          }
+          setState(() {
+            timerValue = 0;
+            timerCountUp = !timerCountUp;
+          });
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final smallScreen = context.isSmallWidth();
     final isCollapsed = AppDrawerScope.of(context)?.isCollapsed ?? true;
-    final child = DecoratedBox(
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        border: Border.all(
-          strokeAlign: BorderSide.strokeAlignOutside,
-          color: Theme.of(context).borderColor,
-          width: 1,
+    final child = Stack(
+      children: [
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            border: Border.all(
+              strokeAlign: BorderSide.strokeAlignOutside,
+              color: Theme.of(context).borderColor,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(smallScreen ? 0 : 25),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(1.001),
+            child: ClipRRect(
+              clipBehavior: Clip.hardEdge,
+              borderRadius: BorderRadius.circular(smallScreen ? 0 : 25),
+              child: widget.child,
+            ),
+          ),
         ),
-        borderRadius: BorderRadius.circular(smallScreen ? 0 : 25),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(1.001),
-        child: ClipRRect(
-          clipBehavior: Clip.hardEdge,
-          borderRadius: BorderRadius.circular(smallScreen ? 0 : 25),
-          child: this.child,
-        ),
-      ),
+        if (widget.state?.refreshInterval != null && widget.state!.refreshInterval! > 0)
+          if (PlatformInfo().isWeb())
+            LinearProgressIndicator(
+              value: timerPosition / widget.state!.refreshInterval!,
+              color: Theme.of(context).primaryColor,
+              minHeight: 1,
+            ),
+        if (widget.state?.refreshInterval != null && widget.state!.refreshInterval! > 0)
+          if (!PlatformInfo().isWeb())
+            TweenAnimationBuilder<double>(
+              tween: Tween<double>(begin: 0.0, end: _endValue),
+              duration: Duration(seconds: widget.state!.refreshInterval!),
+              builder: (context, value, _) => LinearProgressIndicator(
+                value: value,
+                color: Theme.of(context).primaryColor,
+                minHeight: 1,
+              ),
+              onEnd: () {
+                if (widget.state?.onRefresh != null) {
+                  widget.state?.onRefresh!();
+                }
+                setState(() {
+                  _endValue = _endValue == 1.0 ? 0 : 1.0;
+                });
+              },
+            ),
+      ],
     );
     if (smallScreen) {
       return child;
