@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/logo.dart';
+import 'package:flutter_base/utils/settings.dart';
+import 'package:flutter_base_example/utils/settings.dart';
 import 'package:flutter_base_example/utils/social_media.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
@@ -98,9 +100,9 @@ class SideBarFooter extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         child: InkWell(
           onTap: () {
+            ExampleSettings().setBool(Setting.darkMode.name, brightness == Brightness.dark);
             ThemeProvider.controllerOf(context).setTheme(
                 brightness == Brightness.dark ? GetIt.I<AppThemeImpl>().dark.id : GetIt.I<AppThemeImpl>().light.id);
-            //context.read<UserPreferencesCubit>().setBrightness(brightness);
           },
           child: Padding(
             padding: const EdgeInsets.all(4.0),

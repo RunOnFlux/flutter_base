@@ -14,7 +14,7 @@ class ExampleSettings extends Settings {
 
   // Quick access getters
 
-  static bool get darkMode => ExampleSettings().getBool(Setting.darkMode.name, defaultValue: true);
+  //static bool get darkMode => ExampleSettings().getBool(Setting.darkMode.name, defaultValue: true);
   static String get initialRoute => ExampleSettings().getString(Setting.initialRoute.name, defaultValue: '/');
 
   static String get setting1 => ExampleSettings().getString(ExampleSetting.setting1.name, defaultValue: 'a value');
