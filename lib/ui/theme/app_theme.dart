@@ -38,9 +38,171 @@ class AppThemeImpl {
       id: 'light',
       description: 'Light Mode',
       data: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: false,
+          foregroundColor: Color(0xFF303B52),
+          titleTextStyle: TextStyle(
+            fontSize: 20,
+            fontFamily: 'Montserrat',
+            color: Color(0xFF303B52),
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        bottomNavigationBarTheme: ThemeData.light().bottomNavigationBarTheme.copyWith(
+              selectedItemColor: primaryColor,
+              backgroundColor: scaffoldBackgroundLight,
+              selectedIconTheme: IconThemeData(color: primaryColor),
+            ),
         brightness: Brightness.light,
+        canvasColor: Colors.white,
+        cardColor: cardColorLight,
+        cardTheme: ThemeData.light().cardTheme.copyWith(
+              shadowColor: const Color.fromARGB(20, 43, 97, 209),
+              color: cardColorLight,
+            ),
+        checkboxTheme: CheckboxThemeData(
+          side: MaterialStateBorderSide.resolveWith(
+            (states) {
+              if (states.contains(MaterialState.selected)) {
+                return const BorderSide(
+                  color: Color(0xFF0255FE),
+                  width: 1,
+                );
+              } else {
+                return const BorderSide(
+                  color: Color(0xFFD0D5DD),
+                  width: 1,
+                );
+              }
+            },
+          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+          fillColor: MaterialStateProperty.all(Colors.transparent),
+          checkColor: MaterialStateProperty.all(const Color(0xFF0255FE)),
+        ),
+        chipTheme: ChipThemeData(
+          backgroundColor: const Color.fromARGB(255, 230, 233, 238),
+          disabledColor: Colors.white,
+          selectedColor: const Color(0xFF2463EB),
+          secondarySelectedColor: const Color(0xFF2463EB),
+          padding: const EdgeInsets.all(8),
+          side: BorderSide.none,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide.none),
+          secondaryLabelStyle: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
+          brightness: Brightness.light,
+          shadowColor: primaryColorLight.withOpacity(0.35),
+          labelStyle: const TextStyle(
+            color: Colors.grey, // Set the text color to grey
+          ),
+          elevation: 7.5,
+        ),
+        colorScheme: ColorScheme.fromSeed(
+          surface: Colors.white,
+          surfaceTint: Colors.transparent,
+          seedColor: const Color(0xFF2463EB),
+          primary: const Color(0xFF2B61D1),
+          secondary: const Color(0xFF0255FE),
+          background: const Color(0xFFFAFBFC),
+        ),
+        dataTableTheme: DataTableThemeData(
+          checkboxHorizontalMargin: 15,
+          dataRowColor: MaterialStateProperty.resolveWith(
+            (states) {
+              if (states.contains(MaterialState.selected)) {
+                return const Color(0xffFFFBF5);
+              }
+              if (states.contains(MaterialState.hovered)) {
+                return const Color.fromARGB(255, 248, 249, 250);
+              }
+              if (states.contains(MaterialState.pressed)) {
+                return const Color.fromARGB(255, 242, 243, 245);
+              }
+              return null;
+            },
+          ),
+        ),
+        dialogTheme: const DialogTheme(
+          titleTextStyle: TextStyle(
+            fontSize: 18,
+            fontFamily: 'Montserrat',
+            color: Color(0xFF303B52),
+            fontWeight: FontWeight.w600,
+          ),
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              width: 0.6,
+              color: Color.fromRGBO(184, 195, 225, 0.5),
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(8),
+            ),
+          ),
+        ),
+        dividerColor: const Color(0xFFEAEAEA),
+        dividerTheme: const DividerThemeData(
+          color: Color(0xFFE9EAF3),
+          thickness: 1,
+        ),
+        drawerTheme: const DrawerThemeData(
+          surfaceTintColor: Colors.white,
+          scrimColor: Colors.transparent,
+          shape: Border(
+            right: BorderSide(width: 1, color: Color(0xffE9EAF3)),
+            bottom: BorderSide(width: 1, color: Color(0xffE9EAF3)),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 2,
+          width: 300,
+        ),
+        dropdownMenuTheme: DropdownMenuThemeData(
+          menuStyle: const MenuStyle(
+            elevation: MaterialStatePropertyAll(2),
+            shape: MaterialStatePropertyAll(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(12),
+                ),
+              ),
+            ),
+            backgroundColor: MaterialStatePropertyAll(
+              Color(0xFFEBEEFF),
+            ),
+          ),
+          inputDecorationTheme: InputDecorationTheme(
+            fillColor: const Color.fromARGB(255, 247, 248, 252),
+            suffixIconColor: const Color(0xff1E2329),
+            disabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Color.fromRGBO(184, 195, 225, 0.5), width: 1),
+                borderRadius: BorderRadius.circular(10)),
+            focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Color.fromRGBO(184, 195, 225, 0.5), width: 1),
+                borderRadius: BorderRadius.circular(10)),
+            outlineBorder: const BorderSide(color: Color.fromRGBO(184, 195, 225, 0.5), width: 1),
+            enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Color.fromRGBO(184, 195, 225, 0.5), width: 1),
+                borderRadius: BorderRadius.circular(10)),
+            border: OutlineInputBorder(
+                borderSide: const BorderSide(color: Color.fromRGBO(184, 195, 225, 0.5), width: 1),
+                borderRadius: BorderRadius.circular(10)),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(backgroundColor: primaryColorLight),
+        ),
+        expansionTileTheme: ThemeData.light().expansionTileTheme.copyWith(
+              backgroundColor: scaffoldBackgroundLight,
+              collapsedBackgroundColor: cardColorLight,
+              iconColor: darkText,
+              textColor: darkText,
+            ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: primaryColorDark,
+          foregroundColor: darkText,
+        ),
         fontFamily: 'Montserrat',
-        primaryColor: primaryColor,
         iconTheme: ThemeData.light().iconTheme.copyWith(color: lightText),
         iconButtonTheme: IconButtonThemeData(
           style: ButtonStyle(
@@ -51,29 +213,34 @@ class AppThemeImpl {
             ),
           ),
         ),
-        scaffoldBackgroundColor: scaffoldBackgroundLight,
-        splashFactory: InkRipple.splashFactory,
-        appBarTheme: AppBarTheme(
-          backgroundColor: scaffoldBackgroundLight,
-        ),
-        bottomNavigationBarTheme: ThemeData.light().bottomNavigationBarTheme.copyWith(
-              selectedItemColor: primaryColor,
-              backgroundColor: scaffoldBackgroundLight,
-              selectedIconTheme: IconThemeData(color: primaryColor),
-            ),
-        shadowColor: Colors.black,
-        expansionTileTheme: ThemeData.light().expansionTileTheme.copyWith(
-              backgroundColor: scaffoldBackgroundLight,
-              collapsedBackgroundColor: cardColorLight,
-              iconColor: darkText,
-              textColor: darkText,
-            ),
-        cardColor: cardColorLight,
-        cardTheme: ThemeData.light().cardTheme.copyWith(
-              shadowColor: const Color.fromARGB(20, 43, 97, 209),
-              color: cardColorLight,
-            ),
         indicatorColor: primaryColorDark,
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: TextStyle(
+            fontSize: 13,
+            color: darkText,
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: primaryColor,
+            ),
+          ),
+          contentPadding: const EdgeInsets.all(5),
+          isDense: true,
+        ),
+        primaryColor: primaryColor,
+        primaryColorDark: const Color(0xFF303B52),
+        primaryColorLight: const Color(0xFFEBEEFF),
+        scaffoldBackgroundColor: scaffoldBackgroundLight,
+        scrollbarTheme: ScrollbarThemeData(
+          thumbColor: MaterialStateProperty.all(const Color(0xFFB8C3E1)),
+          trackColor: MaterialStateProperty.all(const Color(0xFFEBEEFF)),
+          crossAxisMargin: 4,
+          mainAxisMargin: 4,
+          radius: const Radius.circular(18),
+          thickness: MaterialStateProperty.all(4),
+        ),
+        shadowColor: Colors.black,
+        splashFactory: InkRipple.splashFactory,
         textTheme: ThemeData.light().textTheme.copyWith(
               titleLarge: TextStyle(
                 decorationColor: Colors.white,
@@ -118,31 +285,21 @@ class AppThemeImpl {
                 color: lightText,
               ),
             ),
-        inputDecorationTheme: InputDecorationTheme(
-          labelStyle: TextStyle(
-            fontSize: 13,
-            color: darkText,
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: primaryColor,
+        tooltipTheme: TooltipThemeData(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+              color: const Color.fromRGBO(184, 195, 225, 0.5),
+              width: 1,
             ),
+            borderRadius: BorderRadius.circular(4),
           ),
-          contentPadding: const EdgeInsets.all(5),
-          isDense: true,
+          textStyle: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
         ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(backgroundColor: primaryColorLight),
-        ),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: primaryColorDark,
-          foregroundColor: darkText,
-        ),
-        chipTheme: chipThemeData(
-          styleBackgroundColor: Colors.transparent,
-          textColor: Colors.grey,
-          shadowColor: primaryColorLight.withOpacity(0.35),
-        ),
+        useMaterial3: true,
       ),
       options: themeOptions,
     );
@@ -273,51 +430,50 @@ class AppThemeImpl {
               const Color.fromARGB(255, 13, 126, 255),
             ),
           ),
-          textTheme: ThemeData.dark().textTheme
-            ..copyWith(
-              titleLarge: TextStyle(
-                decorationColor: Colors.white,
-                fontSize: 24,
-                color: darkText,
+          textTheme: ThemeData.dark().textTheme.copyWith(
+                titleLarge: TextStyle(
+                  decorationColor: Colors.white,
+                  fontSize: 24,
+                  color: darkText,
+                ),
+                titleMedium: TextStyle(
+                  decorationColor: Colors.white,
+                  fontSize: 20,
+                  color: darkText,
+                ),
+                titleSmall: TextStyle(
+                  decorationColor: Colors.white,
+                  fontSize: 16,
+                  color: darkText,
+                ),
+                headlineLarge: TextStyle(
+                  fontSize: 28,
+                  color: darkText,
+                  fontWeight: FontWeight.w600,
+                ),
+                headlineMedium: TextStyle(
+                  fontSize: 18,
+                  color: darkText,
+                  fontWeight: FontWeight.w600,
+                ),
+                headlineSmall: TextStyle(
+                  fontSize: 14,
+                  color: darkText,
+                  fontWeight: FontWeight.w600,
+                ),
+                bodyLarge: TextStyle(
+                  fontSize: 18,
+                  color: darkText,
+                ),
+                bodyMedium: TextStyle(
+                  fontSize: 14,
+                  color: darkText,
+                ),
+                bodySmall: TextStyle(
+                  fontSize: 12,
+                  color: darkText,
+                ),
               ),
-              titleMedium: TextStyle(
-                decorationColor: Colors.white,
-                fontSize: 20,
-                color: darkText,
-              ),
-              titleSmall: TextStyle(
-                decorationColor: Colors.white,
-                fontSize: 16,
-                color: darkText,
-              ),
-              headlineLarge: TextStyle(
-                fontSize: 28,
-                color: darkText,
-                fontWeight: FontWeight.w600,
-              ),
-              headlineMedium: TextStyle(
-                fontSize: 18,
-                color: darkText,
-                fontWeight: FontWeight.w600,
-              ),
-              headlineSmall: TextStyle(
-                fontSize: 14,
-                color: darkText,
-                fontWeight: FontWeight.w600,
-              ),
-              bodyLarge: TextStyle(
-                fontSize: 18,
-                color: darkText,
-              ),
-              bodyMedium: TextStyle(
-                fontSize: 14,
-                color: darkText,
-              ),
-              bodySmall: TextStyle(
-                fontSize: 12,
-                color: darkText,
-              ),
-            ),
           useMaterial3: true,
         ),
       );
