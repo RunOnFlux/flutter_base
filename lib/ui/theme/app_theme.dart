@@ -476,6 +476,7 @@ class AppThemeImpl {
               ),
           useMaterial3: true,
         ),
+        options: themeOptions,
       );
 
   ThemeOptions get themeOptions => ThemeOptions(
