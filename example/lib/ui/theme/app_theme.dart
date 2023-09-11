@@ -15,6 +15,21 @@ class ExampleAppTheme extends AppThemeImpl {
   @override
   Color get darkText => const Color.fromARGB(255, 208, 210, 214);
 
+  // Example theme overriding
+  /*@override
+  AppTheme get light {
+    return super.light.copyWith(
+          id: 'light',
+          description: 'Light Mode',
+          data: super.light.data.copyWith(
+                floatingActionButtonTheme: const FloatingActionButtonThemeData(
+                  foregroundColor: Colors.orange,
+                ),
+                primaryColor: Colors.green,
+              ),
+        );
+  }*/
+
   @override
   ThemeOptions get themeOptions => ThemeOptions(
         titledCardIconColor: Colors.transparent,

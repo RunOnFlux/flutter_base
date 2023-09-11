@@ -13,9 +13,7 @@ class HomeScreen extends SimpleScreen with GetItStatefulWidgetMixin {
           key: key,
           title: 'Example',
           stateInfo: AppScreenStateInfo(
-            fabEnabled: true,
             fabIcon: Icons.add,
-            refreshEnabled: true,
             refreshInterval: 60,
           ),
         );
@@ -34,6 +32,11 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
   @override
   void onFAB() {
     const PopupMessage(message: 'FAB was clicked!!').show(context);
+  }
+
+  @override
+  void onRefresh() {
+    const PopupMessage(message: 'Refresh').show(context);
   }
 
   @override

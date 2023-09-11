@@ -83,7 +83,7 @@ class FlutterBaseAppConfig extends AppConfig {
   }
 
   @override
-  List<Widget> buildTitleActionButtons(AppBodyState body, BuildContext context) {
+  List<Widget> buildTitleActionButtons(BuildContext context) {
     return [];
   }
 
