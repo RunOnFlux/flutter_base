@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/widgets/app_screen.dart';
-import 'package:flutter_base/ui/widgets/screen_info.dart';
-import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
 
 abstract class AbstractRoute {
   late String title;
@@ -29,6 +26,7 @@ class ActionRoute extends NavigationRoute {
 
 class NavigationRoute implements AbstractRoute {
   String route;
+  String? initialLocation;
   AppContentScreen? body;
   bool includeInMenu = false;
   List<PrivilegeLevel>? privilege;
@@ -47,6 +45,7 @@ class NavigationRoute implements AbstractRoute {
     this.navBarIndex,
     this.badge,
     this.active,
+    this.initialLocation,
   });
 
   @override
@@ -64,12 +63,12 @@ class NavigationRoute implements AbstractRoute {
   @override
   bool? active;
 
-  void go(GoRouter router) {
+  /*void go(GoRouter router) {
     Future.microtask(() {
       router.go(route);
       GetIt.I<ScreenInfo>().currentState = body!.stateInfo;
     });
-  }
+  }*/
 }
 
 enum PrivilegeLevel {

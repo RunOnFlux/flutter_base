@@ -138,6 +138,8 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
       setWindowTitle(windowTitle);
     }
     NavigationRoute? initialNavRoute;
+    var allRoutes = widget.router.getNavigationRoutes();
+
     router = GoRouter(
       initialLocation: initialRoute,
       routes: [
@@ -151,22 +153,25 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
               ),
             );
           },
-          branches: widget.router.getNavigationRoutes().map(
+          branches: allRoutes.map(
             (e) {
               if (e.route == initialRoute) {
                 initialNavRoute = e;
               }
 
-              return StatefulShellBranch(routes: [
-                AppRoute(
-                  path: e.route,
-                  builder: (GoRouterState state) => I18n(
-                    child: AppBody(
-                      route: e,
+              return StatefulShellBranch(
+                routes: [
+                  AppRoute(
+                    path: e.route,
+                    builder: (GoRouterState state) => I18n(
+                      child: AppBody(
+                        route: e,
+                      ),
                     ),
-                  ),
-                )
-              ]);
+                  )
+                ],
+                initialLocation: e.initialLocation,
+              );
             },
           ).toList(),
         ),

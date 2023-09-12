@@ -3,7 +3,9 @@ import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
 import 'package:flutter_base/ui/widgets/popup_message.dart';
 import 'package:flutter_base_example/ui/screens/home/home_screen.dart';
+import 'package:flutter_base_example/ui/screens/params/params_screen.dart';
 import 'package:flutter_base_example/ui/screens/tabs/tabbed_screen.dart';
+import 'package:go_router/go_router.dart';
 
 class ExampleAppRouter extends AppRouter {
   ExampleAppRouter._p() {
@@ -29,6 +31,14 @@ class ExampleAppRouter extends AppRouter {
         icon: Icons.disabled_by_default_outlined,
         includeInMenu: true,
         active: false,
+      ),
+      NavigationRoute(
+        route: '/app/:appName',
+        initialLocation: '/app/default',
+        body: ParamsScreen(),
+        title: 'Params',
+        icon: Icons.disabled_by_default_outlined,
+        includeInMenu: false,
       ),
       RouteSet(
         title: 'Sub Menu',
@@ -90,6 +100,7 @@ class ExampleAppRouter extends AppRouter {
         action: (BuildContext context) {
           debugPrint('do something!!');
           const PopupMessage(message: 'Do Something!!').show(context);
+          context.go('/app/testapp');
         },
         route: '/action',
         icon: Icons.add,
