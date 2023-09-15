@@ -38,5 +38,6 @@ class ExampleAppTheme extends AppThemeImpl {
         cardOutlineColorLight: cardColorLight.darken(20),
         cardGradient: false,
         titledCardIconShadow: false,
+        appBackgroundColor: Colors.red,
       );
 }

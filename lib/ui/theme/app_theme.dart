@@ -492,6 +492,7 @@ class ThemeOptions implements AppThemeOptions {
   final Color? cardOutlineColorLight;
   final bool? cardGradient;
   final bool? titledCardIconShadow;
+  final Color? appBackgroundColor;
 
   Color? cardOutlineColor(BuildContext context) {
     return Theme.of(context).isDark ? cardOutlineColorDark : cardOutlineColorLight;
@@ -538,6 +539,7 @@ class ThemeOptions implements AppThemeOptions {
     this.cardOutlineColorDark,
     this.cardGradient,
     this.titledCardIconShadow,
+    this.appBackgroundColor,
   });
 }
 

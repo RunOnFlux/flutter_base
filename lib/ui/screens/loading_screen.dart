@@ -1,25 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 import '../theme/colors.dart';
 
-class LoadingScreen extends StatefulWidget {
+class LoadingScreen extends StatelessWidget {
   const LoadingScreen({Key? key}) : super(key: key);
-
-  @override
-  LoadingScreenState createState() => LoadingScreenState();
-}
-
-class LoadingScreenState extends State<LoadingScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Theme.of(context).scaffoldBackgroundColor,
+      color: AppThemeImpl.getOptions(context)?.appBackgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
       child: const Center(
         child: SizedBox(
           width: 100,
