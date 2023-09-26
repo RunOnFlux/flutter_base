@@ -121,3 +121,8 @@ flutter:
           weight: 800
         - asset: assets/fonts/Montserrat-MediumItalic.ttf
           style: italic
+
+  assets:
+    - assets/images/
+    - assets/images/png/
+    - assets/images/svg/
