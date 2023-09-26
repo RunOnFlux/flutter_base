@@ -1,6 +1,4 @@
-import 'dart:io';
-
-import 'package:bitsdojo_window/bitsdojo_window.dart';
+//import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/theme/interface_brightness.dart';
 
@@ -10,7 +8,7 @@ class WindowTitleBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Platform.isWindows
+    return /*Platform.isWindows
         ? Positioned(
             right: 0,
             child: Container(
@@ -74,6 +72,7 @@ class WindowTitleBar extends StatelessWidget {
               ),
             ),
           )
-        : Container();
+        :*/
+        Container();
   }
 }

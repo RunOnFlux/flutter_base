@@ -9,6 +9,7 @@ import 'package:flutter_base_example/ui/theme/app_theme.dart';
 import 'package:flutter_base_example/ui/widgets/footer.dart';
 import 'package:flutter_base_example/utils/settings.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 
 import 'loading.dart';
 
@@ -60,13 +61,13 @@ class _FlutterBaseExampleAppState extends MinimalAppState<FlutterBaseExampleApp>
     //NotificationService().setupFlutterNotifications();
     //NotificationService().router = router;
 
-    /*return MultiProvider(
+    return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: loadingNotifier),
       ],
       child: mainApp,
-    );*/
-    return mainApp;
+    );
+    //return mainApp;
   }
 
   @override

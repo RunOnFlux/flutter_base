@@ -1,4 +1,4 @@
-import 'package:bitsdojo_window/bitsdojo_window.dart';
+//import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:flutter_base/utils/platform_info.dart';
@@ -37,7 +37,7 @@ Future<void> main() async {
   );
 
   // Desktop Windows
-  if (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS()) {
+  /*if (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS()) {
     doWhenWindowReady(() {
       appWindow
         ..minSize = const Size(200, 250)
@@ -45,5 +45,5 @@ Future<void> main() async {
         ..alignment = Alignment.center
         ..show();
     });
-  }
+  }*/
 }

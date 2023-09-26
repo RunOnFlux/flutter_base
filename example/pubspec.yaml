@@ -36,7 +36,7 @@ dependencies:
 
   flutter_base:
     path: ../../flutter_base/
-  bitsdojo_window: ^0.1.2
+  #bitsdojo_window: ^0.1.5
   modal_bottom_sheet:
     git:
       url: https://github.com/CoolDude53/modal_bottom_sheet.git
