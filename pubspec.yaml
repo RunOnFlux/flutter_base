@@ -98,7 +98,3 @@ flutter:
           weight: 600
         - asset: assets/fonts/Montserrat-MediumItalic.ttf
           style: italic
-  assets:
-    - assets/snack/
-    - assets/snack/types/
-    - assets/images/
