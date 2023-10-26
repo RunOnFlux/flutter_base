@@ -17,11 +17,9 @@ class Logo extends StatelessWidget {
             minWidth: 0,
             padding: EdgeInsets.zero,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            onPressed: () {
-              if (clickRedirectHomePage) {
+            onPressed: clickRedirectHomePage ? () {
                 context.goInitialRoute();
-              }
-            },
+            } : null,
             shape: const CircleBorder(),
             color: Colors.white,
             child: SvgPicture.asset(
