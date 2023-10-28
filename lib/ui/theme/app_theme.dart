@@ -196,6 +196,7 @@ class AppThemeImpl {
             textStyle: TextStyle(
               fontSize: 14,
               color: lightText,
+              fontFamily: 'Montserrat',
             ),
           ),
         ),
@@ -394,6 +395,7 @@ class AppThemeImpl {
               textStyle: TextStyle(
                 fontSize: 14,
                 color: lightText,
+                fontFamily: 'Montserrat',
               ),
             ),
           ),
