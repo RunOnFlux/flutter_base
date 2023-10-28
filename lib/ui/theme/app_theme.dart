@@ -190,7 +190,14 @@ class AppThemeImpl {
           ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(backgroundColor: primaryColorLight),
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Colors.white, // change background color of button
+            backgroundColor: primaryColorLight, // change text color of button
+            textStyle: TextStyle(
+              fontSize: 14,
+              color: lightText,
+            ),
+          ),
         ),
         expansionTileTheme: ThemeData.light().expansionTileTheme.copyWith(
               backgroundColor: scaffoldBackgroundLight,
@@ -381,7 +388,14 @@ class AppThemeImpl {
             width: 300,
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(backgroundColor: primaryColorDark),
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white, // change background color of button
+              backgroundColor: primaryColorDark, // change text color of button
+              textStyle: TextStyle(
+                fontSize: 14,
+                color: lightText,
+              ),
+            ),
           ),
           expansionTileTheme: ThemeData.dark().expansionTileTheme.copyWith(
                 backgroundColor: Colors.transparent,
