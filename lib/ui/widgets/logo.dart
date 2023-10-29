@@ -3,10 +3,17 @@ import 'package:flutter_base/extensions/router_extension.dart';
 import 'package:flutter_svg/svg.dart';
 
 class Logo extends StatelessWidget {
-  const Logo({super.key, this.height, this.clickRedirectHomePage = false, this.title});
+  const Logo({
+    super.key,
+    this.height,
+    this.clickRedirectHomePage = false,
+    this.title,
+    this.color = Colors.transparent,
+  });
   final double? height;
   final bool clickRedirectHomePage;
   final String? title;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +24,13 @@ class Logo extends StatelessWidget {
             minWidth: 0,
             padding: EdgeInsets.zero,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            onPressed: clickRedirectHomePage ? () {
-                context.goInitialRoute();
-            } : null,
+            onPressed: clickRedirectHomePage
+                ? () {
+                    context.goInitialRoute();
+                  }
+                : null,
             shape: const CircleBorder(),
-            color: Colors.white,
+            color: color,
             child: SvgPicture.asset(
               'assets/images/svg/logo.svg',
               height: height ?? 28,
