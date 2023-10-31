@@ -9,11 +9,13 @@ class Logo extends StatelessWidget {
     this.clickRedirectHomePage = false,
     this.title,
     this.color = Colors.transparent,
+    this.onPressed,
   });
   final double? height;
   final bool clickRedirectHomePage;
   final String? title;
   final Color? color;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class Logo extends StatelessWidget {
                 ? () {
                     context.goInitialRoute();
                   }
-                : null,
+                : onPressed,
             shape: const CircleBorder(),
             color: color,
             child: SvgPicture.asset(
