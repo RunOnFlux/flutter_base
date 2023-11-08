@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:flutter_base/ui/app/app_route.dart';
@@ -20,7 +21,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:go_router/go_router.dart';
-import 'package:i18n_extension/i18n_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_provider/theme_provider.dart';
 import 'package:window_size/window_size.dart';
@@ -133,52 +133,58 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
 
   late GoRouter router;
 
+  ValueNotifier<RoutingConfig> appRoutingConfig = ValueNotifier<RoutingConfig>(
+    const RoutingConfig(
+      routes: [],
+    ),
+  );
+
+  RoutingConfig buildRoutingConfig() {
+    var allRoutes = widget.router.getNavigationRoutes();
+    return RoutingConfig(routes: [
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return AppRouterScope(
+            router: widget.router,
+            child: MainAppScreen(
+              config: config,
+              child: navigationShell,
+            ),
+          );
+        },
+        branches: allRoutes.map(
+          (e) {
+            return StatefulShellBranch(
+              routes: [
+                AppRoute(
+                  path: e.route,
+                  builder: (GoRouterState state) => AppBody(route: e),
+                )
+              ],
+              initialLocation: e.initialLocation,
+            );
+          },
+        ).toList(),
+      ),
+    ]);
+  }
+
   Widget buildMainApp(BuildContext context) {
     if (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS()) {
       setWindowTitle(windowTitle);
     }
-    NavigationRoute? initialNavRoute;
     var allRoutes = widget.router.getNavigationRoutes();
-
-    router = GoRouter(
-      initialLocation: initialRoute,
-      routes: [
-        StatefulShellRoute.indexedStack(
-          builder: (context, state, navigationShell) {
-            return AppRouterScope(
-              router: widget.router,
-              child: MainAppScreen(
-                config: config,
-                child: navigationShell,
-              ),
-            );
-          },
-          branches: allRoutes.map(
-            (e) {
-              if (e.route == initialRoute) {
-                initialNavRoute = e;
-              }
-
-              return StatefulShellBranch(
-                routes: [
-                  AppRoute(
-                    path: e.route,
-                    builder: (GoRouterState state) => I18n(
-                      child: AppBody(
-                        route: e,
-                      ),
-                    ),
-                  )
-                ],
-                initialLocation: e.initialLocation,
-              );
-            },
-          ).toList(),
-        ),
-      ],
+    NavigationRoute? initialNavRoute = allRoutes.firstWhereOrNull(
+      (element) => element.route == initialRoute,
     );
+
+    router = GoRouter.routingConfig(
+      initialLocation: initialRoute,
+      routingConfig: appRoutingConfig,
+    );
+
     if (initialNavRoute != null) {
-      Future.microtask(() => GetIt.I<ScreenInfo>().currentState = initialNavRoute!.body!.stateInfo);
+      Future.microtask(() => GetIt.I<ScreenInfo>().currentState = initialNavRoute.body!.stateInfo);
     }
 
     return AppConfigScope(
