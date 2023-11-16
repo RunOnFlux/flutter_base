@@ -32,7 +32,6 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
 
   @override
   Widget build(BuildContext context) {
-    final currentRoute = GoRouterState.of(context).uri.toString();
     var c = [const Color(0xFF818795), const Color(0xFFD9D9D9)];
     if (Theme.of(context).brightness == Brightness.dark) {
       c = c.reversed.toList();
@@ -77,65 +76,24 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
             EdgeInsets.zero,
           ),
         ),
-        menuChildren: List<MenuItemButton>.generate(
+        menuChildren: List<Widget>.generate(
           widget.children.length,
           (int index) {
-            var menuItem = widget.children[index] as NavigationMenuItem;
-            var route = menuItem.route;
-            bool isSelected = route.route == currentRoute;
-            return MenuItemButton(
-              child: SizedBox(
-                width: 250,
-                child: ListTile(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  selected: isSelected,
-                  dense: true,
-                  isThreeLine: false,
-                  titleTextStyle: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: fontSizeForLevel(menuItem.level),
-                        letterSpacing: 1,
-                      ),
-                  minVerticalPadding: 16,
-                  iconColor: unselectedColor,
-                  textColor: unselectedColor,
-                  selectedTileColor: Theme.of(context).primaryColor,
-                  selectedColor: selectedColor,
-                  tileColor: Colors.transparent,
-                  title: buildTitle(
-                    context,
-                    route.title,
-                    selectedColor,
-                    unselectedColor,
-                    menuItem.level,
-                    selected: isSelected,
-                  ),
-                  leading: buildIconWidget(
-                    route,
-                    context,
-                    menuItem.level,
-                    isSelected,
-                    selectedColor,
-                    unselectedColor,
-                  ),
-                  trailing: route.badge != null
-                      ? route.badge!(context)
-                      : buildIcon(
-                          context,
-                          Icons.chevron_right_outlined,
-                          selectedColor,
-                          unselectedColor,
-                        ),
-                  onTap: () {
-                    AppDrawerScope.of(context)?.closeDrawer(false);
-                    context.go(route.route);
-                    Future.microtask(() {
-                      GetIt.I<ScreenInfo>().currentState = route.body!.stateInfo;
-                    });
-                  },
-                  enabled: route.active ?? true,
-                ),
-              ),
+            return buildMenu(
+              child: widget.children[index],
+              selectedColor: selectedColor,
+              unselectedColor: unselectedColor,
+              onTap: (AbstractRoute route) {
+                if (route is ActionRoute) {
+                  route.action(context);
+                } else if (route is NavigationRoute) {
+                  AppDrawerScope.of(context)?.closeDrawer(false);
+                  context.go(route.route);
+                  Future.microtask(() {
+                    GetIt.I<ScreenInfo>().currentState = route.body!.stateInfo;
+                  });
+                }
+              },
             );
           },
         ),
@@ -204,6 +162,135 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildMenu({
+    required Widget child,
+    required Color selectedColor,
+    required Color unselectedColor,
+    required Null Function(AbstractRoute)? onTap,
+  }) {
+    final currentRoute = GoRouterState.of(context).uri.toString();
+    if (child is NavigationMenuItem) {
+      var menuItem = child;
+      var route = menuItem.route;
+      bool isSelected = route.route == currentRoute;
+      return buildMenuItem(
+        isSelected: isSelected,
+        level: menuItem.level,
+        selectedColor: selectedColor,
+        unselectedColor: unselectedColor,
+        route: route,
+        onTap: onTap,
+      );
+    } else if (child is SideMenuCategory) {
+      var menuItem = child;
+      return SubmenuButton(
+        menuChildren: menuItem.children.map((e) {
+          return buildMenu(
+            child: e,
+            selectedColor: selectedColor,
+            unselectedColor: unselectedColor,
+            onTap: onTap,
+          );
+        }).toList(),
+        child: buildMenuContent(
+          isSelected: false,
+          level: menuItem.level,
+          selectedColor: selectedColor,
+          unselectedColor: unselectedColor,
+          route: menuItem.route,
+          onTap: null,
+          isSubMenu: true,
+        ),
+      );
+    } else {
+      return const Text('Configuration Error');
+    }
+  }
+
+  Widget buildMenuItem({
+    required bool isSelected,
+    required int level,
+    required Color selectedColor,
+    required Color unselectedColor,
+    required NavigationRoute route,
+    required Null Function(AbstractRoute)? onTap,
+  }) {
+    return MenuItemButton(
+      child: buildMenuContent(
+        isSelected: isSelected,
+        level: level,
+        selectedColor: selectedColor,
+        unselectedColor: unselectedColor,
+        route: route,
+        onTap: onTap,
+        isSubMenu: false,
+      ),
+    );
+  }
+
+  Widget buildMenuContent({
+    required bool isSelected,
+    required int level,
+    required Color selectedColor,
+    required Color unselectedColor,
+    required AbstractRoute route,
+    required Null Function(AbstractRoute)? onTap,
+    required bool isSubMenu,
+  }) {
+    return SizedBox(
+      width: 250,
+      child: ListTile(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        selected: isSelected,
+        dense: true,
+        isThreeLine: false,
+        titleTextStyle: Theme.of(context).textTheme.titleMedium!.copyWith(
+              fontWeight: FontWeight.w500,
+              fontSize: fontSizeForLevel(level),
+              letterSpacing: 1,
+            ),
+        minVerticalPadding: 16,
+        iconColor: unselectedColor,
+        textColor: unselectedColor,
+        selectedTileColor: Theme.of(context).primaryColor,
+        selectedColor: selectedColor,
+        tileColor: Colors.transparent,
+        title: buildTitle(
+          context,
+          route.title,
+          selectedColor,
+          unselectedColor,
+          level,
+          selected: isSelected,
+        ),
+        leading: buildIconWidget(
+          route,
+          context,
+          level,
+          isSelected,
+          selectedColor,
+          unselectedColor,
+        ),
+        trailing: route is NavigationRoute && route.badge != null
+            ? route.badge!(context)
+            : !isSubMenu
+                ? buildIcon(
+                    context,
+                    Icons.chevron_right_outlined,
+                    selectedColor,
+                    unselectedColor,
+                  )
+                : null,
+        onTap: onTap == null
+            ? null
+            : () {
+                onTap(route);
+              },
+        enabled: route.active ?? true,
       ),
     );
   }

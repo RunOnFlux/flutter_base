@@ -76,7 +76,7 @@ class ExampleAppRouter extends AppRouter {
           ),
         ),
       ),
-      /*RouteSet(
+      RouteSet(
         title: '3 Levels',
         icon: Icons.access_alarm_outlined,
         routes: [
@@ -95,6 +95,7 @@ class ExampleAppRouter extends AppRouter {
           ),
           RouteSet(
             title: 'Admin',
+            icon: Icons.admin_panel_settings_outlined,
             routes: [
               NavigationRoute(
                 route: '/5',
@@ -103,10 +104,20 @@ class ExampleAppRouter extends AppRouter {
                 icon: Icons.access_alarm_outlined,
                 includeInMenu: true,
               ),
+              ActionRoute(
+                title: 'Nested Action',
+                action: (BuildContext context) {
+                  debugPrint('nested do something!!');
+                  const PopupMessage(message: 'Do Something!!').show(context);
+                  context.go('/app/testapp');
+                },
+                route: '/action',
+                icon: Icons.add,
+              ),
             ],
           ),
         ],
-      ),*/
+      ),
       NavigationRoute(
         route: '/tabs',
         title: 'Tabbed',
