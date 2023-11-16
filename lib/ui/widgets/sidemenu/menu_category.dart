@@ -142,63 +142,66 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
       );
     }
 
-    return MouseRegion(
-      onEnter: (_) {
-        setState(() {
-          isHovering = true;
-        });
-      },
-      onExit: (_) {
-        setState(() {
-          isHovering = false;
-        });
-      },
-      child: Card(
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        clipBehavior: Clip.antiAlias,
-        margin: EdgeInsets.zero,
-        color: Colors.transparent,
-        child: Theme(
-          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-          child: ExpansionTile(
-            initiallyExpanded: Store().get(widget.route.title) ?? false,
-            title: SizedBox(
-              height: kMenuItemHeight,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: buildTitle(context, widget.route.title, selectedColor, unselectedColor, widget.level),
-              ),
-            ),
-
-            backgroundColor: Colors.transparent,
-            collapsedBackgroundColor: Colors.transparent,
-            leading: Padding(
-              padding: const EdgeInsets.only(
-                left: 0.0,
-                right: 0.0,
-                top: 0.0,
-              ),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 100),
-                //padding: EdgeInsets.only(left: isHovering ? 5 : 0),
-                child: buildIconWidget(
-                  widget.route,
-                  context,
-                  widget.level,
-                  false,
-                  selectedColor,
-                  unselectedColor,
+    return Padding(
+      padding: EdgeInsets.only(left: widget.level * 16.0),
+      child: MouseRegion(
+        onEnter: (_) {
+          setState(() {
+            isHovering = true;
+          });
+        },
+        onExit: (_) {
+          setState(() {
+            isHovering = false;
+          });
+        },
+        child: Card(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          clipBehavior: Clip.antiAlias,
+          margin: EdgeInsets.zero,
+          color: Colors.transparent,
+          child: Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              initiallyExpanded: Store().get(widget.route.title) ?? false,
+              title: SizedBox(
+                height: kMenuItemHeight,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: buildTitle(context, widget.route.title, selectedColor, unselectedColor, widget.level),
                 ),
               ),
+
+              backgroundColor: Colors.transparent,
+              collapsedBackgroundColor: Colors.transparent,
+              leading: Padding(
+                padding: const EdgeInsets.only(
+                  left: 0.0,
+                  right: 0.0,
+                  top: 0.0,
+                ),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 100),
+                  //padding: EdgeInsets.only(left: isHovering ? 5 : 0),
+                  child: buildIconWidget(
+                    widget.route,
+                    context,
+                    widget.level,
+                    false,
+                    selectedColor,
+                    unselectedColor,
+                  ),
+                ),
+              ),
+              //tilePadding: const EdgeInsets.only(left: 0, right: 0),
+              children: widget.children,
+              onExpansionChanged: (expanded) {
+                Store().put(widget.route.title, expanded);
+              },
             ),
-            //tilePadding: const EdgeInsets.only(left: 0, right: 0),
-            children: widget.children,
-            onExpansionChanged: (expanded) {
-              Store().put(widget.route.title, expanded);
-            },
           ),
         ),
       ),

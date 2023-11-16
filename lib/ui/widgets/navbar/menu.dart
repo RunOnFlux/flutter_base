@@ -104,28 +104,33 @@ class _SideBarMenuWidgetState extends State<SideBarMenuWidget> with GetItStateMi
         PrivilegeLevel currentLevel = privilege;
         for (var privilege in r.privilege!) {
           if (privilege == currentLevel) {
+            if (r.above != null) menu.add(r.above!);
             menu.add(
               NavigationMenuItem(
                 route: r,
                 level: level,
               ),
             );
+            if (r.below != null) menu.add(r.below!);
             continue;
           }
         }
       } else {
+        if (r.above != null) menu.add(r.above!);
         menu.add(
           NavigationMenuItem(
             route: r,
             level: level,
           ),
         );
+        if (r.below != null) menu.add(r.below!);
       }
     } else if (r is RouteSet) {
       List<Widget> children = <Widget>[];
       for (AbstractRoute rr in r.routes) {
         _buildMenuForRoute(rr, children, level + 1, privilege);
       }
+      if (r.above != null) menu.add(r.above!);
       menu.add(
         SideMenuCategory(
           route: r,
@@ -133,27 +138,32 @@ class _SideBarMenuWidgetState extends State<SideBarMenuWidget> with GetItStateMi
           children: children,
         ),
       );
+      if (r.below != null) menu.add(r.below!);
     } else if (r is ActionRoute) {
       if (r.privilege != null && r.includeInMenu) {
         PrivilegeLevel currentLevel = privilege;
         for (var privilege in r.privilege!) {
           if (privilege == currentLevel) {
+            if (r.above != null) menu.add(r.above!);
             menu.add(
               FunctionMenuItem(
                 route: r,
                 level: level,
               ),
             );
+            if (r.below != null) menu.add(r.below!);
             continue;
           }
         }
       } else {
+        if (r.above != null) menu.add(r.above!);
         menu.add(
           FunctionMenuItem(
             route: r,
             level: level,
           ),
         );
+        if (r.below != null) menu.add(r.below!);
       }
     }
   }

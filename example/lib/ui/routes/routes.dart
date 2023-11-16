@@ -66,7 +66,47 @@ class ExampleAppRouter extends AppRouter {
             includeInMenu: true,
           ),
         ],
+        above: const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8.0),
+          child: FractionallySizedBox(
+            widthFactor: 0.75,
+            child: Divider(
+              thickness: 0.75,
+            ),
+          ),
+        ),
       ),
+      /*RouteSet(
+        title: '3 Levels',
+        icon: Icons.access_alarm_outlined,
+        routes: [
+          RouteSet(
+            title: 'My Apps',
+            icon: Icons.access_alarm_outlined,
+            routes: [
+              NavigationRoute(
+                route: '/4',
+                body: HomeScreen(),
+                title: '4',
+                icon: Icons.access_alarm_outlined,
+                includeInMenu: true,
+              ),
+            ],
+          ),
+          RouteSet(
+            title: 'Admin',
+            routes: [
+              NavigationRoute(
+                route: '/5',
+                body: HomeScreen(),
+                title: '5',
+                icon: Icons.access_alarm_outlined,
+                includeInMenu: true,
+              ),
+            ],
+          ),
+        ],
+      ),*/
       NavigationRoute(
         route: '/tabs',
         title: 'Tabbed',

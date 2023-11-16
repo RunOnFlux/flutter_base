@@ -7,6 +7,9 @@ abstract class AbstractRoute {
   late Image? image;
   late String? asset;
   late bool? active;
+
+  late Widget? above;
+  late Widget? below;
 }
 
 class ActionRoute extends NavigationRoute {
@@ -21,6 +24,8 @@ class ActionRoute extends NavigationRoute {
     super.asset,
     super.privilege,
     super.active,
+    super.above,
+    super.below,
   });
 }
 
@@ -46,6 +51,8 @@ class NavigationRoute implements AbstractRoute {
     this.badge,
     this.active,
     this.initialLocation,
+    this.above,
+    this.below,
   });
 
   @override
@@ -63,7 +70,13 @@ class NavigationRoute implements AbstractRoute {
   @override
   bool? active;
 
-  /*void go(GoRouter router) {
+  @override
+  Widget? above;
+
+  @override
+  Widget? below;
+
+/*void go(GoRouter router) {
     Future.microtask(() {
       router.go(route);
       GetIt.I<ScreenInfo>().currentState = body!.stateInfo;
@@ -98,6 +111,8 @@ class RouteSet implements AbstractRoute {
     this.icon,
     this.image,
     this.asset,
+    this.above,
+    this.below,
   });
 
   @override
@@ -114,4 +129,10 @@ class RouteSet implements AbstractRoute {
 
   @override
   bool? active;
+
+  @override
+  Widget? above;
+
+  @override
+  Widget? below;
 }
