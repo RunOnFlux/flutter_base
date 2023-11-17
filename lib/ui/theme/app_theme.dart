@@ -509,6 +509,7 @@ class ThemeOptions implements AppThemeOptions {
   final bool? cardGradient;
   final bool? titledCardIconShadow;
   final Color? appBackgroundColor;
+  late List<(Color, Offset)> backgroundGradientEllipses;
 
   Color? cardOutlineColor(BuildContext context) {
     return Theme.of(context).isDark ? cardOutlineColorDark : cardOutlineColorLight;
@@ -556,6 +557,11 @@ class ThemeOptions implements AppThemeOptions {
     this.cardGradient,
     this.titledCardIconShadow,
     this.appBackgroundColor,
+    this.backgroundGradientEllipses = const [
+      (Color.fromRGBO(0, 117, 255, 0.2), Offset(-700, -500)),
+      (Color.fromRGBO(64, 152, 255, 0.2), Offset(400, -900)),
+      (Color.fromRGBO(64, 152, 255, 0.2), Offset(991, 620)),
+    ],
   });
 }
 

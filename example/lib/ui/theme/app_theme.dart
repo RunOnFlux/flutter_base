@@ -39,5 +39,10 @@ class ExampleAppTheme extends AppThemeImpl {
         cardGradient: false,
         titledCardIconShadow: false,
         appBackgroundColor: Colors.red,
+        backgroundGradientEllipses: const [
+          (Color.fromRGBO(0, 117, 255, 0.2), Offset(-700, -500)),
+          (Color.fromRGBO(64, 152, 255, 0.2), Offset(400, -900)),
+          (Color.fromRGBO(64, 152, 255, 0.2), Offset(991, 620)),
+        ],
       );
 }
