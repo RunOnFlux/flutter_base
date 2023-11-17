@@ -7,12 +7,9 @@ class AppThemeImpl {
   Color get scaffoldBackgroundLight => const Color.fromARGB(255, 252, 253, 255);
   Color get cardColorLight => const Color.fromARGB(255, 255, 255, 255);
 
-  static ThemeOptions? getOptions(BuildContext context) {
+  static ThemeOptions getOptions(BuildContext context) {
     var options = ThemeProvider.themeOf(context).options;
-    if (options != null && options is ThemeOptions) {
-      return options;
-    }
-    return null;
+    return options as ThemeOptions;
   }
 
   ChipThemeData chipThemeData(
@@ -510,6 +507,8 @@ class ThemeOptions implements AppThemeOptions {
   final bool? titledCardIconShadow;
   final Color? appBackgroundColor;
   late List<(Color, Offset)> backgroundGradientEllipses;
+  late List<Color> bgDarkGradientColors;
+  late List<Color> bgLightGradientColors;
 
   Color? cardOutlineColor(BuildContext context) {
     return Theme.of(context).isDark ? cardOutlineColorDark : cardOutlineColorLight;
@@ -532,10 +531,10 @@ class ThemeOptions implements AppThemeOptions {
     if (Theme.of(context).isLight) {
       return null;
     }
-    return const LinearGradient(
-        stops: [0.35, 1],
+    return LinearGradient(
+        stops: const [0.35, 1],
         tileMode: TileMode.decal,
-        colors: _bgDarkGradientColors,
+        colors: bgDarkGradientColors,
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter);
   }
@@ -544,7 +543,7 @@ class ThemeOptions implements AppThemeOptions {
     return RadialGradient(
         radius: 0.4,
         tileMode: TileMode.decal,
-        colors: Theme.of(context).isDark ? [color, Colors.transparent] : _bgLightGradientColors,
+        colors: Theme.of(context).isDark ? [color, Colors.transparent] : bgLightGradientColors,
         stops: const [0.25, 1],
         center: Alignment.center);
   }
@@ -561,6 +560,14 @@ class ThemeOptions implements AppThemeOptions {
       (Color.fromRGBO(0, 117, 255, 0.2), Offset(-700, -500)),
       (Color.fromRGBO(64, 152, 255, 0.2), Offset(400, -900)),
       (Color.fromRGBO(64, 152, 255, 0.2), Offset(991, 620)),
+    ],
+    this.bgDarkGradientColors = const [
+      Color.fromARGB(255, 9, 19, 43),
+      Color.fromARGB(255, 6, 13, 26),
+    ],
+    this.bgLightGradientColors = const [
+      Colors.white,
+      Colors.white,
     ],
   });
 }
@@ -608,8 +615,6 @@ const _darkGradient2 = <Color>[
 ];
 const Color _darkPercentColor = Colors.white;
 const Color _lightPercentColor = Color(0xff747EB6);
-const _bgLightGradientColors = [Colors.white, Colors.white];
-const _bgDarkGradientColors = [Color.fromARGB(255, 9, 19, 43), Color.fromARGB(255, 6, 13, 26)];
 
 const Color _warningColor = Color(0xFFFFCB2D);
 

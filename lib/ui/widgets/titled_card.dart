@@ -49,7 +49,7 @@ class TitledCardState extends State<TitledCard> {
   final controller = FlipCardController();
   @override
   Widget build(BuildContext context) {
-    var borderRadius = AppThemeImpl.getOptions(context)?.cardBorderRadius ?? 18.7;
+    var borderRadius = AppThemeImpl.getOptions(context).cardBorderRadius;
     return Padding(
       padding: widget.padding,
       child: Container(
@@ -71,14 +71,14 @@ class TitledCardState extends State<TitledCard> {
           shape: RoundedRectangleBorder(
             side: BorderSide(
               color: widget.outlineColor ??
-                  (AppThemeImpl.getOptions(context)?.cardOutlineColor(context) ?? Colors.transparent),
+                  (AppThemeImpl.getOptions(context).cardOutlineColor(context) ?? Colors.transparent),
             ),
             borderRadius: BorderRadius.circular(borderRadius),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(borderRadius),
             child: Container(
-              decoration: widget.gradient ?? false || (AppThemeImpl.getOptions(context)?.cardGradient ?? false)
+              decoration: widget.gradient ?? false || (AppThemeImpl.getOptions(context).cardGradient ?? false)
                   ? BoxDecoration(
                       gradient: buildLinearGradient(context),
                     )
@@ -99,12 +99,11 @@ class TitledCardState extends State<TitledCard> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
-                                  color: AppThemeImpl.getOptions(context)?.titledCardIconColor ?? Colors.white,
-                                  boxShadow: AppThemeImpl.getOptions(context)?.getTitledCardIconShadow(context),
+                                  color: AppThemeImpl.getOptions(context).titledCardIconColor ?? Colors.white,
+                                  boxShadow: AppThemeImpl.getOptions(context).getTitledCardIconShadow(context),
                                 ),
                                 child: CircleAvatar(
-                                  backgroundColor:
-                                      AppThemeImpl.getOptions(context)?.titledCardIconColor ?? Colors.white,
+                                  backgroundColor: AppThemeImpl.getOptions(context).titledCardIconColor ?? Colors.white,
                                   child: Icon(
                                     color: widget.iconColor ?? Theme.of(context).primaryColor,
                                     size: 30,
@@ -194,7 +193,7 @@ class UntitledCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var borderRadius = AppThemeImpl.getOptions(context)?.cardBorderRadius ?? 18.7;
+    var borderRadius = AppThemeImpl.getOptions(context).cardBorderRadius;
     return Padding(
       padding: padding ?? const EdgeInsets.all(10.0),
       child: Container(
@@ -215,8 +214,7 @@ class UntitledCard extends StatelessWidget {
           margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             side: BorderSide(
-              color:
-                  outlineColor ?? (AppThemeImpl.getOptions(context)?.cardOutlineColor(context) ?? Colors.transparent),
+              color: outlineColor ?? (AppThemeImpl.getOptions(context).cardOutlineColor(context) ?? Colors.transparent),
             ),
             borderRadius: BorderRadius.circular(borderRadius),
           ),
@@ -224,7 +222,7 @@ class UntitledCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(borderRadius),
             child: Container(
               decoration: BoxDecoration(
-                gradient: gradient ?? false || (AppThemeImpl.getOptions(context)?.cardGradient ?? false)
+                gradient: gradient ?? false || (AppThemeImpl.getOptions(context).cardGradient ?? false)
                     ? buildLinearGradient(context)
                     : null,
               ),

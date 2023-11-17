@@ -21,7 +21,6 @@ class NavBar extends StatelessWidget {
     final drawerScope = AppDrawerScope.of(context);
     final isCollapsed = drawerScope?.isCollapsed ?? true;
     final isSmallScreen = drawerScope?.isSmallScreen ?? false;
-    final theme = Theme.of(context);
     final themeOptions = AppThemeImpl.getOptions(context);
 
     return SizedBox(
@@ -34,7 +33,7 @@ class NavBar extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             child: DecoratedBox(
               decoration: BoxDecoration(
-                gradient: !isCollapsed && isSmallScreen ? themeOptions?.backgroundGradient(context) : null,
+                gradient: !isCollapsed && isSmallScreen ? themeOptions.backgroundGradient(context) : null,
               ),
               child: Drawer(
                 width: 300,

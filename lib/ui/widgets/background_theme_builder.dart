@@ -12,7 +12,7 @@ class BackgroundThemeBuilder extends StatelessWidget {
     final themeOptions = AppThemeImpl.getOptions(context);
     return DecoratedBox(
       decoration: BoxDecoration(
-        gradient: themeOptions?.backgroundGradient(context),
+        gradient: themeOptions.backgroundGradient(context),
         color: theme.colorScheme.background,
       ),
       child: theme.isLight
@@ -20,7 +20,7 @@ class BackgroundThemeBuilder extends StatelessWidget {
           : Stack(
               fit: StackFit.expand,
               children: [
-                ...themeOptions!.backgroundGradientEllipses
+                ...themeOptions.backgroundGradientEllipses
                     .map(
                       (e) => _buildGradientEllipsis(
                         e.$1,
@@ -44,7 +44,7 @@ class BackgroundThemeBuilder extends StatelessWidget {
       height: size,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          gradient: AppThemeImpl.getOptions(context)?.ellipsisGradient(context, color),
+          gradient: AppThemeImpl.getOptions(context).ellipsisGradient(context, color),
         ),
       ),
     );

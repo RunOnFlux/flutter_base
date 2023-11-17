@@ -10,7 +10,7 @@ class LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppThemeImpl.getOptions(context)?.appBackgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+      color: AppThemeImpl.getOptions(context).appBackgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
       child: const Center(
         child: SizedBox(
           width: 100,

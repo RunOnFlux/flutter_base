@@ -180,14 +180,14 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
                 ),
             Expanded(
               child: _AppScreenChildWrapper(
-                child: child,
                 state: currentState,
+                child: child,
               ),
             ),
           ],
         ),
         drawer: _isSmallScreen ? sideBar : null,
-        floatingActionButton: (currentState?.fabIcon != null) ?? false
+        floatingActionButton: (currentState?.fabIcon != null)
             ? Padding(
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: FloatingActionButton(
