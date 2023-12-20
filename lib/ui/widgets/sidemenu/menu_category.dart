@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/app/main_app_screen.dart';
-import 'package:flutter_base/ui/widgets/screen_info.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../utils/store.dart';
@@ -89,9 +87,6 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
                 } else if (route is NavigationRoute) {
                   AppDrawerScope.of(context)?.closeDrawer(false);
                   context.go(route.route);
-                  Future.microtask(() {
-                    GetIt.I<ScreenInfo>().currentState = route.body!.stateInfo;
-                  });
                 }
               },
             );

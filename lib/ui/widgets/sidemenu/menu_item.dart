@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/app/main_app_screen.dart';
-import 'package:flutter_base/ui/widgets/screen_info.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../routes/route.dart';
@@ -140,9 +138,6 @@ class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles
   performAction() {
     AppDrawerScope.of(context)?.closeDrawer(false);
     context.go(widget.route.route);
-    Future.microtask(() {
-      GetIt.I<ScreenInfo>().currentState = widget.route.body!.stateInfo;
-    });
   }
 }
 
