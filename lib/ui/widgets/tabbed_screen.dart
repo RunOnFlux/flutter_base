@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/widgets/app_screen.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
+import 'package:flutter_base/ui/widgets/simple_screen.dart';
 import 'package:flutter_base/utils/platform_info.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -11,12 +12,12 @@ import 'package:universal_html/html.dart' as html;
 class TabSpec {
   IconData? icon;
   String title;
-  String? route;
-  AppContentScreen child;
+  String route;
+  TabContentScreen child;
 
   TabSpec({
     this.icon,
-    this.route,
+    required this.route,
     required this.title,
     required this.child,
   });
@@ -36,7 +37,8 @@ abstract class TabbedScreen extends AppContentScreen {
     super.key,
     this.initialPage,
     this.tabsWidth,
-    super.stateInfo,
+    required super.stateInfo,
+    required super.route,
   });
 }
 
@@ -60,17 +62,24 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
         updateBrowserURL(tabController.index);
       });
     }
-    Future.microtask(() {
-      GetIt.I<ScreenInfo>().currentState = tabs[tabController.index].child.stateInfo;
-    });
+  }
+
+  void assignAppState(String route) {
+    var initialAppScreenInfo =
+        GetIt.I<AppScreenRegistry>().get(tabs[widget.initialPage != null ? widget.initialPage!.page : 0].route);
+    if (initialAppScreenInfo != null) {
+      GetIt.I<AppScreenRegistry>().set(widget.route, initialAppScreenInfo);
+
+      Future.microtask(() {
+        GetIt.I<ScreenInfo>().currentState = initialAppScreenInfo;
+      });
+    }
   }
 
   updateBrowserURL(int index) {
-    if (tabs[index].route != null) {
-      html.window.history.replaceState(null, tabs[index].title, tabs[index].route!);
-      // Update the browser tab title
-      context.read<WindowTitle>().setTitle(tabs[index].title);
-    }
+    html.window.history.replaceState(null, tabs[index].title, tabs[index].route);
+    // Update the browser tab title
+    context.read<WindowTitle>().setTitle(tabs[index].title);
   }
 
   @override
@@ -135,5 +144,24 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
 
   List<Widget> _buildChildren() {
     return tabs.map((e) => e.child).toList();
+  }
+}
+
+abstract class TabContentScreen extends SimpleScreen {
+  final TabbedScreenState parent;
+  const TabContentScreen({
+    super.key,
+    required super.stateInfo,
+    required this.parent,
+    required super.route,
+  });
+}
+
+abstract class TabContentScreenState<T extends TabContentScreen> extends SimpleScreenState<T>
+    with TickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+    widget.parent.assignAppState(widget.route);
   }
 }

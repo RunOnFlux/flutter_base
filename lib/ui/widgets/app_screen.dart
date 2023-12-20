@@ -5,22 +5,30 @@ import 'package:get_it/get_it.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 abstract class AppContentScreen extends StatefulWidget {
-  final AppScreenStateInfo? stateInfo;
+  final AppScreenStateInfo stateInfo;
+  final String route;
   const AppContentScreen({
     Key? key,
-    this.stateInfo,
+    required this.stateInfo,
+    required this.route,
   }) : super(key: key);
 }
 
 abstract class AppScreenState<T extends AppContentScreen> extends State<T> {
   @override
   void initState() {
-    if (widget.stateInfo != null) {
-      widget.stateInfo!.onFAB = onFAB;
-      widget.stateInfo!.onRefresh = onRefresh;
-      Future.microtask(() => GetIt.I<ScreenInfo>().currentState = widget.stateInfo!);
-    }
     super.initState();
+    var state = GetIt.I<AppScreenRegistry>().get(widget.route);
+    state ??= widget.stateInfo;
+    state.onFAB = onFAB;
+    state.onRefresh = onRefresh;
+    GetIt.I<AppScreenRegistry>().set(widget.route, state);
+    Future.microtask(() => GetIt.I<ScreenInfo>().currentState = state);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   onFAB() {}
@@ -61,37 +69,7 @@ abstract class AppScreenState<T extends AppContentScreen> extends State<T> {
               ),
             ),
           ),
-          /*Expanded(child: Container()),
-          ChangeNotifierProvider.value(
-            value: GetIt.I.get<NodeList>(),
-            child: const FooterVersion(),
-          ),*/
         ],
-      ),
-    );
-  }
-}
-
-class FooterVersion extends StatelessWidget {
-  const FooterVersion({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    var text = '';
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: bootStrapValueBasedOnSize(
-          sizes: {
-            '': 10.0,
-            'sm': 10.0,
-            'md': 14.0,
-            'lg': 14.0,
-            'xl': 14.0,
-            'xxl': 14.0,
-          },
-          context: context,
-        ),
       ),
     );
   }

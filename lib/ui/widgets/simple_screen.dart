@@ -4,12 +4,11 @@ import 'package:flutter_base/ui/widgets/app_screen.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 abstract class SimpleScreen extends AppContentScreen {
-  final String title;
   const SimpleScreen({
-    Key? key,
-    required this.title,
-    super.stateInfo,
-  }) : super(key: key);
+    super.key,
+    required super.stateInfo,
+    required super.route,
+  });
 }
 
 abstract class SimpleScreenState<T extends SimpleScreen> extends AppScreenState<T>
