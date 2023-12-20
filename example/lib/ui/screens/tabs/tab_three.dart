@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
-import 'package:flutter_base/ui/widgets/simple_screen.dart';
+import 'package:flutter_base/ui/widgets/screen_info.dart';
+import 'package:flutter_base/ui/widgets/tabbed_screen.dart';
 import 'package:flutter_base/ui/widgets/titled_card.dart';
 
-class TabThreeScreen extends SimpleScreen {
-  const TabThreeScreen({Key? key})
-      : super(
+class TabThreeScreen extends TabContentScreen {
+  TabThreeScreen({
+    Key? key,
+    required String route,
+    required TabbedScreenState parent,
+  }) : super(
           key: key,
-          title: '',
+          route: route,
+          parent: parent,
+          stateInfo: AppScreenStateInfo(),
         );
 
   @override
   State<TabThreeScreen> createState() => TabThreeScreenState();
 }
 
-class TabThreeScreenState extends SimpleScreenState<TabThreeScreen> {
+class TabThreeScreenState extends TabContentScreenState<TabThreeScreen> {
   @override
   void initState() {
     super.initState();

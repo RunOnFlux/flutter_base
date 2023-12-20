@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
+import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/tabbed_screen.dart';
 import 'package:flutter_base_example/ui/screens/tabs/tab_one.dart';
 import 'package:flutter_base_example/ui/screens/tabs/tab_three.dart';
@@ -10,11 +11,13 @@ class ExampleTabsScreen extends TabbedScreen {
   static const TabScreenPage two = TabScreenPage(page: 1);
   static const TabScreenPage three = TabScreenPage(page: 2);
 
-  const ExampleTabsScreen({Key? key, TabScreenPage? initialPage})
+  ExampleTabsScreen({Key? key, TabScreenPage? initialPage, required String route})
       : super(
           key: key,
           initialPage: initialPage,
           tabsWidth: 600,
+          route: route,
+          stateInfo: AppScreenStateInfo(),
         );
 
   @override
@@ -28,17 +31,17 @@ class ExampleTabsScreenState extends TabbedScreenState<ExampleTabsScreen> {
     tabs = <TabSpec>[
       TabSpec(
         title: 'One',
-        child: const TabOneScreen(),
+        child: TabOneScreen(route: '/tabs/1', parent: this),
         route: '/tabs/1',
       ),
       TabSpec(
         title: 'Two',
-        child: const TabTwoScreen(),
+        child: TabTwoScreen(route: '/tabs/2', parent: this),
         route: '/tabs/2',
       ),
       TabSpec(
         title: 'Three',
-        child: const TabThreeScreen(),
+        child: TabThreeScreen(route: '/tabs/3', parent: this),
         route: '/tabs/3',
       ),
     ];

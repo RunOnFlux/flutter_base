@@ -19,14 +19,14 @@ class ExampleAppRouter extends AppRouter {
     final routes = <AbstractRoute>[
       NavigationRoute(
         route: '/',
-        body: HomeScreen(),
+        body: HomeScreen(route: '/'),
         title: 'Workers',
         asset: 'assets/images/svg/workers_icon.svg',
         includeInMenu: true,
       ),
       NavigationRoute(
         route: '/disabled',
-        body: HomeScreen(),
+        body: ExampleTabsScreen(route: '/disabled'),
         title: 'Disabled',
         icon: Icons.disabled_by_default_outlined,
         includeInMenu: true,
@@ -35,7 +35,9 @@ class ExampleAppRouter extends AppRouter {
       NavigationRoute(
         route: '/app/:appName',
         initialLocation: '/app/default',
-        body: ParamsScreen(),
+        body: ParamsScreen(
+          route: '/app/:appName',
+        ),
         title: 'Params',
         icon: Icons.disabled_by_default_outlined,
         includeInMenu: false,
@@ -46,21 +48,21 @@ class ExampleAppRouter extends AppRouter {
         routes: [
           NavigationRoute(
             route: '/1',
-            body: HomeScreen(),
+            body: ExampleTabsScreen(route: '/1'),
             title: '1',
             icon: Icons.access_alarm_outlined,
             includeInMenu: true,
           ),
           NavigationRoute(
             route: '/2',
-            body: HomeScreen(),
+            body: ExampleTabsScreen(route: '/2'),
             title: '2',
             icon: Icons.back_hand_outlined,
             includeInMenu: true,
           ),
           NavigationRoute(
             route: '/3',
-            body: HomeScreen(),
+            body: ExampleTabsScreen(route: '/3'),
             title: '3',
             icon: Icons.three_g_mobiledata_outlined,
             includeInMenu: true,
@@ -86,7 +88,7 @@ class ExampleAppRouter extends AppRouter {
             routes: [
               NavigationRoute(
                 route: '/4',
-                body: HomeScreen(),
+                body: ExampleTabsScreen(route: '/4'),
                 title: '4',
                 icon: Icons.access_alarm_outlined,
                 includeInMenu: true,
@@ -99,7 +101,7 @@ class ExampleAppRouter extends AppRouter {
             routes: [
               NavigationRoute(
                 route: '/5',
-                body: HomeScreen(),
+                body: ExampleTabsScreen(route: '/5'),
                 title: '5',
                 icon: Icons.access_alarm_outlined,
                 includeInMenu: true,
@@ -121,29 +123,32 @@ class ExampleAppRouter extends AppRouter {
       NavigationRoute(
         route: '/tabs',
         title: 'Tabbed',
-        body: const ExampleTabsScreen(),
+        body: ExampleTabsScreen(route: '/tabs'),
         icon: Icons.tab_outlined,
         includeInMenu: true,
       ),
       NavigationRoute(
         route: '/tabs/1',
         title: 'Tabbed 1',
-        body: const ExampleTabsScreen(
+        body: ExampleTabsScreen(
           initialPage: ExampleTabsScreen.one,
+          route: '/tabs/1',
         ),
       ),
       NavigationRoute(
         route: '/tabs/2',
         title: 'Tabbed 2',
-        body: const ExampleTabsScreen(
+        body: ExampleTabsScreen(
           initialPage: ExampleTabsScreen.two,
+          route: '/tabs/2',
         ),
       ),
       NavigationRoute(
         route: '/tabs/3',
         title: 'Tabbed 3',
-        body: const ExampleTabsScreen(
+        body: ExampleTabsScreen(
           initialPage: ExampleTabsScreen.three,
+          route: '/tabs/3',
         ),
       ),
       ActionRoute(

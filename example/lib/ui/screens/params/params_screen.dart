@@ -9,10 +9,10 @@ import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:go_router/go_router.dart';
 
 class ParamsScreen extends SimpleScreen with GetItStatefulWidgetMixin {
-  ParamsScreen({Key? key})
+  ParamsScreen({Key? key, required String route})
       : super(
           key: key,
-          title: 'Example',
+          route: route,
           stateInfo: AppScreenStateInfo(
             fabIcon: Icons.add,
             refreshInterval: 60,
@@ -32,7 +32,7 @@ class ParamsScreenState extends SimpleScreenState<ParamsScreen> with GetItStateM
 
   @override
   void onFAB() {
-    const PopupMessage(message: 'FAB was clicked!!').show(context);
+    const PopupMessage(message: 'Param FAB was clicked!!').show(context);
   }
 
   @override

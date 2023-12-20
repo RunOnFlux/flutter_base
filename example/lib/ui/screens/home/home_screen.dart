@@ -8,13 +8,13 @@ import 'package:flutter_base/ui/widgets/titled_card.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 
 class HomeScreen extends SimpleScreen with GetItStatefulWidgetMixin {
-  HomeScreen({Key? key})
+  HomeScreen({Key? key, required String route})
       : super(
           key: key,
-          title: 'Example',
+          route: route,
           stateInfo: AppScreenStateInfo(
             fabIcon: Icons.add,
-            refreshInterval: 60,
+            //refreshInterval: 60,
           ),
         );
 
@@ -23,6 +23,8 @@ class HomeScreen extends SimpleScreen with GetItStatefulWidgetMixin {
 }
 
 class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin {
+  bool clicked = false;
+
   @override
   void initState() {
     super.initState();
@@ -31,6 +33,10 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
 
   @override
   void onFAB() {
+    debugPrint('home screen onFab');
+    setState(() {
+      clicked = !clicked;
+    });
     const PopupMessage(message: 'FAB was clicked!!').show(context);
   }
 
@@ -148,9 +154,10 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                       'xxl': 10.0,
                     }, context: context),
                   ),
-                  child: const Column(
+                  child: Column(
                     children: [
-                      Text('Some text'),
+                      if (clicked) const Text('clicked'),
+                      if (!clicked) const Text('Some text'),
                     ],
                   ),
                 ),
@@ -178,10 +185,30 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                       'xxl': 10.0,
                     }, context: context),
                   ),
-                  backChild: const Column(
-                    children: [
-                      Text("Flipped Card"),
-                    ],
+                  backChild: const DefaultTabController(
+                    length: 3,
+                    child: Column(
+                      children: [
+                        IgnorePointer(
+                          child: TabBar(
+                            tabs: [
+                              Tab(icon: Icon(Icons.directions_car)),
+                              Tab(icon: Icon(Icons.directions_transit)),
+                              Tab(icon: Icon(Icons.directions_bike)),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: TabBarView(
+                            children: [
+                              Icon(Icons.directions_car),
+                              Icon(Icons.directions_transit),
+                              Icon(Icons.directions_bike),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                   backToolTip: 'See you on the flip side',
                   backTitle: 'The flip side is here',
