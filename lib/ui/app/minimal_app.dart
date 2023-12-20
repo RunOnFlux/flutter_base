@@ -55,6 +55,7 @@ abstract class MinimalApp extends StatefulWidget {
     Key? key,
   }) : super(key: key) {
     GetIt.I.registerSingleton<ScreenInfo>(ScreenInfo());
+    GetIt.I.registerSingleton<AppScreenRegistry>(AppScreenRegistry());
     registerTheme();
   }
 
@@ -141,32 +142,42 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
 
   RoutingConfig buildRoutingConfig() {
     var allRoutes = widget.router.getNavigationRoutes();
-    return RoutingConfig(routes: [
-      StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) {
-          return AppRouterScope(
-            router: widget.router,
-            child: MainAppScreen(
-              config: config,
-              child: navigationShell,
-            ),
-          );
-        },
-        branches: allRoutes.map(
-          (e) {
-            return StatefulShellBranch(
-              routes: [
-                AppRoute(
-                  path: e.route,
-                  builder: (GoRouterState state) => AppBody(route: e),
-                )
-              ],
-              initialLocation: e.initialLocation,
+    return RoutingConfig(
+      routes: [
+        StatefulShellRoute.indexedStack(
+          builder: (context, state, navigationShell) {
+            return AppRouterScope(
+              router: widget.router,
+              child: MainAppScreen(
+                config: config,
+                child: navigationShell,
+              ),
             );
           },
-        ).toList(),
-      ),
-    ]);
+          branches: allRoutes.map(
+            (e) {
+              return StatefulShellBranch(
+                routes: [
+                  AppRoute(
+                    path: e.route,
+                    builder: (GoRouterState state) => AppBody(route: e),
+                  )
+                ],
+                initialLocation: e.initialLocation,
+              );
+            },
+          ).toList(),
+        ),
+      ],
+      redirect: (context, state) {
+        Future.microtask(() {
+          final currentRoute = state.fullPath?.toString() ?? '/'; // use fullPath to support routes with parameters
+          GetIt.I<ScreenInfo>().currentState = GetIt.I<AppScreenRegistry>().get(currentRoute);
+        });
+
+        return null;
+      },
+    );
   }
 
   Widget buildMainApp(BuildContext context) {

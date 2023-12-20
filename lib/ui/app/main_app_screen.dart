@@ -8,11 +8,13 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/theme/interface_brightness.dart';
+import 'package:flutter_base/ui/widgets/floating_action_menu.dart';
 import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
 import 'package:flutter_base/ui/widgets/popup_message.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/utils/platform_info.dart';
+import 'package:get_it/get_it.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -136,6 +138,14 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
     _isSmallScreen = context.isSmallWidth();
     var currentState = watchOnly((ScreenInfo info) => info.currentState);
 
+    if (currentState == null) {
+      // check the registry
+      final currentRoute = GoRouterState.of(context).fullPath;
+      if (currentRoute != null) {
+        currentState = GetIt.I<AppScreenRegistry>().get(currentRoute);
+      }
+    }
+
     var sideBar = const NavBar().animate(target: _isCollapsed ? 1 : 0)
       ..fadeOut()
       ..slideX(
@@ -188,13 +198,14 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
         ),
         drawer: _isSmallScreen ? sideBar : null,
         floatingActionButton: (currentState?.fabIcon != null)
-            ? Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: FloatingActionButton(
-                  onPressed: currentState?.onFAB,
-                  backgroundColor: Theme.of(context).primaryColor,
-                  child: Icon(currentState?.fabIcon ?? Icons.refresh),
-                ),
+            ? FloatingActionMenu(
+                icon: currentState?.fabIcon ?? Icons.refresh,
+                onPressed: () {
+                  if (currentState != null && currentState.onFAB != null) {
+                    currentState.onFAB!();
+                  }
+                },
+                items: currentState?.items,
               )
             : null,
       ),
@@ -219,8 +230,8 @@ class AppDrawerScope extends InheritedWidget {
   }
 }
 
-class _AppScreenChildWrapper extends StatefulWidget {
-  const _AppScreenChildWrapper({
+class _AppScreenChildWrapper extends StatefulWidget with GetItStatefulWidgetMixin {
+  _AppScreenChildWrapper({
     required this.child,
     required this.state,
   });
@@ -231,7 +242,7 @@ class _AppScreenChildWrapper extends StatefulWidget {
   State<_AppScreenChildWrapper> createState() => _AppScreenChildWrapperState();
 }
 
-class _AppScreenChildWrapperState extends State<_AppScreenChildWrapper> {
+class _AppScreenChildWrapperState extends State<_AppScreenChildWrapper> with GetItStateMixin {
   double _endValue = 1.0;
 
   Timer? _timer;
@@ -240,46 +251,48 @@ class _AppScreenChildWrapperState extends State<_AppScreenChildWrapper> {
   bool timerCountUp = true;
 
   @override
-  void initState() {
-    super.initState();
-    if (PlatformInfo().isWeb()) {
-      startTimer();
-    }
-  }
-
-  @override
   void dispose() {
     _timer?.cancel();
     super.dispose();
   }
 
   void startTimer() {
-    if (widget.state?.refreshInterval != null) {
-      if (_timer != null) {
-        _timer?.cancel();
-      }
-      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        setState(() {
-          timerPosition += (timerCountUp ? 1 : -1);
-          timerValue += 1;
-        });
-        if (timerValue >= widget.state!.refreshInterval!) {
-          if (widget.state?.onRefresh != null) {
-            widget.state?.onRefresh!();
-          }
-          setState(() {
-            timerValue = 0;
-            timerCountUp = !timerCountUp;
-          });
-        }
-      });
+    if (_timer != null) {
+      _timer?.cancel();
     }
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) return;
+      setState(() {
+        timerPosition += (timerCountUp ? 1 : -1);
+        timerValue += 1;
+      });
+      if (timerValue >= widget.state!.refreshInterval!) {
+        if (widget.state?.onRefresh != null) {
+          widget.state?.onRefresh!();
+        }
+        setState(() {
+          timerValue = 0;
+          timerCountUp = !timerCountUp;
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final smallScreen = context.isSmallWidth();
     final isCollapsed = AppDrawerScope.of(context)?.isCollapsed ?? true;
+
+    registerHandler((ScreenInfo s) => s.state, (context, value, cancel) {
+      if (value == null || value.refreshInterval == null) {
+        _timer?.cancel();
+        return;
+      }
+      if (value.refreshInterval != null && value.refreshInterval! > 0) {
+        startTimer();
+      }
+    });
+
     final child = Stack(
       children: [
         DecoratedBox(
