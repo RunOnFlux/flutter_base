@@ -9,11 +9,9 @@ import 'package:flutter_base/ui/widgets/titled_card.dart';
 class TabOneScreen extends TabContentScreen {
   TabOneScreen({
     Key? key,
-    required String route,
     required TabbedScreenState parent,
   }) : super(
           key: key,
-          route: route,
           parent: parent,
           stateInfo: AppScreenStateInfo(
             fabIcon: Icons.upload_file_outlined,

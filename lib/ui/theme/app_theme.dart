@@ -548,6 +548,28 @@ class ThemeOptions implements AppThemeOptions {
         center: Alignment.center);
   }
 
+  LinearGradient textLinearGradient(BuildContext context) {
+    return LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: Theme.of(context).isDark
+            ? [
+                const Color(0xFFD2EEFF),
+                const Color(0xFF5CBDFF),
+                const Color(0xFF528EFC),
+                const Color(0xFF8B94F3),
+                const Color(0xFFA08FCE)
+              ]
+            : [
+                const Color(0xFFD2EEFF),
+                const Color(0xFF5CBDFF),
+                const Color(0xFF528EFC),
+                const Color(0xFF8B94F3),
+                const Color(0xFFA08FCE)
+              ],
+        stops: const [0, 0.2344, 0.5104, 0.724, 1]);
+  }
+
   ThemeOptions({
     required this.cardBorderRadius,
     this.titledCardIconColor,

@@ -7,11 +7,9 @@ import 'package:flutter_base/ui/widgets/titled_card.dart';
 class TabTwoScreen extends TabContentScreen {
   TabTwoScreen({
     Key? key,
-    required String route,
     required TabbedScreenState parent,
   }) : super(
           key: key,
-          route: route,
           parent: parent,
           stateInfo: AppScreenStateInfo(),
         );

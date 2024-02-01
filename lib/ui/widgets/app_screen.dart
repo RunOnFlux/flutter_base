@@ -6,11 +6,9 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 abstract class AppContentScreen extends StatefulWidget {
   final AppScreenStateInfo stateInfo;
-  final String route;
   const AppContentScreen({
     Key? key,
     required this.stateInfo,
-    required this.route,
   }) : super(key: key);
 }
 
@@ -18,11 +16,11 @@ abstract class AppScreenState<T extends AppContentScreen> extends State<T> {
   @override
   void initState() {
     super.initState();
-    var state = GetIt.I<AppScreenRegistry>().get(widget.route);
+    var state = GetIt.I<AppScreenRegistry>().get(widget.stateInfo.route);
     state ??= widget.stateInfo;
     state.onFAB = onFAB;
     state.onRefresh = onRefresh;
-    GetIt.I<AppScreenRegistry>().set(widget.route, state);
+    GetIt.I<AppScreenRegistry>().set(widget.stateInfo.route, state);
     Future.microtask(() => GetIt.I<ScreenInfo>().currentState = state);
   }
 

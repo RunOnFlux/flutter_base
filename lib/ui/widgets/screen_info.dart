@@ -20,6 +20,7 @@ class AppScreenStateInfo {
   Function()? onRefresh;
   Function()? onFAB;
   List<FloatingMenuItem>? items;
+  late String route;
 
   AppScreenStateInfo({
     this.refreshInterval,
