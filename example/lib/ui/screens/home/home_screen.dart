@@ -8,10 +8,9 @@ import 'package:flutter_base/ui/widgets/titled_card.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 
 class HomeScreen extends SimpleScreen with GetItStatefulWidgetMixin {
-  HomeScreen({Key? key, required String route})
+  HomeScreen({Key? key})
       : super(
           key: key,
-          route: route,
           stateInfo: AppScreenStateInfo(
             fabIcon: Icons.add,
             //refreshInterval: 60,

@@ -11,12 +11,11 @@ class ExampleTabsScreen extends TabbedScreen {
   static const TabScreenPage two = TabScreenPage(page: 1);
   static const TabScreenPage three = TabScreenPage(page: 2);
 
-  ExampleTabsScreen({Key? key, TabScreenPage? initialPage, required String route})
+  ExampleTabsScreen({Key? key, TabScreenPage? initialPage})
       : super(
           key: key,
           initialPage: initialPage,
           tabsWidth: 600,
-          route: route,
           stateInfo: AppScreenStateInfo(),
         );
 
@@ -31,17 +30,17 @@ class ExampleTabsScreenState extends TabbedScreenState<ExampleTabsScreen> {
     tabs = <TabSpec>[
       TabSpec(
         title: 'One',
-        child: TabOneScreen(route: '/tabs/1', parent: this),
+        child: TabOneScreen(parent: this),
         route: '/tabs/1',
       ),
       TabSpec(
         title: 'Two',
-        child: TabTwoScreen(route: '/tabs/2', parent: this),
+        child: TabTwoScreen(parent: this),
         route: '/tabs/2',
       ),
       TabSpec(
         title: 'Three',
-        child: TabThreeScreen(route: '/tabs/3', parent: this),
+        child: TabThreeScreen(parent: this),
         route: '/tabs/3',
       ),
     ];

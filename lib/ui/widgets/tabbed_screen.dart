@@ -20,7 +20,9 @@ class TabSpec {
     required this.route,
     required this.title,
     required this.child,
-  });
+  }) {
+    child.stateInfo.route = route;
+  }
 }
 
 class TabScreenPage {
@@ -38,7 +40,6 @@ abstract class TabbedScreen extends AppContentScreen {
     this.initialPage,
     this.tabsWidth,
     required super.stateInfo,
-    required super.route,
   });
 }
 
@@ -68,7 +69,7 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
     var initialAppScreenInfo =
         GetIt.I<AppScreenRegistry>().get(tabs[widget.initialPage != null ? widget.initialPage!.page : 0].route);
     if (initialAppScreenInfo != null) {
-      GetIt.I<AppScreenRegistry>().set(widget.route, initialAppScreenInfo);
+      GetIt.I<AppScreenRegistry>().set(widget.stateInfo.route, initialAppScreenInfo);
 
       Future.microtask(() {
         GetIt.I<ScreenInfo>().currentState = initialAppScreenInfo;
@@ -153,7 +154,6 @@ abstract class TabContentScreen extends SimpleScreen {
     super.key,
     required super.stateInfo,
     required this.parent,
-    required super.route,
   });
 }
 
@@ -162,6 +162,6 @@ abstract class TabContentScreenState<T extends TabContentScreen> extends SimpleS
   @override
   void initState() {
     super.initState();
-    widget.parent.assignAppState(widget.route);
+    widget.parent.assignAppState(widget.stateInfo.route);
   }
 }

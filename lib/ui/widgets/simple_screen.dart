@@ -7,7 +7,6 @@ abstract class SimpleScreen extends AppContentScreen {
   const SimpleScreen({
     super.key,
     required super.stateInfo,
-    required super.route,
   });
 }
 

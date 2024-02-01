@@ -53,7 +53,9 @@ class NavigationRoute implements AbstractRoute {
     this.initialLocation,
     this.above,
     this.below,
-  });
+  }) {
+    body?.stateInfo.route = route;
+  }
 
   @override
   IconData? icon;

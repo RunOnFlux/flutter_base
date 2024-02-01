@@ -9,10 +9,9 @@ import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:go_router/go_router.dart';
 
 class ParamsScreen extends SimpleScreen with GetItStatefulWidgetMixin {
-  ParamsScreen({Key? key, required String route})
+  ParamsScreen({Key? key})
       : super(
           key: key,
-          route: route,
           stateInfo: AppScreenStateInfo(
             fabIcon: Icons.add,
             refreshInterval: 60,

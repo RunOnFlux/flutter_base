@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/extensions/modal_sheet_extensions.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
+import 'package:flutter_base/ui/widgets/auth/auth_screen.dart';
 import 'package:flutter_base/ui/widgets/popup_message.dart';
 import 'package:flutter_base_example/ui/screens/home/home_screen.dart';
 import 'package:flutter_base_example/ui/screens/params/params_screen.dart';
@@ -19,14 +21,14 @@ class ExampleAppRouter extends AppRouter {
     final routes = <AbstractRoute>[
       NavigationRoute(
         route: '/',
-        body: HomeScreen(route: '/'),
+        body: HomeScreen(),
         title: 'Workers',
         asset: 'assets/images/svg/workers_icon.svg',
         includeInMenu: true,
       ),
       NavigationRoute(
         route: '/disabled',
-        body: ExampleTabsScreen(route: '/disabled'),
+        body: ExampleTabsScreen(),
         title: 'Disabled',
         icon: Icons.disabled_by_default_outlined,
         includeInMenu: true,
@@ -35,9 +37,7 @@ class ExampleAppRouter extends AppRouter {
       NavigationRoute(
         route: '/app/:appName',
         initialLocation: '/app/default',
-        body: ParamsScreen(
-          route: '/app/:appName',
-        ),
+        body: ParamsScreen(),
         title: 'Params',
         icon: Icons.disabled_by_default_outlined,
         includeInMenu: false,
@@ -48,21 +48,21 @@ class ExampleAppRouter extends AppRouter {
         routes: [
           NavigationRoute(
             route: '/1',
-            body: ExampleTabsScreen(route: '/1'),
+            body: ExampleTabsScreen(),
             title: '1',
             icon: Icons.access_alarm_outlined,
             includeInMenu: true,
           ),
           NavigationRoute(
             route: '/2',
-            body: ExampleTabsScreen(route: '/2'),
+            body: ExampleTabsScreen(),
             title: '2',
             icon: Icons.back_hand_outlined,
             includeInMenu: true,
           ),
           NavigationRoute(
             route: '/3',
-            body: ExampleTabsScreen(route: '/3'),
+            body: ExampleTabsScreen(),
             title: '3',
             icon: Icons.three_g_mobiledata_outlined,
             includeInMenu: true,
@@ -88,7 +88,7 @@ class ExampleAppRouter extends AppRouter {
             routes: [
               NavigationRoute(
                 route: '/4',
-                body: ExampleTabsScreen(route: '/4'),
+                body: ExampleTabsScreen(),
                 title: '4',
                 icon: Icons.access_alarm_outlined,
                 includeInMenu: true,
@@ -101,7 +101,7 @@ class ExampleAppRouter extends AppRouter {
             routes: [
               NavigationRoute(
                 route: '/5',
-                body: ExampleTabsScreen(route: '/5'),
+                body: ExampleTabsScreen(),
                 title: '5',
                 icon: Icons.access_alarm_outlined,
                 includeInMenu: true,
@@ -123,7 +123,7 @@ class ExampleAppRouter extends AppRouter {
       NavigationRoute(
         route: '/tabs',
         title: 'Tabbed',
-        body: ExampleTabsScreen(route: '/tabs'),
+        body: ExampleTabsScreen(),
         icon: Icons.tab_outlined,
         includeInMenu: true,
       ),
@@ -132,7 +132,6 @@ class ExampleAppRouter extends AppRouter {
         title: 'Tabbed 1',
         body: ExampleTabsScreen(
           initialPage: ExampleTabsScreen.one,
-          route: '/tabs/1',
         ),
       ),
       NavigationRoute(
@@ -140,7 +139,6 @@ class ExampleAppRouter extends AppRouter {
         title: 'Tabbed 2',
         body: ExampleTabsScreen(
           initialPage: ExampleTabsScreen.two,
-          route: '/tabs/2',
         ),
       ),
       NavigationRoute(
@@ -148,7 +146,6 @@ class ExampleAppRouter extends AppRouter {
         title: 'Tabbed 3',
         body: ExampleTabsScreen(
           initialPage: ExampleTabsScreen.three,
-          route: '/tabs/3',
         ),
       ),
       ActionRoute(
