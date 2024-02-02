@@ -36,7 +36,7 @@ class NavigationRoute implements AbstractRoute {
   bool includeInMenu = false;
   List<PrivilegeLevel>? privilege;
   int? navBarIndex;
-  Widget Function(BuildContext)? badge;
+  Widget Function(BuildContext, Widget?)? badge;
 
   NavigationRoute({
     required this.route,

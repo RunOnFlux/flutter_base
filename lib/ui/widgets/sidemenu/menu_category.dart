@@ -236,6 +236,14 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
     required Null Function(AbstractRoute)? onTap,
     required bool isSubMenu,
   }) {
+    Widget? defaultIcon = !isSubMenu
+        ? buildIcon(
+            context,
+            Icons.chevron_right_outlined,
+            selectedColor,
+            unselectedColor,
+          )
+        : null;
     return SizedBox(
       width: 250,
       child: ListTile(
@@ -271,15 +279,11 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
           unselectedColor,
         ),
         trailing: route is NavigationRoute && route.badge != null
-            ? route.badge!(context)
-            : !isSubMenu
-                ? buildIcon(
-                    context,
-                    Icons.chevron_right_outlined,
-                    selectedColor,
-                    unselectedColor,
-                  )
-                : null,
+            ? route.badge!(
+                context,
+                defaultIcon,
+              )
+            : defaultIcon,
         onTap: onTap == null
             ? null
             : () {

@@ -61,6 +61,13 @@ class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles
       );
     }
 
+    var defaultIcon = buildIcon(
+      context,
+      Icons.chevron_right_outlined,
+      selectedColor,
+      unselectedColor,
+    );
+
     return Padding(
       padding: EdgeInsets.only(left: widget.level * 20),
       child: Material(
@@ -116,13 +123,11 @@ class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles
                   unselectedColor,
                 ),
                 trailing: widget.route.badge != null
-                    ? widget.route.badge!(context)
-                    : buildIcon(
+                    ? widget.route.badge!(
                         context,
-                        Icons.chevron_right_outlined,
-                        selectedColor,
-                        unselectedColor,
-                      ),
+                        defaultIcon,
+                      )
+                    : defaultIcon,
                 onTap: () {
                   performAction();
                 },
