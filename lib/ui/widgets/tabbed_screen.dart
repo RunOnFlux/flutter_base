@@ -83,6 +83,8 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
     context.read<WindowTitle>().setTitle(tabs[index].title);
   }
 
+  Widget titleHeader(BuildContext context) => Container();
+
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
@@ -98,25 +100,30 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
             // widgets that do not overlap the next sliver.
             handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
             sliver: SliverToBoxAdapter(
-              child: TabBar(
-                // These are the widgets to put in each tab in the tab bar.
-                controller: tabController,
-                tabs: _buildTabs(),
-                isScrollable: MediaQuery.of(context).size.width < (widget.tabsWidth ?? 700),
-                labelColor: Theme.of(context).textTheme.titleLarge!.color,
-                overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.hovered)) {
-                      return Theme.of(context).primaryColor.withOpacity(0.5); //<-- SEE HERE
-                    }
-                    return null;
-                  },
-                ),
-                onTap: (value) {
-                  if (PlatformInfo().isWeb()) {
-                    updateBrowserURL(value);
-                  }
-                },
+              child: Column(
+                children: [
+                  titleHeader(context),
+                  TabBar(
+                    // These are the widgets to put in each tab in the tab bar.
+                    controller: tabController,
+                    tabs: _buildTabs(),
+                    isScrollable: MediaQuery.of(context).size.width < (widget.tabsWidth ?? 700),
+                    labelColor: Theme.of(context).textTheme.titleLarge!.color,
+                    overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                      (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.hovered)) {
+                          return Theme.of(context).primaryColor.withOpacity(0.5); //<-- SEE HERE
+                        }
+                        return null;
+                      },
+                    ),
+                    onTap: (value) {
+                      if (PlatformInfo().isWeb()) {
+                        updateBrowserURL(value);
+                      }
+                    },
+                  ),
+                ],
               ),
             ),
           ),
