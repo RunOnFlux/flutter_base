@@ -34,14 +34,20 @@ abstract class AppScreenState<T extends AppContentScreen> extends State<T> {
   onRefresh() {}
 
   EdgeInsets mainPadding() {
-    return EdgeInsets.all(bootStrapValueBasedOnSize(sizes: {
-      '': 5.0,
-      'sm': 12.0,
-      'md': 20.0,
-      'lg': 25.0,
-      'xl': 25.0,
-      'xxl': 25.0,
-    }, context: context));
+    return EdgeInsets.symmetric(
+      horizontal: bootStrapValueBasedOnSize(
+        sizes: {
+          '': 5.0,
+          'sm': 12.0,
+          'md': 20.0,
+          'lg': 25.0,
+          'xl': 25.0,
+          'xxl': 25.0,
+        },
+        context: context,
+      ),
+      vertical: 10.0,
+    );
   }
 
   Widget buildFooter(BuildContext context) {

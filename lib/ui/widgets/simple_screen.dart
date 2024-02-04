@@ -40,18 +40,13 @@ abstract class SimpleScreenState<T extends SimpleScreen> extends AppScreenState<
   }
 
   Widget buildScreen(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 5.0,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          buildChild(context),
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        buildChild(context),
+      ],
     );
   }
 }
