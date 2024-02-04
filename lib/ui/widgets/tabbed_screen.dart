@@ -102,7 +102,10 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
             sliver: SliverToBoxAdapter(
               child: Column(
                 children: [
-                  titleHeader(context),
+                  Padding(
+                    padding: mainPadding(),
+                    child: titleHeader(context),
+                  ),
                   TabBar(
                     // These are the widgets to put in each tab in the tab bar.
                     controller: tabController,

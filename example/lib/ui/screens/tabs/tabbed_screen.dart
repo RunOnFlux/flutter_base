@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
+import 'package:flutter_base/ui/widgets/screen_title_header.dart';
 import 'package:flutter_base/ui/widgets/tabbed_screen.dart';
 import 'package:flutter_base_example/ui/screens/tabs/tab_one.dart';
 import 'package:flutter_base_example/ui/screens/tabs/tab_three.dart';
@@ -47,4 +48,7 @@ class ExampleTabsScreenState extends TabbedScreenState<ExampleTabsScreen> {
     debugPrint('tabs: ${tabs.length}');
     super.initState();
   }
+
+  @override
+  Widget titleHeader(BuildContext context) => const TitleHeader(title: 'Dashboard', icon: Icons.analytics_outlined);
 }

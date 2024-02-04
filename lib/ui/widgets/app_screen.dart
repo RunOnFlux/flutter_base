@@ -33,6 +33,17 @@ abstract class AppScreenState<T extends AppContentScreen> extends State<T> {
 
   onRefresh() {}
 
+  EdgeInsets mainPadding() {
+    return EdgeInsets.all(bootStrapValueBasedOnSize(sizes: {
+      '': 5.0,
+      'sm': 12.0,
+      'md': 20.0,
+      'lg': 25.0,
+      'xl': 25.0,
+      'xxl': 25.0,
+    }, context: context));
+  }
+
   Widget buildFooter(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5),
