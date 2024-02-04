@@ -5,7 +5,8 @@ import 'package:flutter_base/ui/widgets/screen_title_divider.dart';
 
 class TitleHeader extends StatelessWidget {
   final String title;
-  const TitleHeader({super.key, required this.title});
+  final IconData icon;
+  const TitleHeader({super.key, required this.title, required this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +21,9 @@ class TitleHeader extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 10.0, top: 8.0),
                 child: Row(
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(right: 8.0),
-                      child: Icon(Icons.calculate_outlined, size: 30),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Icon(icon, size: 30),
                     ),
                     AutoSizeText(
                       title,
