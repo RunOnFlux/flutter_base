@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
 
-class BaseDialog extends StatefulWidget {
+abstract class BaseDialog extends StatefulWidget {
   final String title;
   const BaseDialog({super.key, required this.title});
-
-  @override
-  State<BaseDialog> createState() => _BaseDialogState();
 }
 
-class _BaseDialogState extends State<BaseDialog> {
+abstract class BaseDialogState<T extends BaseDialog> extends State<T> {
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
