@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
 
-class BaseDialog extends StatelessWidget {
+class BaseDialog extends StatefulWidget {
   final String title;
   const BaseDialog({super.key, required this.title});
 
+  @override
+  State<BaseDialog> createState() => _BaseDialogState();
+}
+
+class _BaseDialogState extends State<BaseDialog> {
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
@@ -28,7 +33,7 @@ class BaseDialog extends StatelessWidget {
               ),
               child: Scaffold(
                 appBar: AppBar(
-                  title: Text(title, style: Theme.of(context).textTheme.headlineLarge),
+                  title: Text(widget.title, style: Theme.of(context).textTheme.headlineLarge),
                   leading: IconButton(
                     icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
                     onPressed: () => Navigator.pop(context),
