@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
 
@@ -30,7 +31,12 @@ abstract class BaseDialogState<T extends BaseDialog> extends State<T> {
               ),
               child: Scaffold(
                 appBar: AppBar(
-                  title: Text(widget.title, style: Theme.of(context).textTheme.headlineLarge),
+                  title: AutoSizeText(
+                    widget.title,
+                    style: Theme.of(context).textTheme.headlineLarge,
+                    maxLines: maxHeaderLines,
+                    minFontSize: 8,
+                  ),
                   leading: IconButton(
                     icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
                     onPressed: () => Navigator.pop(context),
@@ -44,6 +50,8 @@ abstract class BaseDialogState<T extends BaseDialog> extends State<T> {
       },
     );
   }
+
+  int get maxHeaderLines => 1;
 
   double dialogWidth(BuildContext context) => bootStrapValueBasedOnSize(
         sizes: {
