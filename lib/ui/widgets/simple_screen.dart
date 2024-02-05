@@ -45,6 +45,10 @@ abstract class SimpleScreenState<T extends SimpleScreen> extends AppScreenState<
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        Padding(
+          padding: mainPadding(),
+          child: titleHeader(context),
+        ),
         buildChild(context),
       ],
     );

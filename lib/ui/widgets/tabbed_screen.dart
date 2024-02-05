@@ -83,8 +83,6 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
     context.read<WindowTitle>().setTitle(tabs[index].title);
   }
 
-  Widget titleHeader(BuildContext context) => Container();
-
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(

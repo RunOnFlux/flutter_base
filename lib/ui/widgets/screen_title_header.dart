@@ -21,6 +21,7 @@ class TitleHeader extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 10.0, top: 8.0),
                 child: Row(
                   children: [
+                    preHeader(context),
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: Icon(icon, size: 30),
@@ -30,6 +31,7 @@ class TitleHeader extends StatelessWidget {
                       maxLines: 1,
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
+                    postHeader(context),
                   ],
                 ),
               ),
@@ -40,4 +42,7 @@ class TitleHeader extends StatelessWidget {
       ],
     );
   }
+
+  Widget preHeader(BuildContext context) => Container();
+  Widget postHeader(BuildContext context) => Container();
 }

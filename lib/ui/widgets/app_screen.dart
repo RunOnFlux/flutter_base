@@ -50,6 +50,8 @@ abstract class AppScreenState<T extends AppContentScreen> extends State<T> {
     );
   }
 
+  Widget titleHeader(BuildContext context) => Container();
+
   Widget buildFooter(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5),
