@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
 
 abstract class BaseDialog extends StatefulWidget {
-  final String title;
-  const BaseDialog({super.key, required this.title});
+  const BaseDialog({super.key});
 }
 
 abstract class BaseDialogState<T extends BaseDialog> extends State<T> {
@@ -32,7 +31,7 @@ abstract class BaseDialogState<T extends BaseDialog> extends State<T> {
               child: Scaffold(
                 appBar: AppBar(
                   title: AutoSizeText(
-                    widget.title,
+                    title,
                     style: Theme.of(context).textTheme.headlineLarge,
                     maxLines: maxHeaderLines,
                     minFontSize: 8,
@@ -50,6 +49,8 @@ abstract class BaseDialogState<T extends BaseDialog> extends State<T> {
       },
     );
   }
+
+  String get title;
 
   int get maxHeaderLines => 1;
 
