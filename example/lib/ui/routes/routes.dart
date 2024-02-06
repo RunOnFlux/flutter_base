@@ -108,7 +108,7 @@ class ExampleAppRouter extends AppRouter {
                 title: 'Nested Action',
                 action: (BuildContext context) {
                   debugPrint('nested do something!!');
-                  const PopupMessage(message: 'Do Something!!').show(context);
+                  PopupMessage.success(message: 'Do Something!!').showNoContext();
                   context.go('/app/testapp');
                 },
                 route: '/action',
