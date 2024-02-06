@@ -37,12 +37,12 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
     setState(() {
       clicked = !clicked;
     });
-    const PopupMessage(message: 'FAB was clicked!!').show(context);
+    const PopupMessage(message: 'FAB was clicked!!').show();
   }
 
   @override
   void onRefresh() {
-    const PopupMessage(message: 'Refresh').show(context);
+    const PopupMessage(message: 'Refresh').show();
   }
 
   @override

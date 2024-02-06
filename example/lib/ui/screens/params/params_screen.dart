@@ -31,12 +31,12 @@ class ParamsScreenState extends SimpleScreenState<ParamsScreen> with GetItStateM
 
   @override
   void onFAB() {
-    const PopupMessage(message: 'Param FAB was clicked!!').show(context);
+    context.show(const PopupMessage(message: 'Param FAB was clicked!!'));
   }
 
   @override
   void onRefresh() {
-    const PopupMessage(message: 'Refresh').show(context);
+    context.show(const PopupMessage(message: 'Refresh'));
   }
 
   @override

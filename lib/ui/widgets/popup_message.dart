@@ -77,18 +77,10 @@ class PopupMessage extends StatelessWidget {
     return other.message == message || other.richMessage == richMessage;
   }
 
-  void showNoContext() {
+  void show() {
     if (rootPopupMessageKey.currentState != null) {
       rootPopupMessageKey.currentState!.addMessage(this);
     }
-  }
-
-  void show(BuildContext context) {
-    PopupMessageScope.of(context).addMessage(this);
-  }
-
-  void remove(BuildContext context) {
-    PopupMessageScope.of(context).removeMessage(this);
   }
 
   @override
@@ -137,6 +129,16 @@ class PopupMessage extends StatelessWidget {
         .animate()
         .fadeIn()
         .slideY();
+  }
+}
+
+extension PopupMessageContext on BuildContext {
+  void show(PopupMessage message) {
+    PopupMessageScope.of(this).addMessage(message);
+  }
+
+  void remove(PopupMessage message) {
+    PopupMessageScope.of(this).removeMessage(message);
   }
 }
 
