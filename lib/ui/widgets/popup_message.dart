@@ -38,7 +38,24 @@ class PopupMessage extends StatelessWidget {
         copiable: copiable,
         richMessage: richMessage,
         message: message,
-        icon: Icons.warning_rounded);
+        icon: Icons.error_outline_rounded);
+  }
+
+  factory PopupMessage.warning(
+      {Key? key,
+      int maxLines = 2,
+      bool copiable = true,
+      Duration duration = const Duration(seconds: 5),
+      String? message,
+      TextSpan? richMessage}) {
+    return PopupMessage(
+        key: key,
+        duration: duration,
+        maxLines: maxLines,
+        copiable: copiable,
+        richMessage: richMessage,
+        message: message,
+        icon: Icons.warning_amber_outlined);
   }
 
   factory PopupMessage.success(
@@ -53,7 +70,7 @@ class PopupMessage extends StatelessWidget {
         maxLines: maxLines,
         richMessage: richMessage,
         message: message,
-        icon: Icons.check_circle_rounded);
+        icon: Icons.check_circle_outline_rounded);
   }
 
   bool isEquals(PopupMessage other) {
