@@ -158,11 +158,12 @@ class PopupMessageScope extends InheritedWidget {
 }
 
 class PopupMessageWidget extends StatefulWidget {
-  PopupMessageWidget({
+  const PopupMessageWidget({
     required this.child,
     this.aligment = Alignment.topCenter,
     this.maxMessages = 3,
-  }) : super(key: rootPopupMessageKey);
+    super.key,
+  });
   final Widget child;
   final Alignment aligment;
   final int maxMessages;

@@ -33,6 +33,7 @@ class MainAppScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMessageWidget(
+      key: rootPopupMessageKey,
       child: Provider.value(
         value: child,
         child: AppScreenDelegate(config: config),
