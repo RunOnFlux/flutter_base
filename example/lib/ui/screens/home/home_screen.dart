@@ -26,6 +26,12 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
   bool clicked = false;
 
   @override
+  Widget titleHeader(BuildContext context) => const TitleHeader(
+        title: 'FluxOS Home',
+        icon: Icons.home,
+      );
+
+  @override
   void initState() {
     super.initState();
     bootstrapGridParameters(gutterSize: 0);
@@ -49,10 +55,6 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
   Widget buildChild(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: mainPadding(),
-          child: const TitleHeader(title: 'FluxOS Home', icon: Icons.home),
-        ),
         BootstrapContainer(
           fluid: true,
           padding: mainPadding(),

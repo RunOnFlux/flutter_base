@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/ui/utils/bootstrap.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/screen_title_header.dart';
 import 'package:flutter_base/ui/widgets/tabbed_screen.dart';
@@ -27,7 +26,6 @@ class ExampleTabsScreen extends TabbedScreen {
 class ExampleTabsScreenState extends TabbedScreenState<ExampleTabsScreen> {
   @override
   void initState() {
-    bootstrapGridParameters(gutterSize: 0);
     tabs = <TabSpec>[
       TabSpec(
         title: 'One',
@@ -50,5 +48,9 @@ class ExampleTabsScreenState extends TabbedScreenState<ExampleTabsScreen> {
   }
 
   @override
-  Widget titleHeader(BuildContext context) => const TitleHeader(title: 'Dashboard', icon: Icons.analytics_outlined);
+  Widget titleHeader(BuildContext context) => const TitleHeader(
+        title: 'Dashboard',
+        icon: Icons.analytics_outlined,
+        bootstrap: false,
+      );
 }
