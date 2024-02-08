@@ -24,6 +24,42 @@ class PopupMessage extends StatelessWidget {
   final int maxLines;
   final TextSpan? richMessage;
 
+  factory PopupMessage.byType(
+      {Key? key,
+      required String type,
+      int maxLines = 2,
+      bool copiable = true,
+      Duration duration = const Duration(seconds: 5),
+      String? message,
+      TextSpan? richMessage}) {
+    if (type == 'error') {
+      return PopupMessage.error(
+        key: key,
+        maxLines: maxLines,
+        copiable: copiable,
+        duration: duration,
+        message: message,
+        richMessage: richMessage,
+      );
+    } else if (type == 'warning') {
+      return PopupMessage.warning(
+        key: key,
+        maxLines: maxLines,
+        copiable: copiable,
+        duration: duration,
+        message: message,
+        richMessage: richMessage,
+      );
+    }
+    return PopupMessage.success(
+      key: key,
+      maxLines: maxLines,
+      duration: duration,
+      message: message,
+      richMessage: richMessage,
+    );
+  }
+
   factory PopupMessage.error(
       {Key? key,
       int maxLines = 2,
