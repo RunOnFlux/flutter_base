@@ -154,7 +154,7 @@ class CollapsedSidebar extends StatelessWidget with GetItMixin {
         ),
       );
     } else if (r is ActionRoute) {
-      if (r.privilege != null && r.includeInMenu) {
+      if (r.privilege != null) {
         PrivilegeLevel currentLevel = privilege;
         for (var privilege in r.privilege!) {
           if (privilege == currentLevel) {

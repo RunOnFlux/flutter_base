@@ -3,14 +3,13 @@ import 'package:flutter_base/ui/app/main_app_screen.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../routes/route.dart';
-import '../titled_card.dart';
 import 'menu_styles.dart';
 
 const double kMenuItemHeight = 30.0;
 const List<double> kMenuItemHeights = [47, 47, 47];
 
 class NavigationMenuItem extends StatefulWidget {
-  final NavigationRoute route;
+  final AbstractRoute route;
   final int level;
   final bool collapsed;
 
@@ -27,9 +26,10 @@ class NavigationMenuItem extends StatefulWidget {
 
 class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles {
   bool isHovering = false;
+
   @override
   Widget build(BuildContext context) {
-    final bool isSelected = widget.route.route == GoRouterState.of(context).uri.toString();
+    final bool isSelected = isRouteSelected();
     var c = [const Color(0xFF818795), const Color(0xFFD9D9D9)];
     if (Theme.of(context).brightness == Brightness.dark) {
       c = c.reversed.toList();
@@ -140,9 +140,16 @@ class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles
     );
   }
 
+  bool isRouteSelected() {
+    return widget.route is NavigationRoute &&
+        ((widget.route as NavigationRoute).route == GoRouterState.of(context).uri.toString());
+  }
+
   performAction() {
-    AppDrawerScope.of(context)?.closeDrawer(false);
-    context.go(widget.route.route);
+    if (widget.route is NavigationRoute) {
+      AppDrawerScope.of(context)?.closeDrawer(false);
+      context.go((widget.route as NavigationRoute).route);
+    }
   }
 }
 
@@ -169,7 +176,7 @@ class _FunctionMenuItemState extends _NavigationMenuItemState {
   }
 }
 
-class ActionMenuItem extends StatefulWidget {
+/*class ActionMenuItem extends StatefulWidget {
   final Function() action;
   final String title;
   final IconData? icon;
@@ -224,3 +231,4 @@ class _ActionMenuItemState extends State<ActionMenuItem> with MenuStyles {
     );
   }
 }
+*/

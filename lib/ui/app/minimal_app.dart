@@ -258,7 +258,6 @@ class AppBodyState extends State<AppBody> with GetItStateMixin {
 
   Widget buildTitle(BuildContext context) {
     return Consumer<WindowTitle>(builder: (_, title, __) {
-      debugPrint('buildTitle: ${title.title}');
       return SafeArea(
         child: Title(
           color: Theme.of(context).primaryColor,

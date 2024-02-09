@@ -171,7 +171,7 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
     if (child is NavigationMenuItem) {
       var menuItem = child;
       var route = menuItem.route;
-      bool isSelected = route.route == currentRoute;
+      bool isSelected = (route as NavigationRoute).route == currentRoute;
       return buildMenuItem(
         isSelected: isSelected,
         level: menuItem.level,

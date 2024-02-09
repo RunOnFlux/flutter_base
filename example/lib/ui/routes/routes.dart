@@ -111,7 +111,6 @@ class ExampleAppRouter extends AppRouter {
                   PopupMessage.success(message: 'Do Something!!').show();
                   context.go('/app/testapp');
                 },
-                route: '/action',
                 icon: Icons.add,
               ),
             ],
@@ -153,7 +152,6 @@ class ExampleAppRouter extends AppRouter {
           const PopupMessage(message: 'Do Something!!').show();
           context.go('/app/testapp');
         },
-        route: '/action',
         icon: Icons.add,
       ),
     ];

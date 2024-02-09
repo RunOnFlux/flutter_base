@@ -140,7 +140,7 @@ class _SideBarMenuWidgetState extends State<SideBarMenuWidget> with GetItStateMi
       );
       if (r.below != null) menu.add(r.below!);
     } else if (r is ActionRoute) {
-      if (r.privilege != null && r.includeInMenu) {
+      if (r.privilege != null) {
         PrivilegeLevel currentLevel = privilege;
         for (var privilege in r.privilege!) {
           if (privilege == currentLevel) {
