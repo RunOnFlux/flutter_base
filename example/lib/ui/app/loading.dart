@@ -1,14 +1,13 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter_base/ui/app/i18n.dart';
-import 'package:flutter_base/ui/app/loading_notifier.dart';
+import 'package:flutter_base/blocs/loading_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ExampleLoadingNotifier extends LoadingNotifier {
+class MyLoadingBloc extends LoadingBloc {
   @override
-  Future<void> fetchData() async {
-    debugPrint('LoadingNotifier started');
-    await MyI18n.loadTranslations();
-    loadingComplete = true;
-    debugPrint('LoadingNotifier notifying');
-    notifyListeners();
+  void startLoading(StartLoadingApp event, Emitter<LoadingState> emit) async {
+    emit(AppLoadProgressState(message: 'Start'));
+    await Future.delayed(const Duration(seconds: 5));
+    emit(AppLoadProgressState(message: 'Almost there...'));
+    await Future.delayed(const Duration(seconds: 5));
+    emit(AppLoadedState());
   }
 }
