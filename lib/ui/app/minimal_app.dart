@@ -93,17 +93,19 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
             ...createRootBlocs(context),
           ],
           child: BlocBuilder<LoadingBloc, LoadingState>(
-            builder: (context, state) {
-              if (state is AppLoadedState) {
-                return buildMainApp(context);
-              } else {
-                return buildLoadingApp(context);
-              }
-            },
+            builder: handleLoadingState,
           ),
         ),
       ),
     );
+  }
+
+  Widget handleLoadingState(BuildContext context, LoadingState state) {
+    if (state is AppLoadedState) {
+      return buildMainApp(context);
+    } else {
+      return buildLoadingApp(context);
+    }
   }
 
   List<BlocProvider> createRootBlocs(BuildContext context) => [];
