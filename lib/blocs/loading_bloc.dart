@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-sealed class LoadingEvent {}
+class LoadingEvent {}
 
 final class StartLoadingApp extends LoadingEvent {}
 
