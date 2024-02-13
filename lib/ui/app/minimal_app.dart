@@ -159,7 +159,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
     ),
   );
 
-  RoutingConfig buildRoutingConfig() {
+  RoutingConfig buildRoutingConfig(BuildContext context) {
     var allRoutes = widget.router.getNavigationRoutes(context);
     return RoutingConfig(
       routes: [

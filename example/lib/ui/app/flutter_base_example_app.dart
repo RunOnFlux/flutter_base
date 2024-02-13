@@ -58,7 +58,7 @@ class _FlutterBaseExampleAppState extends MinimalAppState<FlutterBaseExampleApp>
   @override
   Widget buildMainApp(BuildContext context) {
     //GetIt.I<NodeCollaterals>().collaterals = loadingNotifier.collaterals;
-    appRoutingConfig.value = buildRoutingConfig();
+    appRoutingConfig.value = buildRoutingConfig(context);
 
     Widget mainApp = super.buildMainApp(context);
 
