@@ -1,12 +1,14 @@
+import 'package:flutter/material.dart';
+
 import 'route.dart';
 
 abstract class AppRouter {
   List<AbstractRoute> routes = [];
 
-  List<AbstractRoute> buildRoutes();
+  List<AbstractRoute> buildRoutes(BuildContext context);
 
-  List<NavigationRoute> getNavigationRoutes() {
-    List<AbstractRoute> allRoutes = buildRoutes();
+  List<NavigationRoute> getNavigationRoutes(BuildContext context) {
+    List<AbstractRoute> allRoutes = buildRoutes(context);
     List<NavigationRoute> navRoutes = <NavigationRoute>[];
     for (AbstractRoute r in allRoutes) {
       _addNavigationRoutesFrom(r, navRoutes);

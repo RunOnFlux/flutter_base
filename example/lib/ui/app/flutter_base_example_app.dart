@@ -70,6 +70,16 @@ class _FlutterBaseExampleAppState extends MinimalAppState<FlutterBaseExampleApp>
   }
 
   @override
+  Widget handleLoadingState(BuildContext context, LoadingState state) {
+    debugPrint('handle loading state');
+    debugPrint(state.toString());
+    if (state is TrendingAppsLoadedState) {
+      debugPrint('trending apps loaded');
+    }
+    return super.handleLoadingState(context, state);
+  }
+
+  @override
   AppConfig get config => FlutterBaseAppConfig();
 
   @override

@@ -160,7 +160,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
   );
 
   RoutingConfig buildRoutingConfig() {
-    var allRoutes = widget.router.getNavigationRoutes();
+    var allRoutes = widget.router.getNavigationRoutes(context);
     return RoutingConfig(
       routes: [
         StatefulShellRoute.indexedStack(
@@ -203,7 +203,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
     if (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS()) {
       setWindowTitle(windowTitle);
     }
-    var allRoutes = widget.router.getNavigationRoutes();
+    var allRoutes = widget.router.getNavigationRoutes(context);
     NavigationRoute? initialNavRoute = allRoutes.firstWhereOrNull(
       (element) => element.route == initialRoute,
     );

@@ -85,7 +85,7 @@ class _SideBarMenuWidgetState extends State<SideBarMenuWidget> with GetItStateMi
   }*/
 
   List<Widget> _buildMenu(BuildContext context, PrivilegeLevel privilegeLevel) {
-    List<AbstractRoute> routes = AppRouterScope.of(context).buildRoutes();
+    List<AbstractRoute> routes = AppRouterScope.of(context).buildRoutes(context);
     List<AbstractRoute> enabledRoutes = routes.where((element) => element.active ?? true).toList();
     List<AbstractRoute> disabledRoutes = routes.where((element) => !(element.active ?? true)).toList();
     List<Widget> menu = <Widget>[];
