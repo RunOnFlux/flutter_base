@@ -85,9 +85,14 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
         dark,
       ],
       child: ThemeConsumer(
-        child: BlocProvider<LoadingBloc>(
-          create: createLoadingBloc,
-          child: BlocConsumer<LoadingBloc, LoadingState>(
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<LoadingBloc>(
+              create: createLoadingBloc,
+            ),
+            ...createRootBlocs(context),
+          ],
+          child: BlocBuilder<LoadingBloc, LoadingState>(
             builder: (context, state) {
               if (state is AppLoadedState) {
                 return buildMainApp(context);
@@ -95,13 +100,13 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                 return buildLoadingApp(context);
               }
             },
-            listener: (BuildContext context, LoadingState state) {},
-            //buildWhen: (previous, current) => current is! AppLoadProgressState,
           ),
         ),
       ),
     );
   }
+
+  List<BlocProvider> createRootBlocs(BuildContext context) => [];
 
   LoadingBloc createLoadingBloc(_) {
     final bloc = LoadingBloc();
