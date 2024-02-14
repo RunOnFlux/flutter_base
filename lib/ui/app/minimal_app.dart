@@ -68,8 +68,6 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
   // This widget is the root of your application.
   var initialRoute = '/';
 
-  //LoadingNotifier get loadingNotifier => LoadingNotifier();
-
   String get initialWindowTitle => 'FluxOS - checking access...';
   String get windowTitle => 'Window Title';
 
