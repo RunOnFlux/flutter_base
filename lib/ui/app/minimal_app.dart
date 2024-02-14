@@ -78,25 +78,29 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
+    Widget child = MultiBlocProvider(
+      providers: [
+        BlocProvider<LoadingBloc>(
+          create: createLoadingBloc,
+        ),
+        ...createRootBlocs(context),
+      ],
+      child: BlocBuilder<LoadingBloc, LoadingState>(
+        builder: handleLoadingState,
+      ),
+    );
+    var repos = createRootRepositories(context);
+    // Can't use an empty list with MultiRepositoryProvider
+    if (repos.isNotEmpty) {
+      child = MultiRepositoryProvider(providers: repos, child: child);
+    }
     return ThemeProvider(
       defaultThemeId: widget.settings.getBool(Setting.darkMode.name, defaultValue: true) ? dark.id : light.id,
       themes: <AppTheme>[
         light,
         dark,
       ],
-      child: ThemeConsumer(
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider<LoadingBloc>(
-              create: createLoadingBloc,
-            ),
-            ...createRootBlocs(context),
-          ],
-          child: BlocBuilder<LoadingBloc, LoadingState>(
-            builder: handleLoadingState,
-          ),
-        ),
-      ),
+      child: ThemeConsumer(child: child),
     );
   }
 
@@ -109,8 +113,9 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
   }
 
   List<BlocProvider> createRootBlocs(BuildContext context) => [];
+  List<RepositoryProvider> createRootRepositories(BuildContext context) => [];
 
-  LoadingBloc createLoadingBloc(_) {
+  LoadingBloc createLoadingBloc(BuildContext context) {
     final bloc = LoadingBloc();
     bloc.add(StartLoadingApp());
     return bloc;
