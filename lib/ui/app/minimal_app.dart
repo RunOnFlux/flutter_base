@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
+import 'package:flutter_base/blocs/loading_bloc.dart';
 import 'package:flutter_base/ui/app/app_route.dart';
-import 'package:flutter_base/ui/app/loading_notifier.dart';
 import 'package:flutter_base/ui/app/main_app_screen.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
@@ -17,9 +17,9 @@ import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/snack.dart';
 import 'package:flutter_base/utils/platform_info.dart';
 import 'package:flutter_base/utils/settings.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
-import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_provider/theme_provider.dart';
@@ -68,8 +68,6 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
   // This widget is the root of your application.
   var initialRoute = '/';
 
-  LoadingNotifier get loadingNotifier => LoadingNotifier();
-
   String get initialWindowTitle => 'FluxOS - checking access...';
   String get windowTitle => 'Window Title';
 
@@ -78,28 +76,50 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<LoadingNotifier>(
-        create: (_) => loadingNotifier,
-        builder: (context, _) {
-          final loading = Provider.of<LoadingNotifier>(context);
-          return ThemeProvider(
-            defaultThemeId: widget.settings.getBool(Setting.darkMode.name, defaultValue: true) ? dark.id : light.id,
-            themes: <AppTheme>[
-              light,
-              dark,
-            ],
-            child: ThemeConsumer(
-              child: (loading.loadingComplete) ? buildMainApp(context) : buildLoadingApp(context),
-            ),
-          );
-        });
+    Widget child = MultiBlocProvider(
+      providers: [
+        BlocProvider<LoadingBloc>(
+          create: createLoadingBloc,
+        ),
+        ...createRootBlocs(context),
+      ],
+      child: BlocBuilder<LoadingBloc, LoadingState>(
+        builder: handleLoadingState,
+      ),
+    );
+    var repos = createRootRepositories(context);
+    // Can't use an empty list with MultiRepositoryProvider
+    if (repos.isNotEmpty) {
+      child = MultiRepositoryProvider(providers: repos, child: child);
+    }
+    return ThemeProvider(
+      defaultThemeId: widget.settings.getBool(Setting.darkMode.name, defaultValue: true) ? dark.id : light.id,
+      themes: <AppTheme>[
+        light,
+        dark,
+      ],
+      child: ThemeConsumer(child: child),
+    );
+  }
+
+  Widget handleLoadingState(BuildContext context, LoadingState state) {
+    if (state is AppLoadedState) {
+      return buildMainApp(context);
+    } else {
+      return buildLoadingApp(context);
+    }
+  }
+
+  List<BlocProvider> createRootBlocs(BuildContext context) => [];
+  List<RepositoryProvider> createRootRepositories(BuildContext context) => [];
+
+  LoadingBloc createLoadingBloc(BuildContext context) {
+    final bloc = LoadingBloc();
+    bloc.add(StartLoadingApp());
+    return bloc;
   }
 
   Widget buildLoadingApp(BuildContext context) {
-    final list = context.watch<LoadingNotifier>();
-    if (list.isError) {
-      Future.delayed(const Duration(seconds: 5), () => list.fetchData());
-    }
     if (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS()) {
       setWindowTitle(initialWindowTitle);
     }
@@ -120,14 +140,16 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                 config.setInitialRoute('/', widget.settings);
               }
             }
-            return MaterialPageRoute(builder: (context) {
-              return const LoadingScreen();
-            });
+            return MaterialPageRoute(builder: createLoadingScreen);
           }
           return null;
         },
       );
     });
+  }
+
+  Widget createLoadingScreen(BuildContext context) {
+    return const LoadingScreen();
   }
 
   AppConfig get config;
@@ -140,8 +162,8 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
     ),
   );
 
-  RoutingConfig buildRoutingConfig() {
-    var allRoutes = widget.router.getNavigationRoutes();
+  RoutingConfig buildRoutingConfig(BuildContext context) {
+    var allRoutes = widget.router.getNavigationRoutes(context);
     return RoutingConfig(
       routes: [
         StatefulShellRoute.indexedStack(
@@ -184,7 +206,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
     if (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS()) {
       setWindowTitle(windowTitle);
     }
-    var allRoutes = widget.router.getNavigationRoutes();
+    var allRoutes = widget.router.getNavigationRoutes(context);
     NavigationRoute? initialNavRoute = allRoutes.firstWhereOrNull(
       (element) => element.route == initialRoute,
     );
@@ -220,8 +242,8 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
   }
 }
 
-class AppBody extends StatefulWidget with GetItStatefulWidgetMixin {
-  AppBody({
+class AppBody extends StatefulWidget {
+  const AppBody({
     Key? key,
     required this.route,
   }) : super(key: key);
@@ -243,7 +265,7 @@ class WindowTitle with ChangeNotifier {
   }
 }
 
-class AppBodyState extends State<AppBody> with GetItStateMixin {
+class AppBodyState extends State<AppBody> {
   @override
   Widget build(BuildContext context) {
     return (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS())
@@ -267,91 +289,6 @@ class AppBodyState extends State<AppBody> with GetItStateMixin {
       );
     });
   }
-
-  //double _endValue = 1.0;
-
-  /*Widget getContent(BuildContext context) {
-    return Stack(
-      children: [
-        if (AppConfigScope.of(context) != null)
-          AppConfigScope.of(context)!.wrapScaffold(this, _buildScaffold(context), context),
-        (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS())
-            ? WindowTitleBar(brightness: brightness)
-            : Container(),
-      ],
-    );
-  }
-
-  SuperScaffold _buildScaffold(BuildContext context) {
-    var currentState = watchOnly((ScreenInfo info) => info.currentState);
-    return SuperScaffold(
-      drawerEdgeDragWidth: 75,
-      appBar: buildAppBar(context),
-      drawer: SideMenuDrawer(
-        router: widget.router,
-        config: widget.config,
-        body: this,
-      ),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Stack(
-              alignment: AlignmentDirectional.topCenter,
-              children: [
-                if (widget.route.body != null) widget.route.body!,
-              ],
-            ),
-            if (widget.route.body != null && currentState?.refreshEnabled != null && currentState!.refreshEnabled!)
-              TweenAnimationBuilder<double>(
-                tween: Tween<double>(begin: 0.0, end: _endValue),
-                duration: Duration(seconds: currentState.refreshInterval ?? 30),
-                builder: (context, value, _) => LinearProgressIndicator(
-                  value: value,
-                  color: Theme.of(context).primaryColor,
-                  minHeight: 1,
-                ),
-                onEnd: () {
-                  //log('animated refresh now');
-                  //widget.route.body!.onRefresh();
-                  if (currentState.onRefresh != null) {
-                    currentState.onRefresh!();
-                  }
-                  setState(() {
-                    _endValue = _endValue == 1.0 ? 0 : 1.0;
-                  });
-                },
-              ),
-          ],
-        ),
-      ),
-      floatingActionButton: currentState?.fabEnabled ?? false
-          ? Padding(
-              padding: const EdgeInsets.only(bottom: 10.0),
-              child: FloatingActionButton(
-                onPressed: currentState?.onFAB,
-                backgroundColor: Theme.of(context).primaryColor,
-                child: Icon(currentState?.fabIcon ?? Icons.refresh),
-              ),
-            )
-          : null,
-    );
-  }*/
-
-  /*Hero? buildAppBar(BuildContext context) {
-    return AppConfigScope.of(context)?.hasTitleBar ?? false
-        ? Hero(
-            tag: "appbar",
-            child: AppBar(
-              centerTitle: false,
-              elevation: 0,
-              title: AppConfigScope.of(context)?.buildAppBarTitle(context),
-              actions: [
-                ...AppConfigScope.of(context)?.buildTitleActionButtons(this, context) ?? [],
-              ],
-            ),
-          )
-        : null;
-  }*/
 }
 
 class AppConfig {
@@ -374,10 +311,6 @@ class AppConfig {
   List<Widget> buildTitleActionButtons(BuildContext context) {
     return [];
   }
-
-  /*List<Widget> buildTitleWidgets(AppBodyState body, BuildContext context) {
-    return [];
-  }*/
 
   Widget? buildAppBarTitle(BuildContext context) {
     return null;
@@ -406,10 +339,6 @@ class AppConfig {
 
   Widget? buildMenuFooter(BuildContext context) {
     return null;
-  }
-
-  Widget wrapScaffold(AppBodyState body, Scaffold scaffold, BuildContext context) {
-    return scaffold;
   }
 
   List<LocalizationsDelegate> get localizationDelegates => const [

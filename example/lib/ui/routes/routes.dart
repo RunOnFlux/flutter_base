@@ -8,14 +8,12 @@ import 'package:flutter_base_example/ui/screens/tabs/tabbed_screen.dart';
 import 'package:go_router/go_router.dart';
 
 class ExampleAppRouter extends AppRouter {
-  ExampleAppRouter._p() {
-    routes = buildRoutes();
-  }
+  ExampleAppRouter._p();
   static final ExampleAppRouter _instance = ExampleAppRouter._p();
   factory ExampleAppRouter() => _instance;
 
   @override
-  List<AbstractRoute> buildRoutes() {
+  List<AbstractRoute> buildRoutes(BuildContext context) {
     final routes = <AbstractRoute>[
       NavigationRoute(
         route: '/',

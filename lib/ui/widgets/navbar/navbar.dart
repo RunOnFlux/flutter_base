@@ -72,7 +72,7 @@ class CollapsedSidebar extends StatelessWidget with GetItMixin {
       privilege = watchOnly((LoginState state) => state.privilege);
     }
 
-    List<AbstractRoute> routes = AppRouterScope.of(context).buildRoutes();
+    List<AbstractRoute> routes = AppRouterScope.of(context).buildRoutes(context);
     List<AbstractRoute> active = routes.where((element) => element.active ?? true).toList();
     List<AbstractRoute> inactive = routes.where((element) => !(element.active ?? true)).toList();
     List allRoutes = [active, inactive];
