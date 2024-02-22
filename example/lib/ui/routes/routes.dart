@@ -158,6 +158,16 @@ class ExampleAppRouter extends AppRouter {
         route: '/action',
         icon: Icons.add,
       ),
+      ActionRoute(
+        title: 'Auth Screen',
+        action: (BuildContext context) {
+          context.showBottomSheet((_) {
+            return AuthScreen();
+          });
+        },
+        route: '/',
+        icon: Icons.add,
+      ),
     ];
     return routes;
   }

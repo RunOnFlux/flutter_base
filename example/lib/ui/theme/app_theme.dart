@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
+import 'package:flutter_base/ui/widgets/gradients/gradient_divider.dart';
+import 'package:flutter_base/ui/widgets/gradients/gradient_text.dart';
 import 'package:tinycolor2/tinycolor2.dart';
 
 class ExampleAppTheme extends AppThemeImpl {
@@ -44,5 +46,32 @@ class ExampleAppTheme extends AppThemeImpl {
           (Color.fromRGBO(64, 152, 255, 0.2), Offset(400, -900)),
           (Color.fromRGBO(64, 152, 255, 0.2), Offset(991, 620)),
         ],
-      );
+      )..authOptions = AuthOptions(
+          getImage: (context) => Image.asset(
+            'assets/images/webp/pouw_background.webp',
+            fit: BoxFit.cover,
+          ),
+          rightChild: (context) => const FractionallySizedBox(
+            widthFactor: 0.75,
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text('Revolutionizing Technology',
+                      textAlign: TextAlign.center,
+                      softWrap: false,
+                      maxLines: 3,
+                      style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700)),
+                  GradientDivider(
+                    width: 100,
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                  ),
+                  GradientText(
+                    'AuthScreen Example',
+                    style: TextStyle(color: Colors.white, fontSize: 80, fontWeight: FontWeight.bold),
+                  ),
+                ]),
+              ),
+            ),
+          ),
+        );
 }
