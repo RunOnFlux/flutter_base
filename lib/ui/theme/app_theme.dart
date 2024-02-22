@@ -373,6 +373,11 @@ class AppThemeImpl {
               ),
             ),
           ),
+          dividerColor: const Color.fromRGBO(184, 195, 225, 0.25),
+          dividerTheme: const DividerThemeData(
+            color: Color.fromRGBO(184, 195, 225, 0.25),
+            thickness: 1,
+          ),
           drawerTheme: const DrawerThemeData(
             surfaceTintColor: Colors.black,
             scrimColor: Colors.transparent,
@@ -648,7 +653,7 @@ const Color _lLightPositiveColor = Color(0xFFECFDF3);
 
 const Color _lightBorderColor = Color(0xFFDBE1F0);
 
-const Color _darkBorderColor = Color.fromRGBO(46, 142, 255, 0.20);
+const Color _darkBorderColor = Color.fromRGBO(184, 195, 255, 0.25);
 
 const BoxShadow _defaultLightShadowColor = BoxShadow(
   color: Color.fromARGB(255, 231, 236, 247),
