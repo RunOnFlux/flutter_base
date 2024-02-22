@@ -10,6 +10,7 @@ import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
 import 'package:flutter_base/ui/screens/loading_screen.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
+import 'package:flutter_base/ui/widgets/banner.dart';
 import 'package:flutter_base/ui/widgets/logo.dart';
 import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
@@ -228,11 +229,19 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
             scaffoldMessengerKey: rootScaffoldMessengerKey,
             localizationsDelegates: config.localizationDelegates,
             supportedLocales: config.supportedLocales,
-            debugShowCheckedModeBanner: config.isDebug,
+            debugShowCheckedModeBanner: false,
             title: windowTitle,
             theme: ThemeProvider.themeOf(themeContext).data,
             builder: (context, child) {
-              return ResponsiveBuilder(child: child!);
+              return ResponsiveBuilder(
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    child!,
+                    AppBanner(text: config.banner),
+                  ],
+                ),
+              );
             },
             routerConfig: router,
           );
@@ -292,7 +301,7 @@ class AppBodyState extends State<AppBody> {
 }
 
 class AppConfig {
-  bool get isDebug => false;
+  String? get banner => null;
 
   bool get hasTitleBar => false;
 

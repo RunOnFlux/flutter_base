@@ -131,6 +131,9 @@ class MyLoadingScreen extends StatelessWidget {
 
 class FlutterBaseAppConfig extends AppConfig {
   @override
+  String? get banner => 'YES!';
+
+  @override
   bool get smallScreenScroll => false;
 
   @override
