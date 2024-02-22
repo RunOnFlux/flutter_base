@@ -28,16 +28,18 @@ mixin MenuStyles {
     Color unselectedColor, {
     int level = 0,
     bool selected = false,
+    double? size,
   }) {
-    double size = iconSizeForLevel(level);
+    double ssize = size ?? iconSizeForLevel(level);
     return icon != null
         ? SizedBox(
-            width: size,
-            height: size,
+            width: ssize,
+            height: ssize,
             child: Icon(
               icon,
-              size: size,
+              size: ssize,
               color: selected ? selectedColor : unselectedColor,
+              weight: 4,
             ),
           )
         : const SizedBox();
@@ -59,6 +61,15 @@ mixin MenuStyles {
     Color selectedColor,
     Color unselectedColor,
   ) {
+    /*if (level > 0) {
+      return Container(
+        height: double.infinity,
+        width: 2,
+        decoration: BoxDecoration(
+          color: isSelected ? selectedColor : unselectedColor,
+        ),
+      );
+    }*/
     if (route.icon != null) {
       return buildIcon(
         context,
@@ -104,9 +115,10 @@ mixin MenuStyles {
     return Text(
       title,
       style: Theme.of(context).textTheme.titleMedium!.copyWith(
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w600,
             fontSize: fontSizeForLevel(level),
-            letterSpacing: 1,
+            //letterSpacing: 1,
+            height: 1.125,
             color: selected ? selectedColor : unselectedColor,
           ),
     );
@@ -127,11 +139,11 @@ mixin MenuStyles {
   double fontSizeForLevel(int level) {
     switch (level) {
       case 0:
-        return 13;
+        return 14;
       case 1:
-        return 11;
+        return 13;
       case 2:
-        return 10;
+        return 12;
     }
     return 20;
   }
@@ -139,11 +151,11 @@ mixin MenuStyles {
   double iconSizeForLevel(int level) {
     switch (level) {
       case 0:
-        return 24;
+        return 20;
       case 1:
-        return 20.5;
+        return 18;
       case 2:
-        return 17;
+        return 16;
     }
     return 20;
   }

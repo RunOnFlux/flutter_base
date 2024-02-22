@@ -609,6 +609,9 @@ extension ThemeBits on ThemeData {
   Color get headingRowColor => isDark ? _headingRowDark : _headingRownLight;
   Color get tileColor => isDark ? _headingRowDark : const Color(0xFF2463EB);
   Color get sysInfoColor => isDark ? _systemInfoDark : _systemInfoLight;
+
+  List<Color> get menuColors => [const Color(0xFFB8C3E1), const Color.fromARGB(255, 242, 243, 248)];
+  Color get selectedMenuItem => const Color.fromRGBO(43, 97, 209, 0.05);
 }
 
 const Color kBestScoreColor = Colors.purpleAccent;

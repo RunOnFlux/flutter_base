@@ -58,6 +58,7 @@ class _SideBarMenuWidgetState extends State<SideBarMenuWidget> with GetItStateMi
               trackVisibility: true,
               child: ListView(
                 controller: _controller,
+                padding: const EdgeInsets.only(bottom: 10),
                 shrinkWrap: true,
                 children: items,
               ),

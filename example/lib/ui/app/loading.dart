@@ -6,9 +6,9 @@ class MyLoadingBloc extends LoadingBloc {
   void startLoading(StartLoadingApp event, Emitter<LoadingState> emit) async {
     emit(AppLoadProgressState(message: 'Start'));
     emit(TrendingAppsLoadedState(const ['1', '2']));
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 1));
     emit(AppLoadProgressState(message: 'Almost there...'));
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 1));
     emit(AppLoadedState());
   }
 }
