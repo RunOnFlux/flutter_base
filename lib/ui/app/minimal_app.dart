@@ -228,7 +228,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
             scaffoldMessengerKey: rootScaffoldMessengerKey,
             localizationsDelegates: config.localizationDelegates,
             supportedLocales: config.supportedLocales,
-            debugShowCheckedModeBanner: false,
+            debugShowCheckedModeBanner: config.isDebug,
             title: windowTitle,
             theme: ThemeProvider.themeOf(themeContext).data,
             builder: (context, child) {
@@ -292,6 +292,8 @@ class AppBodyState extends State<AppBody> {
 }
 
 class AppConfig {
+  bool get isDebug => false;
+
   bool get hasTitleBar => false;
 
   bool get smallScreenScroll => true;
