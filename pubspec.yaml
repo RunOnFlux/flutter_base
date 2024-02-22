@@ -36,7 +36,11 @@ dependencies:
   universal_html: ^2.0.8
   flutter_wizard: ^2.0.5
   flutter_svg: ^2.0.7
-  package_info_plus: ^5.0.1
+  package_info_plus:
+    git:
+      url: https://github.com/fluttercommunity/plus_plugins.git
+      path: packages/package_info_plus/package_info_plus
+
   window_size:
     git:
       url: https://github.com/google/flutter-desktop-embedding.git
