@@ -33,13 +33,22 @@ class NavBar extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             child: DecoratedBox(
               decoration: BoxDecoration(
-                gradient: !isCollapsed && isSmallScreen ? themeOptions.backgroundGradient(context) : null,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x0C0B162C),
+                    blurRadius: 12,
+                    offset: Offset(0, 2),
+                    spreadRadius: 0,
+                  )
+                ],
+                gradient: !isCollapsed ? AppThemeImpl.getOptions(context).backgroundGradient(context) : null,
               ),
               child: Drawer(
                 width: 300,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       const SideBarHeader(),
                       Expanded(child: SideBarMenuWidget()),

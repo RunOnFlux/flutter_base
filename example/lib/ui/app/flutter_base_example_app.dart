@@ -150,20 +150,21 @@ class FlutterBaseAppConfig extends AppConfig {
   Widget? buildMenuHeader(BuildContext context) {
     return const Column(
       children: [
-        SizedBox(
-          height: 50,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Logo(title: 'Flutter Base', clickRedirectHomePage: true),
-              SideBarButton(),
-            ],
-          ),
+        SizedBox(height: 7),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Logo(
+              title: 'Flux',
+              gradientTitle: 'Cloud',
+              clickRedirectHomePage: true,
+            ),
+            SideBarButton(),
+          ],
         ),
-        Divider(),
-        SizedBox(
-          height: 8,
-        ),
+        SizedBox(height: 17),
+        Divider(height: 1),
+        SizedBox(height: 16),
       ],
     );
   }
