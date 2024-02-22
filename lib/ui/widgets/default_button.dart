@@ -212,82 +212,100 @@ class DefaultTextButton extends StatelessWidget {
             }
           : null,
       child: TextButton(
-          focusNode: focusNode,
-          autofocus: autoFocus,
-          style: ButtonStyle(
-              fixedSize: MaterialStateProperty.all(
-                Size(width ?? double.infinity, height ?? double.infinity),
-              ),
-              maximumSize: MaterialStatePropertyAll(Size(maxWidth ?? double.infinity, maxHeight ?? double.infinity)),
-              minimumSize: MaterialStatePropertyAll(Size(minWidth ?? 20, minHeight ?? 45)),
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-              textStyle: MaterialStateProperty.all(
-                  textStyle?.copyWith(fontFamily: 'Montserrat', package: 'flux_common') ??
-                      TextStyle(
-                          fontWeight: fontWeight ?? FontWeight.w400,
-                          fontFamily: 'Montserrat',
-                          package: 'flux_common',
-                          fontSize: fontSize ?? 14)),
-              foregroundColor: MaterialStateProperty.resolveWith((states) {
-                final foregroundColor = this.foregroundColor ??
-                    (backgroundColor.resolve(states).computeLuminance() > 0.6 ? Colors.black : Colors.white);
-                if (states.contains(MaterialState.disabled)) {
-                  return disabledColor ?? foregroundColor.withOpacity(foregroundColor.opacity * 0.25);
-                }
-                return foregroundColor;
-              }),
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  side: borderSide?.copyWith(
-                          color: borderSide!.color.withOpacity(borderSide!.color.opacity * (disabled ? 0.25 : 1))) ??
-                      BorderSide.none,
-                  borderRadius: BorderRadius.circular(borderRadius ?? 8),
-                ),
-              ),
-              padding: MaterialStateProperty.all(padding),
-              backgroundColor: backgroundColor),
-          onPressed: disabled ? null : () => onPressed?.call(),
-          child: customActionBuilder == null
-              ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (icon != null)
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: icon!,
+        focusNode: focusNode,
+        autofocus: autoFocus,
+        style: ButtonStyle(
+            fixedSize: MaterialStateProperty.all(
+              Size(width ?? double.infinity, height ?? double.infinity),
+            ),
+            maximumSize: MaterialStatePropertyAll(Size(maxWidth ?? double.infinity, maxHeight ?? double.infinity)),
+            minimumSize: MaterialStatePropertyAll(Size(minWidth ?? 20, minHeight ?? 45)),
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+            textStyle: MaterialStateProperty.all(
+              textStyle?.copyWith(fontFamily: 'Montserrat') ??
+                  TextStyle(
+                    fontWeight: fontWeight ?? FontWeight.w400,
+                    fontFamily: 'Montserrat',
+                    fontSize: fontSize ?? 14,
+                  ),
+            ),
+            foregroundColor: MaterialStateProperty.resolveWith((states) {
+              final foregroundColor = this.foregroundColor ??
+                  (backgroundColor.resolve(states).computeLuminance() > 0.6 ? Colors.black : Colors.white);
+              if (states.contains(MaterialState.disabled)) {
+                return disabledColor ?? foregroundColor.withOpacity(foregroundColor.opacity * 0.25);
+              }
+              return foregroundColor;
+            }),
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                side: borderSide?.copyWith(
+                      color: borderSide!.color.withOpacity(
+                        borderSide!.color.opacity * (disabled ? 0.25 : 1),
                       ),
-                    Text(text, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
-                  ],
-                )
-              : Stack(
-                  children: [
-                    Positioned(
-                        right: actionRightPadding ?? (this.padding.right / 2),
-                        top: 0,
-                        bottom: 0,
-                        child: ConstrainedBox(
-                            constraints: BoxConstraints(maxWidth: _actionMaxWidth),
-                            child: customActionBuilder!(context))),
-                    Positioned.fill(
-                        child: Center(
-                            child: Padding(
-                      padding: EdgeInsets.only(right: this.padding.right),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (icon != null && directionality == TextDirection.ltr)
-                            Padding(padding: const EdgeInsets.only(right: 8), child: icon!),
-                          Flexible(
-                            child:
-                                Text(text, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
-                          ),
-                          if (icon != null && directionality == TextDirection.rtl)
-                            Padding(padding: const EdgeInsets.only(left: 8), child: icon!),
-                        ],
+                    ) ??
+                    BorderSide.none,
+                borderRadius: BorderRadius.circular(borderRadius ?? 8),
+              ),
+            ),
+            padding: MaterialStateProperty.all(padding),
+            backgroundColor: backgroundColor),
+        onPressed: disabled ? null : () => onPressed?.call(),
+        child: customActionBuilder == null
+            ? Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (icon != null)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: icon!,
+                    ),
+                  Text(
+                    text,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              )
+            : Stack(
+                children: [
+                  Positioned(
+                    right: actionRightPadding ?? (this.padding.right / 2),
+                    top: 0,
+                    bottom: 0,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: _actionMaxWidth),
+                      child: customActionBuilder!(context),
+                    ),
+                  ),
+                  Positioned.fill(
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(right: this.padding.right),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (icon != null && directionality == TextDirection.ltr)
+                              Padding(padding: const EdgeInsets.only(right: 8), child: icon!),
+                            Flexible(
+                              child: Text(
+                                text,
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            if (icon != null && directionality == TextDirection.rtl)
+                              Padding(padding: const EdgeInsets.only(left: 8), child: icon!),
+                          ],
+                        ),
                       ),
-                    )))
-                  ],
-                )),
+                    ),
+                  )
+                ],
+              ),
+      ),
     );
   }
 }
