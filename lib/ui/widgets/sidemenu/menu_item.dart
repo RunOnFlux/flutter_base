@@ -40,7 +40,7 @@ class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles
       return IconButton(
         tooltip: widget.route.title,
         style: IconButton.styleFrom(
-          backgroundColor: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
+          backgroundColor: isSelected ? Theme.of(context).selectedMenuItem : Colors.transparent,
           shape: const CircleBorder(),
         ),
         isSelected: isSelected,
