@@ -18,6 +18,51 @@ part 'auth_data.dart';
 part 'auth_events.dart';
 part 'auth_state.dart';
 
-class AuthBloc<U extends FluxUser> extends Bloc<AuthEvent, AuthState<U>> {
-  AuthBloc(super.initialState);
+class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  AuthBloc() : super(AuthState());
+
+  Future<void> init([Duration? timeout = const Duration(seconds: 10)]) async {
+    /*if (FluxAuth.config.disableAuthentication) {
+      return;
+    }
+    if (_initialized) {
+      return;
+    }
+    log('\x1B[37mInitializing', name: '\x1B[37mAuthBloc');
+
+    _initializedCompleter ??= Completer();
+
+    try {
+      await Future.wait([FluxAuthLocalStorage.init()]);
+
+      _listenToFirebaseAuthSub();
+
+      /// if the user is already signed in, we wait for the user to be loaded
+      /// in the init method, to more easily handle the state of the app
+      if (_firebaseInstance.currentUser != null) {
+        await waitForAsync((p0) => p0.firebaseUser != null, timeout: timeout);
+      }
+      _initialized = true;
+      if (state.isIdle) {
+        // ignore: invalid_use_of_visible_for_testing_member
+        emit(state.copyWith(status: AuthConnectionStatus.done));
+      }
+      _initializedCompleter!.complete();
+    } catch (e) {
+      _initializedCompleter!.completeError(e);
+      if (e is TimeoutException) {
+        _initialized = true;
+      }
+    }*/
+  }
+
+  FutureOr<void> ensureInitialized() async {
+    if (_initializedCompleter == null) {
+      await init();
+    } else {
+      await _initializedCompleter!.future;
+    }
+  }
+
+  Completer<void>? _initializedCompleter;
 }
