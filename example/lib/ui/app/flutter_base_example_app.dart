@@ -73,6 +73,11 @@ class _FlutterBaseExampleAppState extends MinimalAppState<FlutterBaseExampleApp>
 
   @override
   AppConfig get config => FlutterBaseAppConfig();
+
+  @override
+  Widget createLoadingScreen(BuildContext context) {
+    return const FlutterBaseLoadingScreen();
+  }
 }
 
 class FlutterBaseAppConfig extends AppConfig {
