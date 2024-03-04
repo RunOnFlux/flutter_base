@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/ui/app/minimal_app.dart';
+import 'package:flutter_base/ui/app/config/app_config.dart';
+import 'package:flutter_base/ui/app/scope/app_config_scope.dart';
 import 'package:flutter_base/ui/widgets/background_theme_builder.dart';
 import 'package:flutter_base/utils/config.dart';
 import 'package:responsive_framework/responsive_framework.dart';

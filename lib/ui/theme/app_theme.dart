@@ -313,7 +313,7 @@ class AppThemeImpl {
   Color get primaryColorDark => const Color.fromARGB(255, 27, 103, 255);
   Color get darkText => const Color.fromARGB(255, 255, 255, 255);
   //Color get scaffoldBackgroundDark => const Color.fromARGB(255, 20, 22, 41);
-  Color get cardColorDark => const Color.fromARGB(255, 5, 11, 22);
+  Color get cardColorDark => const Color.fromARGB(29, 56, 56, 61);
 
   AppTheme get dark => AppTheme(
         id: 'dark',
@@ -515,8 +515,6 @@ class ThemeOptions implements AppThemeOptions {
   late List<Color> bgDarkGradientColors;
   late List<Color> bgLightGradientColors;
 
-  late AuthOptions authOptions;
-
   Color? cardOutlineColor(BuildContext context) {
     return Theme.of(context).isDark ? cardOutlineColorDark : cardOutlineColorLight;
   }
@@ -605,7 +603,6 @@ extension ThemeBits on ThemeData {
   bool get isDark => brightness == Brightness.dark;
   bool get isLight => brightness == Brightness.light;
 
-  // TODO Move these into the ThemeOptions class
   Color get borderColor => isDark ? _darkBorderColor : _lightBorderColor;
   Color get percentColor => isDark ? _darkPercentColor : _lightPercentColor;
   Color get headingRowColor => isDark ? _headingRowDark : _headingRownLight;
@@ -614,6 +611,8 @@ extension ThemeBits on ThemeData {
   List<Color> get menuColors => [const Color(0xFFB8C3E1), const Color.fromARGB(255, 242, 243, 248)];
   Color get selectedMenuItem => const Color.fromRGBO(43, 97, 209, 0.05);
   Color get positiveColor => isDark ? _dPositiveColor : _lPositiveColor;
+  Color get colorBarrier => isDark ? Colors.black12 : Colors.black45;
+  BoxShadow get shadow => isDark ? _defaultDarkShadowColor : _defaultLightShadowColor;
 }
 
 const Color kBestScoreColor = Colors.purpleAccent;

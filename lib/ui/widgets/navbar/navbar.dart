@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_base/ui/app/config/app_config.dart';
 import 'package:flutter_base/ui/app/main_app_screen.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
+import 'package:flutter_base/ui/app/scope/app_config_scope.dart';
+import 'package:flutter_base/ui/app/scope/app_router_scope.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/navbar/footer.dart';
@@ -20,8 +23,6 @@ class NavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final drawerScope = AppDrawerScope.of(context);
     final isCollapsed = drawerScope?.isCollapsed ?? true;
-    final isSmallScreen = drawerScope?.isSmallScreen ?? false;
-    final themeOptions = AppThemeImpl.getOptions(context);
 
     return SizedBox(
       width: 300,
@@ -71,9 +72,6 @@ class CollapsedSidebar extends StatelessWidget with GetItMixin {
 
   @override
   Widget build(BuildContext context) {
-    //final state = context.watch<StatefulNavigationShell>();
-    //final currentIndex = state.currentIndex;
-
     PrivilegeLevel privilege = PrivilegeLevel.none;
     if (GetIt.instance.isRegistered<LoginState>()) {
       privilege = watchOnly((LoginState state) => state.privilege);
@@ -233,29 +231,3 @@ class SideBarHeader extends StatelessWidget {
     return header ?? Container();
   }
 }
-
-/*class SideBarStatus extends StatelessWidget {
-  const SideBarStatus({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<LocalWorkerSystemCubit, LocalWorkerSystemState>(buildWhen: (previous, current) {
-      return previous.applicationOnline != current.applicationOnline || previous.serviceOnline != current.serviceOnline;
-    }, builder: (context, state) {
-      return FittedBox(
-        fit: BoxFit.scaleDown,
-        alignment: Alignment.centerLeft,
-        child: Row(mainAxisSize: MainAxisSize.min, children: [
-          Flexible(
-            child: ActivatedText(text: context.tr.applicationOnline, activated: state.applicationOnline),
-          ),
-          const SizedBox(width: 5),
-          Flexible(
-            child: ActivatedText(text: context.tr.servicesOnline, activated: state.serviceOnline),
-          ),
-        ]),
-      );
-    });
-  }
-}
-*/

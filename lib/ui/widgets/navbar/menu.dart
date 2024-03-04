@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
+import 'package:flutter_base/ui/app/scope/app_router_scope.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/no_scroll_glow.dart';

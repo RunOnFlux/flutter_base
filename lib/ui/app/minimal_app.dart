@@ -5,21 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:flutter_base/blocs/loading_bloc.dart';
 import 'package:flutter_base/ui/app/app_route.dart';
+import 'package:flutter_base/ui/app/config/app_config.dart';
+import 'package:flutter_base/ui/app/config/auth_config.dart';
 import 'package:flutter_base/ui/app/main_app_screen.dart';
+import 'package:flutter_base/ui/app/scope/app_config_scope.dart';
+import 'package:flutter_base/ui/app/scope/app_router_scope.dart';
+import 'package:flutter_base/ui/app/scope/auth_config_scope.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
 import 'package:flutter_base/ui/screens/loading_screen.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/banner.dart';
-import 'package:flutter_base/ui/widgets/logo.dart';
-import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/snack.dart';
 import 'package:flutter_base/utils/platform_info.dart';
 import 'package:flutter_base/utils/settings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -83,6 +85,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
           create: createLoadingBloc,
         ),
         ...createRootBlocs(context),
+        if (authConfig != null) BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
       ],
       child: BlocBuilder<LoadingBloc, LoadingState>(
         builder: handleLoadingState,
@@ -99,8 +102,15 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
         light,
         dark,
       ],
-      child: ThemeConsumer(child: child),
+      child: ThemeConsumer(child: authWrapper(child)),
     );
+  }
+
+  Widget authWrapper(Widget child) {
+    if (authConfig != null) {
+      return AuthConfigScope(config: authConfig!, child: child);
+    }
+    return child;
   }
 
   Widget handleLoadingState(BuildContext context, LoadingState state) {
@@ -154,6 +164,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
   }
 
   AppConfig get config;
+  AuthConfig? get authConfig;
 
   late GoRouter router;
 
@@ -300,69 +311,6 @@ class AppBodyState extends State<AppBody> {
   }
 }
 
-class AppConfig {
-  String? get banner => null;
-
-  bool get hasTitleBar => false;
-
-  bool get smallScreenScroll => true;
-
-  String getInitialRoute(Settings settings) {
-    return settings.getString(Setting.initialRoute.name);
-  }
-
-  setInitialRoute(String route, Settings settings) {
-    settings.setString(Setting.initialRoute.name, route);
-  }
-
-  String getWindowTitle(AppBodyState body, WindowTitle title) {
-    return title.title;
-  }
-
-  List<Widget> buildTitleActionButtons(BuildContext context) {
-    return [];
-  }
-
-  Widget? buildAppBarTitle(BuildContext context) {
-    return null;
-  }
-
-  Widget? buildMenuHeader(BuildContext context) {
-    return const Column(
-      children: [
-        SizedBox(
-          height: 50,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Logo(clickRedirectHomePage: true),
-              SideBarButton(),
-            ],
-          ),
-        ),
-        Divider(),
-        SizedBox(
-          height: 8,
-        ),
-      ],
-    );
-  }
-
-  Widget? buildMenuFooter(BuildContext context) {
-    return null;
-  }
-
-  List<LocalizationsDelegate> get localizationDelegates => const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ];
-
-  Iterable<Locale> get supportedLocales => const [
-        Locale('en', "US"),
-      ];
-}
-
 class LoginState with ChangeNotifier {
   PrivilegeLevel _privilege = PrivilegeLevel.none;
 
@@ -371,41 +319,5 @@ class LoginState with ChangeNotifier {
   set privilege(PrivilegeLevel p) {
     _privilege = p;
     notifyListeners();
-  }
-}
-
-class AppConfigScope extends InheritedWidget {
-  const AppConfigScope({
-    Key? key,
-    required Widget child,
-    required this.config,
-  }) : super(key: key, child: child);
-  final AppConfig config;
-
-  static AppConfig? of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<AppConfigScope>()?.config;
-  }
-
-  @override
-  bool updateShouldNotify(covariant AppConfigScope oldWidget) {
-    return false;
-  }
-}
-
-class AppRouterScope extends InheritedWidget {
-  const AppRouterScope({
-    Key? key,
-    required Widget child,
-    required this.router,
-  }) : super(key: key, child: child);
-  final AppRouter router;
-
-  static AppRouter of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<AppRouterScope>()!.router;
-  }
-
-  @override
-  bool updateShouldNotify(covariant AppRouterScope oldWidget) {
-    return false;
   }
 }
