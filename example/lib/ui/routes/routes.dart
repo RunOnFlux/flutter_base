@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/auth/auth_routes.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
 import 'package:flutter_base/ui/widgets/popup_message.dart';
@@ -155,11 +156,8 @@ class ExampleAppRouter extends AppRouter {
       ActionRoute(
         title: 'Auth Screen',
         action: (BuildContext context) {
-          context.showBottomSheet((_) {
-            return AuthScreen();
-          });
+          context.go(AuthFluxBranchRoute.login.fullPath);
         },
-        route: '/',
         icon: Icons.add,
       ),
     ];

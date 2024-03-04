@@ -1,9 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/auth/auth_routes.dart';
 import 'package:flutter_base/blocs/loading_bloc.dart';
+import 'package:flutter_base/ui/app/config/app_config.dart';
+import 'package:flutter_base/ui/app/config/auth_config.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/theme/colors.dart';
+import 'package:flutter_base/ui/widgets/auth/screens/sign_in.dart';
+import 'package:flutter_base/ui/widgets/gradients/gradient_divider.dart';
+import 'package:flutter_base/ui/widgets/gradients/gradient_text.dart';
 import 'package:flutter_base/ui/widgets/logo.dart';
 import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
 import 'package:flutter_base_example/ui/routes/routes.dart';
@@ -81,6 +87,8 @@ class _FlutterBaseExampleAppState extends MinimalAppState<FlutterBaseExampleApp>
 
   @override
   AppConfig get config => FlutterBaseAppConfig();
+  @override
+  AuthConfig? get authConfig => FlutterBaseAuthConfig();
 
   @override
   MyLoadingBloc createLoadingBloc(_) {
@@ -224,4 +232,78 @@ class FlutterBaseAppConfig extends AppConfig {
       ),
     );*/
   }
+}
+
+class FlutterBaseAuthConfig extends AuthConfig {
+  @override
+  Widget Function(Object? arg) authPageBuilder(AuthFluxRoute route) {
+    switch (route) {
+      case AuthFluxBranchRoute.login:
+        return (_) => const SignInScreen();
+      case AuthFluxBranchRoute.register:
+        return (_) => const SignInScreen(type: SignInScreenType.register);
+      case AuthFluxBranchRoute.forgotPassword:
+        //return (_) => forgotPasswordPage();
+        return (_) => Container();
+      case AuthFluxBranchRoute.resetPassword:
+        //return (arg) => resetPasswordPage(arg as String);
+        return (_) => Container();
+      case AuthFluxBranchRoute.verifyEmail:
+        //return (arg) => verifyEmailPage(arg as String);
+        return (_) => Container();
+      case AuthFluxChallengeRoute.needAccountEmailVerification:
+        //return (_) => needEmailVerificationPage();
+        return (_) => Container();
+      case AuthFluxBranchRoute.verifyAndChangeEmail:
+        //return (arg) => verifyAndChangeEmailPage(arg as String);
+        return (_) => Container();
+      case AuthFluxChallengeRoute.needReauthentication:
+        //return (_) => needReauthenticationPage();
+        return (_) => Container();
+      case AuthFluxChallengeRoute.needTwoFactorAuth:
+        //return (_) => needTwoFactorAuthenticationPage();
+        return (_) => Container();
+      case AuthFluxChallengeRoute.confTwoFactorAuth:
+        //return (arg) => confTwoFactorAuthenticationPage(arg as TwoFactorConfigRequest);
+        return (_) => Container();
+      case AuthFluxChallengeRoute.saveTwoFactorAuthCodes:
+        //return (arg) => backupCodesPage(arg as Validate2FAOTPResult);
+        return (_) => Container();
+      case AuthFluxBranchRoute.phoneVerification:
+        //return (arg) => phoneVerificationPage(arg as PhoneSigninRequest);
+        return (_) => Container();
+      default:
+        throw Exception('Unknown route: $route');
+    }
+  }
+
+  @override
+  Image getImage(context) => Image.asset(
+        'assets/images/webp/pouw_background.webp',
+        fit: BoxFit.cover,
+      );
+
+  @override
+  Widget rightChild(context) => const FractionallySizedBox(
+        widthFactor: 0.75,
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text('Revolutionizing Technology',
+                  textAlign: TextAlign.center,
+                  softWrap: false,
+                  maxLines: 3,
+                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700)),
+              GradientDivider(
+                width: 100,
+                margin: EdgeInsets.symmetric(vertical: 10),
+              ),
+              GradientText(
+                'AuthScreen Example',
+                style: TextStyle(color: Colors.white, fontSize: 80, fontWeight: FontWeight.bold),
+              ),
+            ]),
+          ),
+        ),
+      );
 }
