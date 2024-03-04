@@ -98,7 +98,7 @@ enum FirebaseSignInMethods {
               : null;
           return SvgPicture.asset(
             'assets/images/svg/github.svg',
-            package: 'flux_auth',
+            package: 'flutter_base',
             colorFilter: colorFilter,
           );
         });
@@ -114,7 +114,7 @@ enum FirebaseSignInMethods {
       //case FirebaseSignInMethods.gitlab:
       //  assetName = 'assets/images/svg/gitlab.svg';
     }
-    return SvgPicture.asset(assetName, package: 'flux_auth');
+    return SvgPicture.asset(assetName, package: 'flutter_base');
   }
 
   AuthProvider? get authProvider {
