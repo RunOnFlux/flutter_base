@@ -31,26 +31,30 @@ dependencies:
   data_table_2: ^2.3.10
   #bitsdojo_window: ^0.1.5
   auto_size_text: ^3.0.0
-  flip_card: ^0.6.0
+  flip_card: ^0.7.0
   provider: ^6.0.2
   universal_html: ^2.0.8
   flutter_wizard: ^2.0.5
   flutter_svg: ^2.0.7
-  package_info_plus: ^4.1.0
+  package_info_plus:
+    git:
+      url: https://github.com/fluttercommunity/plus_plugins.git
+      path: packages/package_info_plus/package_info_plus
+
   window_size:
     git:
       url: https://github.com/google/flutter-desktop-embedding.git
       path: plugins/window_size
   flutter_acrylic: ^1.0.0+2
-  shared_preferences: ^2.0.18
+  shared_preferences: ^2.2.2
   responsive_framework: ^1.1.0
   collection: ^1.17.0
   floating_action_bubble: ^1.1.4
-  android_intent_plus: ^3.1.9
+  android_intent_plus: ^4.0.3
   flutter_bloc: ^8.1.4
+  equatable: ^2.0.5
   firebase_auth: ^4.15.2
   flutter_html: ^3.0.0-beta.2
-  equatable: ^2.0.5
   email_validator: ^2.1.17
 
 #dependency_overrides:

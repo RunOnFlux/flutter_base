@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/extensions/modal_sheet_extensions.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
-import 'package:flutter_base/ui/widgets/auth/auth_screen.dart';
 import 'package:flutter_base/ui/widgets/popup_message.dart';
 import 'package:flutter_base_example/ui/screens/home/home_screen.dart';
 import 'package:flutter_base_example/ui/screens/params/params_screen.dart';
@@ -10,14 +8,12 @@ import 'package:flutter_base_example/ui/screens/tabs/tabbed_screen.dart';
 import 'package:go_router/go_router.dart';
 
 class ExampleAppRouter extends AppRouter {
-  ExampleAppRouter._p() {
-    routes = buildRoutes();
-  }
+  ExampleAppRouter._p();
   static final ExampleAppRouter _instance = ExampleAppRouter._p();
   factory ExampleAppRouter() => _instance;
 
   @override
-  List<AbstractRoute> buildRoutes() {
+  List<AbstractRoute> buildRoutes(BuildContext context) {
     final routes = <AbstractRoute>[
       NavigationRoute(
         route: '/',
@@ -110,10 +106,9 @@ class ExampleAppRouter extends AppRouter {
                 title: 'Nested Action',
                 action: (BuildContext context) {
                   debugPrint('nested do something!!');
-                  const PopupMessage(message: 'Do Something!!').show(context);
+                  PopupMessage.success(message: 'Do Something!!').show();
                   context.go('/app/testapp');
                 },
-                route: '/action',
                 icon: Icons.add,
               ),
             ],
@@ -152,10 +147,9 @@ class ExampleAppRouter extends AppRouter {
         title: 'Action',
         action: (BuildContext context) {
           debugPrint('do something!!');
-          const PopupMessage(message: 'Do Something!!').show(context);
+          const PopupMessage(message: 'Do Something!!').show();
           context.go('/app/testapp');
         },
-        route: '/action',
         icon: Icons.add,
       ),
       ActionRoute(

@@ -58,6 +58,7 @@ class _SideBarMenuWidgetState extends State<SideBarMenuWidget> with GetItStateMi
               trackVisibility: true,
               child: ListView(
                 controller: _controller,
+                padding: const EdgeInsets.only(bottom: 10),
                 shrinkWrap: true,
                 children: items,
               ),
@@ -85,7 +86,7 @@ class _SideBarMenuWidgetState extends State<SideBarMenuWidget> with GetItStateMi
   }*/
 
   List<Widget> _buildMenu(BuildContext context, PrivilegeLevel privilegeLevel) {
-    List<AbstractRoute> routes = AppRouterScope.of(context).buildRoutes();
+    List<AbstractRoute> routes = AppRouterScope.of(context).buildRoutes(context);
     List<AbstractRoute> enabledRoutes = routes.where((element) => element.active ?? true).toList();
     List<AbstractRoute> disabledRoutes = routes.where((element) => !(element.active ?? true)).toList();
     List<Widget> menu = <Widget>[];
@@ -140,7 +141,7 @@ class _SideBarMenuWidgetState extends State<SideBarMenuWidget> with GetItStateMi
       );
       if (r.below != null) menu.add(r.below!);
     } else if (r is ActionRoute) {
-      if (r.privilege != null && r.includeInMenu) {
+      if (r.privilege != null) {
         PrivilegeLevel currentLevel = privilege;
         for (var privilege in r.privilege!) {
           if (privilege == currentLevel) {

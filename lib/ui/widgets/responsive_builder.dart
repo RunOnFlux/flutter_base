@@ -25,7 +25,6 @@ class ResponsiveBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('responsive builder');
     return ResponsiveBreakpoints.builder(
         debugLog: kDebugMode,
         child: Builder(builder: (context) {

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/app/main_app_screen.dart';
+import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../routes/route.dart';
-import '../titled_card.dart';
 import 'menu_styles.dart';
 
-const double kMenuItemHeight = 30.0;
-const List<double> kMenuItemHeights = [47, 47, 47];
+const double kMenuItemHeight = 24.0;
+const List<double> kMenuItemHeights = [41, 41, 41];
 
 class NavigationMenuItem extends StatefulWidget {
-  final NavigationRoute route;
+  final AbstractRoute route;
   final int level;
   final bool collapsed;
 
@@ -26,22 +26,21 @@ class NavigationMenuItem extends StatefulWidget {
 }
 
 class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles {
-  bool isHovering = false;
   @override
   Widget build(BuildContext context) {
-    final bool isSelected = widget.route.route == GoRouterState.of(context).uri.toString();
-    var c = [const Color(0xFF818795), const Color(0xFFD9D9D9)];
+    final bool isSelected = isRouteSelected();
+    var c = Theme.of(context).menuColors;
     if (Theme.of(context).brightness == Brightness.dark) {
       c = c.reversed.toList();
     }
     final unselectedColor = (widget.route.active ?? true) ? c[0] : c[1];
-    Color selectedColor = Colors.white;
+    Color selectedColor = Theme.of(context).primaryColor;
 
     if (widget.collapsed) {
       return IconButton(
         tooltip: widget.route.title,
         style: IconButton.styleFrom(
-          backgroundColor: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
+          backgroundColor: isSelected ? Theme.of(context).selectedMenuItem : Colors.transparent,
           shape: const CircleBorder(),
         ),
         isSelected: isSelected,
@@ -66,83 +65,74 @@ class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles
       Icons.chevron_right_outlined,
       selectedColor,
       unselectedColor,
+      selected: isSelected,
+      size: iconSizeForLevel(widget.level) * 1.2,
     );
 
     return Padding(
-      padding: EdgeInsets.only(left: widget.level * 20),
+      padding: EdgeInsets.only(left: widget.level * 10),
       child: Material(
         color: Colors.transparent,
         child: SizedBox(
           height: kMenuItemHeights[widget.level],
-          child: MouseRegion(
-            onEnter: (_) {
-              setState(() {
-                isHovering = true;
-              });
-            },
-            onExit: (_) {
-              setState(() {
-                isHovering = false;
-              });
-            },
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 100),
-              //padding: EdgeInsets.only(left: isHovering ? 5 : 0),
-              //margin: EdgeInsets.only(left: isHovering ? 5 : 0, right: 0),
-              //color: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
-              child: ListTile(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                selected: isSelected,
-                dense: true,
-                isThreeLine: false,
-                titleTextStyle: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      fontWeight: FontWeight.w500,
-                      fontSize: fontSizeForLevel(widget.level),
-                      letterSpacing: 1,
-                    ),
-                minVerticalPadding: 16,
-                iconColor: unselectedColor,
-                textColor: unselectedColor,
-                selectedTileColor: Theme.of(context).primaryColor,
-                selectedColor: selectedColor,
-                tileColor: Colors.transparent,
-                title: buildTitle(
-                  context,
-                  widget.route.title,
-                  selectedColor,
-                  unselectedColor,
-                  widget.level,
-                  selected: isSelected,
+          child: ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            selected: isSelected,
+            dense: true,
+            isThreeLine: false,
+            titleTextStyle: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                  fontSize: fontSizeForLevel(widget.level),
                 ),
-                leading: buildIconWidget(
-                  widget.route,
-                  context,
-                  widget.level,
-                  isSelected,
-                  selectedColor,
-                  unselectedColor,
-                ),
-                trailing: widget.route.badge != null
-                    ? widget.route.badge!(
-                        context,
-                        defaultIcon,
-                      )
-                    : defaultIcon,
-                onTap: () {
-                  performAction();
-                },
-                enabled: widget.route.active ?? true,
-              ),
+            titleAlignment: ListTileTitleAlignment.center,
+            minVerticalPadding: 4,
+            iconColor: unselectedColor,
+            textColor: unselectedColor,
+            selectedTileColor: Theme.of(context).selectedMenuItem,
+            selectedColor: selectedColor,
+            tileColor: Colors.transparent,
+            title: buildTitle(
+              context,
+              widget.route.title,
+              selectedColor,
+              unselectedColor,
+              widget.level,
+              selected: isSelected,
             ),
+            leading: buildIconWidget(
+              widget.route,
+              context,
+              widget.level,
+              isSelected,
+              selectedColor,
+              unselectedColor,
+            ),
+            trailing: widget.route.badge != null
+                ? widget.route.badge!(
+                    context,
+                    defaultIcon,
+                  )
+                : defaultIcon,
+            onTap: () {
+              performAction();
+            },
+            enabled: widget.route.active ?? true,
           ),
         ),
       ),
     );
   }
 
+  bool isRouteSelected() {
+    return widget.route is NavigationRoute &&
+        ((widget.route as NavigationRoute).route == GoRouterState.of(context).uri.toString());
+  }
+
   performAction() {
-    AppDrawerScope.of(context)?.closeDrawer(false);
-    context.go(widget.route.route);
+    if (widget.route is NavigationRoute) {
+      AppDrawerScope.of(context)?.closeDrawer(false);
+      context.go((widget.route as NavigationRoute).route);
+    }
   }
 }
 
@@ -169,7 +159,7 @@ class _FunctionMenuItemState extends _NavigationMenuItemState {
   }
 }
 
-class ActionMenuItem extends StatefulWidget {
+/*class ActionMenuItem extends StatefulWidget {
   final Function() action;
   final String title;
   final IconData? icon;
@@ -224,3 +214,4 @@ class _ActionMenuItemState extends State<ActionMenuItem> with MenuStyles {
     );
   }
 }
+*/

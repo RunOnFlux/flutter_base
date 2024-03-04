@@ -373,6 +373,11 @@ class AppThemeImpl {
               ),
             ),
           ),
+          dividerColor: const Color.fromRGBO(184, 195, 225, 0.25),
+          dividerTheme: const DividerThemeData(
+            color: Color.fromRGBO(184, 195, 225, 0.25),
+            thickness: 1,
+          ),
           drawerTheme: const DrawerThemeData(
             surfaceTintColor: Colors.black,
             scrimColor: Colors.transparent,
@@ -606,6 +611,8 @@ extension ThemeBits on ThemeData {
   Color get headingRowColor => isDark ? _headingRowDark : _headingRownLight;
   Color get tileColor => isDark ? _headingRowDark : const Color(0xFF2463EB);
   Color get sysInfoColor => isDark ? _systemInfoDark : _systemInfoLight;
+  List<Color> get menuColors => [const Color(0xFFB8C3E1), const Color.fromARGB(255, 242, 243, 248)];
+  Color get selectedMenuItem => const Color.fromRGBO(43, 97, 209, 0.05);
   Color get positiveColor => isDark ? _dPositiveColor : _lPositiveColor;
 }
 
@@ -651,7 +658,7 @@ const Color _lLightPositiveColor = Color(0xFFECFDF3);
 
 const Color _lightBorderColor = Color(0xFFDBE1F0);
 
-const Color _darkBorderColor = Color.fromRGBO(46, 142, 255, 0.20);
+const Color _darkBorderColor = Color.fromRGBO(184, 195, 255, 0.25);
 
 const BoxShadow _defaultLightShadowColor = BoxShadow(
   color: Color.fromARGB(255, 231, 236, 247),

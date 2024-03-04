@@ -30,7 +30,7 @@ class TabOneScreenState extends TabContentScreenState<TabOneScreen> {
         title: 'Menu Item 1',
         icon: Icons.ac_unit_outlined,
         onPress: () {
-          const PopupMessage(message: 'Menu Item 1 was clicked!!').show(context);
+          const PopupMessage(message: 'Menu Item 1 was clicked!!').show();
         },
       ),
       FloatingMenuItem(

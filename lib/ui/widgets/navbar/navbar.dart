@@ -33,19 +33,26 @@ class NavBar extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             child: DecoratedBox(
               decoration: BoxDecoration(
-                gradient: !isCollapsed && isSmallScreen ? themeOptions.backgroundGradient(context) : null,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x0C0B162C),
+                    blurRadius: 12,
+                    offset: Offset(0, 2),
+                    spreadRadius: 0,
+                  )
+                ],
+                gradient: !isCollapsed ? AppThemeImpl.getOptions(context).backgroundGradient(context) : null,
               ),
               child: Drawer(
                 width: 300,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       const SideBarHeader(),
                       Expanded(child: SideBarMenuWidget()),
-                      const SizedBox(
-                        height: 24,
-                      ),
+                      const SizedBox(height: 24),
                       const SideBarFooter(),
                     ],
                   ),
@@ -72,7 +79,7 @@ class CollapsedSidebar extends StatelessWidget with GetItMixin {
       privilege = watchOnly((LoginState state) => state.privilege);
     }
 
-    List<AbstractRoute> routes = AppRouterScope.of(context).buildRoutes();
+    List<AbstractRoute> routes = AppRouterScope.of(context).buildRoutes(context);
     List<AbstractRoute> active = routes.where((element) => element.active ?? true).toList();
     List<AbstractRoute> inactive = routes.where((element) => !(element.active ?? true)).toList();
     List allRoutes = [active, inactive];
@@ -154,7 +161,7 @@ class CollapsedSidebar extends StatelessWidget with GetItMixin {
         ),
       );
     } else if (r is ActionRoute) {
-      if (r.privilege != null && r.includeInMenu) {
+      if (r.privilege != null) {
         PrivilegeLevel currentLevel = privilege;
         for (var privilege in r.privilege!) {
           if (privilege == currentLevel) {

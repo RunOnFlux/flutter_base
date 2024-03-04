@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/ui/utils/bootstrap.dart';
 import 'package:flutter_base/ui/widgets/app_screen.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
@@ -40,30 +39,18 @@ abstract class SimpleScreenState<T extends SimpleScreen> extends AppScreenState<
     );
   }
 
-  EdgeInsets mainPadding() {
-    return EdgeInsets.all(bootStrapValueBasedOnSize(sizes: {
-      '': 5.0,
-      'sm': 12.0,
-      'md': 20.0,
-      'lg': 25.0,
-      'xl': 25.0,
-      'xxl': 25.0,
-    }, context: context));
-  }
-
   Widget buildScreen(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 5.0,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          buildChild(context),
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Padding(
+          padding: mainPadding(),
+          child: titleHeader(context),
+        ),
+        buildChild(context),
+      ],
     );
   }
 }

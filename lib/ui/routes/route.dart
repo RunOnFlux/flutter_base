@@ -2,23 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/widgets/app_screen.dart';
 
 abstract class AbstractRoute {
-  late String title;
-  late IconData? icon;
-  late Image? image;
-  late String? asset;
-  late bool? active;
+  final String title;
+  final IconData? icon;
+  final Image? image;
+  final String? asset;
+  final bool? active;
 
-  late Widget? above;
-  late Widget? below;
+  final Widget? above;
+  final Widget? below;
+  Widget Function(BuildContext, Widget?)? badge;
+
+  final List<PrivilegeLevel>? privilege;
+
+  AbstractRoute({
+    this.icon,
+    this.image,
+    this.asset,
+    this.active,
+    this.above,
+    this.below,
+    this.privilege,
+    this.badge,
+    required this.title,
+  });
 }
 
-class ActionRoute extends NavigationRoute {
+class ActionRoute extends AbstractRoute {
   Function(BuildContext context) action;
 
   ActionRoute({
     required super.title,
     required this.action,
-    required super.route,
     super.icon,
     super.image,
     super.asset,
@@ -29,54 +43,31 @@ class ActionRoute extends NavigationRoute {
   });
 }
 
-class NavigationRoute implements AbstractRoute {
+class NavigationRoute extends AbstractRoute {
   String route;
   String? initialLocation;
   AppContentScreen? body;
   bool includeInMenu = false;
-  List<PrivilegeLevel>? privilege;
   int? navBarIndex;
-  Widget Function(BuildContext, Widget?)? badge;
 
   NavigationRoute({
     required this.route,
     this.body,
-    required this.title,
+    required super.title,
     this.includeInMenu = false,
-    this.icon,
-    this.image,
-    this.asset,
-    this.privilege,
+    super.icon,
+    super.image,
+    super.asset,
+    super.privilege,
     this.navBarIndex,
-    this.badge,
-    this.active,
+    super.badge,
+    super.active,
     this.initialLocation,
-    this.above,
-    this.below,
+    super.above,
+    super.below,
   }) {
     body?.stateInfo.route = route;
   }
-
-  @override
-  IconData? icon;
-
-  @override
-  String title;
-
-  @override
-  Image? image;
-
-  @override
-  String? asset;
-
-  @override
-  bool? active;
-
-  @override
-  Widget? above;
-
-  @override
-  Widget? below;
 
 /*void go(GoRouter router) {
     Future.microtask(() {
@@ -104,37 +95,16 @@ enum PrivilegeLevel {
   }
 }
 
-class RouteSet implements AbstractRoute {
+class RouteSet extends AbstractRoute {
   List<AbstractRoute> routes;
 
   RouteSet({
-    required this.title,
+    required super.title,
     required this.routes,
-    this.icon,
-    this.image,
-    this.asset,
-    this.above,
-    this.below,
+    super.icon,
+    super.image,
+    super.asset,
+    super.above,
+    super.below,
   });
-
-  @override
-  IconData? icon;
-
-  @override
-  String title;
-
-  @override
-  Image? image;
-
-  @override
-  String? asset;
-
-  @override
-  bool? active;
-
-  @override
-  Widget? above;
-
-  @override
-  Widget? below;
 }
