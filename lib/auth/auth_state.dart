@@ -13,7 +13,7 @@ part of 'auth_bloc.dart';
 /// With AuthState we get all the information to update UI accordingly, two
 /// instance of the state are considered equal if they have the same event, error,
 /// and status, and if the delta between the two states is less than 500ms
-class AuthState<U extends FluxUser> {
+class AuthState {
   AuthState(
       {this.error,
       this.result,
@@ -34,7 +34,7 @@ class AuthState<U extends FluxUser> {
   final AuthEvent? event;
   final Object? error;
   final User? firebaseUser;
-  final U? fluxUser;
+  final FluxUser? fluxUser;
   final AuthChallenge? challenge;
   final AuthResult? result;
   final PhoneSigninRequest? phoneSignInOTPRequest;
@@ -189,17 +189,17 @@ class AuthState<U extends FluxUser> {
   /// as well as any extra of type [ExtraKeepAliveMixin] with [keepAlive] set to false
   /// Any other type of extra is kept. Meaning that if a new state is emit using copyWith
   /// the extra will still be present in the new state
-  AuthState<U> copyWith(
+  AuthState copyWith(
       {AuthEvent? event,
       Object? error,
       AuthResult? result,
-      U? fluxUser,
+      FluxUser? fluxUser,
       PhoneVerificationRequest? phoneVerificationRequest,
       PhoneSigninRequest? phoneSignInOTPRequest,
       AuthChallenge? challenge,
       AuthConnectionStatus? status,
       User? firebaseUser}) {
-    return AuthState<U>(
+    return AuthState(
         challenge: challenge ?? this.challenge,
         phoneSignInOTPRequest: phoneSignInOTPRequest,
         phoneVerificationRequest: phoneVerificationRequest,

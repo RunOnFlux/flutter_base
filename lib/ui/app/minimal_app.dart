@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
+import 'package:flutter_base/auth/auth_bloc.dart';
+import 'package:flutter_base/auth/auth_routes.dart';
 import 'package:flutter_base/blocs/loading_bloc.dart';
 import 'package:flutter_base/ui/app/app_route.dart';
 import 'package:flutter_base/ui/app/config/app_config.dart';
@@ -15,6 +17,7 @@ import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
 import 'package:flutter_base/ui/screens/loading_screen.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
+import 'package:flutter_base/ui/widgets/auth/auth_screen.dart';
 import 'package:flutter_base/ui/widgets/banner.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
@@ -202,6 +205,54 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
             },
           ).toList(),
         ),
+        if (authConfig != null)
+          ShellRoute(
+            routes: [
+              for (final route in AuthFluxBranchRoute.signInRoutes)
+                GoRoute(
+                    path: route.fullPath,
+                    pageBuilder: (context, state) {
+                      final authBloc = context.read<AuthBloc>();
+                      final builder = authConfig!.authPageBuilder(route);
+                      final arg = route.getArg(authBloc.state, state);
+
+                      return NoTransitionPage(
+                        child: builder(arg),
+                      );
+                    }
+
+                    /*redirect: (context, state) async {
+                  final authBloc = await authWaitForAuthBloc(context);
+
+                  bool canContinue = authBloc != null;
+
+                  if (authBloc != null) {
+                    final mode = AuthFluxBranchRoute.fromUri(state.uri) ?? AuthFluxBranchRoute.login;
+
+                    canContinue = mode.canContinueNavigation(authBloc.state, null);
+                  }
+
+                  if (canContinue == false) {
+                    //log('Tried to go to ${state.uri} but the conditions are not met', name: 'AuthRouter');
+                    //return config.initialLocation;
+                  }
+
+                  return null;
+                },*/
+                    ),
+            ],
+            pageBuilder: (context, state, child) {
+              //final authBloc = context.read<AuthBloc>();
+
+              //return NoTransitionPage(child: fluxAuthRouteConfig.builder(route, authBloc.state, state));
+              return NoTransitionPage(
+                child: BlocListener<AuthBloc, AuthState>(
+                  listener: (BuildContext context, AuthState state) {},
+                  child: AuthScreen(child: child),
+                ),
+              );
+            },
+          ),
       ],
       redirect: (context, state) {
         Future.microtask(() {
@@ -212,6 +263,17 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
         return null;
       },
     );
+  }
+
+  FutureOr<AuthBloc?> authWaitForAuthBloc(BuildContext context) async {
+    try {
+      final authBloc = context.read<AuthBloc>();
+      //_AuthBlocInitializerWidget.of(context)?.showProgress(true);
+      await authBloc.ensureInitialized();
+      return authBloc;
+    } catch (e) {
+      return null;
+    }
   }
 
   Widget buildMainApp(BuildContext context) {

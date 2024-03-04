@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
+import 'package:flutter_base/ui/app/scope/auth_config_scope.dart';
 import 'package:flutter_base/ui/widgets/auth/auth_screen.dart';
 import 'package:flutter_base/ui/widgets/default_button.dart';
 import 'package:flutter_base/ui/widgets/logo.dart';
@@ -31,8 +32,12 @@ class SignInScreen extends StatelessWidget {
 }
 
 enum SignInScreenType {
-  signIn,
-  register;
+  signIn('Sign In'),
+  register('Register');
+
+  final String title;
+
+  const SignInScreenType(this.title);
 
   static SignInScreenType from(String? name) {
     return SignInScreenType.values.firstWhere((element) => element.name == name, orElse: () => signIn);
@@ -68,8 +73,6 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
     super.dispose();
   }
 
-  bool get allowSignUp => true; // TODO: Move this to the App Config scope
-
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -91,14 +94,17 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Logo(),
+            const Logo2(),
             const SizedBox(
               height: 16,
             ),
             Text(
-              widget.type.name,
+              widget.type.title,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
+              style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 32,
+                  ),
             ),
             const SizedBox(
               height: 16,
@@ -112,14 +118,17 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
             const SizedBox(
               height: 36,
             ),
-            const Row(
+            Row(
               children: [
-                Expanded(child: Divider()),
+                const Expanded(child: Divider()),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: Text('OR'),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(
+                    'OR',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
                 ),
-                Expanded(child: Divider())
+                const Expanded(child: Divider())
               ],
             ),
             const SizedBox(
@@ -188,53 +197,64 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (allowSignUp)
+                  if (AuthConfigScope.of(context)?.allowSignUp ?? false)
                     Flexible(
                       child: Wrap(
                         alignment: WrapAlignment.center,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.only(top: 2),
-                            child: Text('Don\'t have an account?'),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: Text(
+                              'Don\'t have an account?',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 4),
                             child: TextButton(
-                                onPressed: () {
-                                  AuthScreen.goToAuthRoute(context, AuthFluxBranchRoute.register);
-                                },
-                                child: Text(
-                                  'Sign Up',
-                                  style: TextStyle(color: Theme.of(context).primaryColor),
-                                )),
+                              onPressed: () {
+                                AuthScreen.goToAuthRoute(context, AuthFluxBranchRoute.register);
+                              },
+                              child: Text(
+                                'Sign Up',
+                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                              ),
+                            ),
                           )
                         ],
                       ),
                     ),
                   const SizedBox(height: 16),
                   TextButton(
-                      onPressed: () {
-                        AuthScreen.goToAuthRoute(context, AuthFluxBranchRoute.forgotPassword);
-                      },
-                      child: Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: Theme.of(context).primaryColor),
-                      ))
+                    onPressed: () {
+                      AuthScreen.goToAuthRoute(context, AuthFluxBranchRoute.forgotPassword);
+                    },
+                    child: Text(
+                      'Forgot Password?',
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                    ),
+                  )
                 ],
               )
             else
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Already have an account?'),
+                  Text('Already have an account?', style: Theme.of(context).textTheme.bodyMedium),
                   TextButton(
                       onPressed: () {
                         AuthScreen.goToAuthRoute(context, AuthFluxBranchRoute.login);
                       },
                       child: Text(
                         'Sign In',
-                        style: TextStyle(color: Theme.of(context).primaryColor),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              color: Theme.of(context).primaryColor,
+                            ),
                       ))
                 ],
               )
@@ -434,6 +454,10 @@ class _ProviderSignInButton extends StatelessWidget {
         label: Text(
           method.providerName,
           maxLines: 1,
+          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+              ),
         ),
       ),
     );
@@ -456,7 +480,9 @@ class _OtherSignInButton extends StatelessWidget {
       onPressed: onPressed,
       child: Text(
         method.providerName,
-        style: TextStyle(color: selected ? Theme.of(context).primaryColor : Colors.grey.shade700),
+        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+              color: selected ? Theme.of(context).primaryColor : Colors.grey.shade700,
+            ),
       ),
     );
   }

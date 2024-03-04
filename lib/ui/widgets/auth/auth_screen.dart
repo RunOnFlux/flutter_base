@@ -1,41 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
+import 'package:flutter_base/ui/app/scope/auth_config_scope.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/copy_button.dart';
+import 'package:flutter_base/ui/widgets/loading_overlay.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/ui/widgets/specifal_focus_nodes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class AuthScreen extends StatelessWidget {
-  const AuthScreen({super.key});
+  final Widget child;
+
+  const AuthScreen({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
     final smallScreen = context.isSmallWidth();
-    final authOptions = AppThemeImpl.getOptions(context).authOptions;
 
-    return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (!smallScreen)
-                Expanded(
-                  child: _AuthScreenLeftSide(
-                    image: authOptions.getImage(context),
-                    content: authOptions.rightChild(context),
-                  ),
+    return BlocBuilder<AuthBloc, AuthState>(
+        buildWhen: (previous, current) => previous.status.isIdle(),
+        builder: (context, state) {
+          if (state.isIdle) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          wrapper(child) => _DefaultWrapperWidget(child: child);
+          if (state.needReauthentication) {
+            //wrapper = (child) => _DialogWrapperWidget(child: child);
+          }
+          return _AuthWrapperWidget(child: wrapper(child));
+
+          /*return Scaffold(
+            body: Stack(
+              fit: StackFit.expand,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (!smallScreen)
+                      Expanded(
+                        child: _AuthScreenLeftSide(
+                          image: authOptions.getImage(context),
+                          content: authOptions.rightChild(context),
+                        ),
+                      ),
+                    _AuthScreenRightSide(),
+                  ],
                 ),
-              _AuthScreenRightSide(),
-            ],
-          ),
-          _AuthScreenCloseButton(invertColor: smallScreen),
-        ],
-      ),
-    );
+                _AuthScreenCloseButton(invertColor: smallScreen),
+              ],
+            ),
+          );*/
+        });
   }
 
   static void goToAuthRoute(BuildContext context, AuthFluxBranchRoute route) {
@@ -46,10 +64,72 @@ class AuthScreen extends StatelessWidget {
   }
 }
 
-class _AuthScreenLeftSide extends StatelessWidget {
+class _DefaultWrapperWidget extends StatelessWidget {
+  const _DefaultWrapperWidget({required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final smallScreen = width < 1280;
+    final authOptions = AuthConfigScope.of(context)!;
+    final child = Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (!smallScreen)
+                Expanded(
+                  child: _AuthWrapperLeftSide(
+                    image: authOptions.getImage(context),
+                    content: authOptions.rightChild(context),
+                  ),
+                ),
+              Expanded(child: _AuthWrapperRightSide(child: this.child))
+            ],
+          ),
+          _AuthScreenCloseButton(invertColor: smallScreen)
+        ],
+      ),
+    );
+    if (smallScreen) {
+      return child;
+    }
+
+    final largeScreen = width > 2000;
+    if (largeScreen) {
+      return child;
+    }
+
+    return child;
+  }
+}
+
+class _AuthWrapperWidget extends StatelessWidget {
+  const _AuthWrapperWidget({required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthBloc, AuthState>(
+      buildWhen: (previous, current) => previous.loading != current.loading,
+      builder: (context, state) {
+        return LoadingOverlay(
+          loading: state.loading,
+          colorBarrier: Colors.black54,
+          child: child,
+        );
+      },
+    );
+  }
+}
+
+class _AuthWrapperLeftSide extends StatelessWidget {
   final Widget image;
   final Widget content;
-  const _AuthScreenLeftSide({
+  const _AuthWrapperLeftSide({
     required this.image,
     required this.content,
   });
@@ -79,26 +159,29 @@ class _AuthScreenLeftSide extends StatelessWidget {
   }
 }
 
-class _AuthScreenRightSide extends StatelessWidget {
+class _AuthWrapperRightSide extends StatelessWidget {
+  final Widget child;
+
+  const _AuthWrapperRightSide({super.key, required this.child});
   @override
   Widget build(BuildContext context) {
-    return const Stack(
+    return Stack(
       fit: StackFit.expand,
       children: [
-        //ScrollConfiguration(
-        //  behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-        //  child: Container(),
-        //),
-        /*const Positioned(
+        ScrollConfiguration(
+          behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+          child: child,
+        ),
+        const Positioned(
           right: 30,
           top: 16,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              LanguageDropDownPicker(),
+              //LanguageDropDownPicker(),
             ],
           ),
-        ),*/
+        ),
       ],
     );
   }
