@@ -333,7 +333,8 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
       }
     }
 
-    FluxApp.instance.authSystem.bloc.add(event);
+    //FluxApp.instance.authSystem.bloc.add(event);
+    context.read<AuthBloc>().add(event);
   }
 
   Widget _buildSignInbutton() {
