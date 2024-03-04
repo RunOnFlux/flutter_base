@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/extensions/router_extension.dart';
+import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/gradients/gradient_text.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -67,6 +68,28 @@ class Logo extends StatelessWidget {
                 fontSize: fontSize),
           ),
       ],
+    );
+  }
+}
+
+class Logo2 extends StatelessWidget {
+  const Logo2({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 140,
+      height: 140,
+      alignment: Alignment.center,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        shape: BoxShape.circle,
+        boxShadow: [
+          Theme.of(context).shadow,
+        ],
+      ),
+      child: SvgPicture.asset('assets/images/svg/logo_2.svg'),
     );
   }
 }
