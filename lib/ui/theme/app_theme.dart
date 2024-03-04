@@ -515,6 +515,8 @@ class ThemeOptions implements AppThemeOptions {
   late List<Color> bgDarkGradientColors;
   late List<Color> bgLightGradientColors;
 
+  late AuthOptions authOptions;
+
   Color? cardOutlineColor(BuildContext context) {
     return Theme.of(context).isDark ? cardOutlineColorDark : cardOutlineColorLight;
   }
@@ -609,9 +611,9 @@ extension ThemeBits on ThemeData {
   Color get headingRowColor => isDark ? _headingRowDark : _headingRownLight;
   Color get tileColor => isDark ? _headingRowDark : const Color(0xFF2463EB);
   Color get sysInfoColor => isDark ? _systemInfoDark : _systemInfoLight;
-
   List<Color> get menuColors => [const Color(0xFFB8C3E1), const Color.fromARGB(255, 242, 243, 248)];
   Color get selectedMenuItem => const Color.fromRGBO(43, 97, 209, 0.05);
+  Color get positiveColor => isDark ? _dPositiveColor : _lPositiveColor;
 }
 
 const Color kBestScoreColor = Colors.purpleAccent;
@@ -671,3 +673,13 @@ const BoxShadow _defaultDarkShadowColor = BoxShadow(
   blurRadius: 18.7403564453125,
   spreadRadius: 1.8740354776382446,
 );
+
+class AuthOptions {
+  final Image Function(BuildContext) getImage;
+  final Widget Function(BuildContext) rightChild;
+
+  AuthOptions({
+    required this.getImage,
+    required this.rightChild,
+  });
+}
