@@ -7,6 +7,7 @@ import 'package:flutter_base/ui/app/config/auth_config.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/theme/colors.dart';
+import 'package:flutter_base/ui/widgets/auth/screens/forgot_password.dart';
 import 'package:flutter_base/ui/widgets/auth/screens/sign_in.dart';
 import 'package:flutter_base/ui/widgets/gradients/gradient_divider.dart';
 import 'package:flutter_base/ui/widgets/gradients/gradient_text.dart';
@@ -243,8 +244,7 @@ class FlutterBaseAuthConfig extends AuthConfig {
       case AuthFluxBranchRoute.register:
         return (_) => const SignInScreen(type: SignInScreenType.register);
       case AuthFluxBranchRoute.forgotPassword:
-        //return (_) => forgotPasswordPage();
-        return (_) => Container();
+        return (_) => const ForgotPasswordScreen();
       case AuthFluxBranchRoute.resetPassword:
         //return (arg) => resetPasswordPage(arg as String);
         return (_) => Container();

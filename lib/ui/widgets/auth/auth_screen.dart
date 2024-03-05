@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
+import 'package:flutter_base/extensions/router_extension.dart';
 import 'package:flutter_base/ui/app/scope/auth_config_scope.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/copy_button.dart';
@@ -59,7 +60,9 @@ class AuthScreen extends StatelessWidget {
   static void goToAuthRoute(BuildContext context, AuthFluxBranchRoute route) {
     final router = GoRouter.of(context);
     final currentRoute = router.routerDelegate.currentConfiguration.uri;
+    debugPrint(currentRoute.toString());
     final newRoute = currentRoute.replace(path: route.fullPath);
+    debugPrint(newRoute.toString());
     router.go(newRoute.toString());
   }
 }
@@ -199,8 +202,21 @@ class _AuthScreenCloseButton extends StatelessWidget {
       child: CloseButton(
         color: invertColor ? Theme.of(context).colorScheme.onBackground : Colors.white,
         onPressed: () {
-          if (context.canPop()) {
-            context.pop(false);
+          debugPrint(context.canPop().toString());
+          debugPrint(GoRouter.of(context).routerDelegate.currentConfiguration.toString());
+          if (context.isAuthBranch()) {
+            if (context.canPop()) {
+              context.pop(false);
+            } else {
+              context.historyBack((success) {
+                if (!success) {
+                  context.goInitialBranch();
+                }
+              });
+              // if (!context.goBackIfReferrerIsNotCurrent()) {
+              //   context.goInitialBranch();
+              // }
+            }
           }
         },
       ),

@@ -613,6 +613,7 @@ extension ThemeBits on ThemeData {
   Color get positiveColor => isDark ? _dPositiveColor : _lPositiveColor;
   Color get colorBarrier => isDark ? Colors.black12 : Colors.black45;
   BoxShadow get shadow => isDark ? _defaultDarkShadowColor : _defaultLightShadowColor;
+  Color get strokeColor => const Color(0xFFB8C3E1);
 }
 
 const Color kBestScoreColor = Colors.purpleAccent;
@@ -672,13 +673,3 @@ const BoxShadow _defaultDarkShadowColor = BoxShadow(
   blurRadius: 18.7403564453125,
   spreadRadius: 1.8740354776382446,
 );
-
-class AuthOptions {
-  final Image Function(BuildContext) getImage;
-  final Widget Function(BuildContext) rightChild;
-
-  AuthOptions({
-    required this.getImage,
-    required this.rightChild,
-  });
-}

@@ -181,78 +181,77 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
     var allRoutes = widget.router.getNavigationRoutes(context);
     return RoutingConfig(
       routes: [
-        StatefulShellRoute.indexedStack(
-          builder: (context, state, navigationShell) {
-            return AppRouterScope(
-              router: widget.router,
-              child: MainAppScreen(
-                config: config,
-                child: navigationShell,
-              ),
-            );
-          },
-          branches: allRoutes.map(
-            (e) {
-              return StatefulShellBranch(
-                routes: [
-                  AppRoute(
-                    path: e.route,
-                    builder: (GoRouterState state) => AppBody(route: e),
-                  )
-                ],
-                initialLocation: e.initialLocation,
-              );
-            },
-          ).toList(),
-        ),
-        if (authConfig != null)
-          ShellRoute(
-            routes: [
-              for (final route in AuthFluxBranchRoute.signInRoutes)
-                GoRoute(
-                    path: route.fullPath,
-                    pageBuilder: (context, state) {
-                      final authBloc = context.read<AuthBloc>();
-                      final builder = authConfig!.authPageBuilder(route);
-                      final arg = route.getArg(authBloc.state, state);
-
-                      return NoTransitionPage(
-                        child: builder(arg),
+        ShellRoute(
+          navigatorKey: rootNavigatorKey,
+          routes: [
+            ShellRoute(
+              parentNavigatorKey: rootNavigatorKey,
+              navigatorKey: mainNavigatorKey,
+              pageBuilder: (context, state, child) {
+                return NoTransitionPage(child: child);
+              },
+              routes: [
+                StatefulShellRoute.indexedStack(
+                  parentNavigatorKey: mainNavigatorKey,
+                  builder: (context, state, navigationShell) {
+                    return AppRouterScope(
+                      router: widget.router,
+                      child: MainAppScreen(
+                        config: config,
+                        child: navigationShell,
+                      ),
+                    );
+                  },
+                  branches: allRoutes.map(
+                    (e) {
+                      return StatefulShellBranch(
+                        routes: [
+                          AppRoute(
+                            path: e.route,
+                            builder: (GoRouterState state) => AppBody(route: e),
+                          )
+                        ],
+                        initialLocation: e.initialLocation,
                       );
-                    }
-
-                    /*redirect: (context, state) async {
-                  final authBloc = await authWaitForAuthBloc(context);
-
-                  bool canContinue = authBloc != null;
-
-                  if (authBloc != null) {
-                    final mode = AuthFluxBranchRoute.fromUri(state.uri) ?? AuthFluxBranchRoute.login;
-
-                    canContinue = mode.canContinueNavigation(authBloc.state, null);
-                  }
-
-                  if (canContinue == false) {
-                    //log('Tried to go to ${state.uri} but the conditions are not met', name: 'AuthRouter');
-                    //return config.initialLocation;
-                  }
-
-                  return null;
-                },*/
-                    ),
-            ],
-            pageBuilder: (context, state, child) {
-              //final authBloc = context.read<AuthBloc>();
-
-              //return NoTransitionPage(child: fluxAuthRouteConfig.builder(route, authBloc.state, state));
-              return NoTransitionPage(
-                child: BlocListener<AuthBloc, AuthState>(
-                  listener: (BuildContext context, AuthState state) {},
-                  child: AuthScreen(child: child),
+                    },
+                  ).toList(),
                 ),
-              );
-            },
-          ),
+              ],
+            ),
+            if (authConfig != null)
+              ShellRoute(
+                parentNavigatorKey: rootNavigatorKey,
+                navigatorKey: authNavigatorKey,
+                routes: [
+                  for (final route in AuthFluxBranchRoute.signInRoutes)
+                    GoRoute(
+                      path: route.fullPath,
+                      parentNavigatorKey: authNavigatorKey,
+                      pageBuilder: (context, state) {
+                        final authBloc = context.read<AuthBloc>();
+                        final builder = authConfig!.authPageBuilder(route);
+                        final arg = route.getArg(authBloc.state, state);
+
+                        return NoTransitionPage(
+                          child: BlocListener<AuthBloc, AuthState>(
+                            listener: (BuildContext context, AuthState state) {},
+                            child: AuthScreen(child: builder(arg)),
+                          ),
+                        );
+                      },
+                    ),
+                ],
+                pageBuilder: (context, state, child) {
+                  return NoTransitionPage(
+                    child: child,
+                  );
+                },
+              ),
+          ],
+          pageBuilder: (context, state, child) {
+            return NoTransitionPage(child: child);
+          },
+        ),
       ],
       redirect: (context, state) {
         Future.microtask(() {
@@ -286,6 +285,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
     );
 
     router = GoRouter.routingConfig(
+      debugLogDiagnostics: true,
       initialLocation: initialRoute,
       routingConfig: appRoutingConfig,
     );
@@ -310,7 +310,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    child!,
+                    if (child != null) child,
                     AppBanner(text: config.banner),
                   ],
                 ),
@@ -383,3 +383,7 @@ class LoginState with ChangeNotifier {
     notifyListeners();
   }
 }
+
+GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+GlobalKey<NavigatorState> authNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'auth');
+GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'main');

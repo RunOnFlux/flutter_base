@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
 import 'package:flutter_base/auth/connection_status.dart';
 import 'package:flutter_base/data/flux_user.dart';
+import 'package:flutter_base/extensions/router_extension.dart';
 import 'package:flutter_base/extensions/try_cast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -65,4 +66,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Completer<void>? _initializedCompleter;
+}
+
+extension GoRouterExtension on BuildContext {
+  /// check if we are on the auth branch
+  bool isAuthBranch() {
+    final currentRoute = currentUri;
+    return currentRoute.path.startsWith(AuthFluxBranchRoute.rootPath);
+  }
 }
