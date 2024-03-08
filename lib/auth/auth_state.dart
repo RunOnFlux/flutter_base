@@ -213,7 +213,7 @@ class AuthState {
 
   @override
   String toString() {
-    return 'AuthState(status: $status, event: $event, error: $error, challenge: $challenge, fluxUserID: ${fluxUser?.id}, firebaseUserID: ${firebaseUser?.uid})';
+    return 'AuthState(status: $status, event: $event, error: $error, challenge: $challenge, fluxUserID: ${fluxUser?.uid}, firebaseUserID: ${firebaseUser?.uid})';
   }
 
   String? get photoUrl => fluxUser?.hasPhoto() == true ? fluxUser!.photo : firebaseUser?.photoURL;

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:flutter_base/utils/platform_info.dart';
+import 'package:flutter_base_example/config/constants.dart';
 import 'package:flutter_base_example/ui/app/flutter_base_example_app.dart';
 import 'package:flutter_base_example/utils/settings.dart';
 
@@ -10,6 +11,7 @@ import 'config/configure_nonweb.dart' if (dart.library.html) 'config/configure_w
 Future<void> main() async {
   configureApp();
   WidgetsFlutterBinding.ensureInitialized();
+  Constants.setEnvironment(Environment.debug);
 
   // Desktop Windows
   if (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS()) {

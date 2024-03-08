@@ -6,6 +6,10 @@ abstract class AuthEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class InitializeAuthEvent extends AuthEvent {
+  const InitializeAuthEvent();
+}
+
 /// event to notify that the backup codes have been saved, and that
 /// they should therefore be removed from the state, to change the UI
 class BackupCodesSavedEvent extends AuthEvent {

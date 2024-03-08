@@ -3,10 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
 import 'package:flutter_base/extensions/router_extension.dart';
+import 'package:flutter_base/ui/app/config/auth_config.dart';
 import 'package:flutter_base/ui/app/scope/auth_config_scope.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/copy_button.dart';
 import 'package:flutter_base/ui/widgets/loading_overlay.dart';
+import 'package:flutter_base/ui/widgets/popup_message.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/ui/widgets/specifal_focus_nodes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -119,10 +121,14 @@ class _AuthWrapperWidget extends StatelessWidget {
     return BlocBuilder<AuthBloc, AuthState>(
       buildWhen: (previous, current) => previous.loading != current.loading,
       builder: (context, state) {
-        return LoadingOverlay(
-          loading: state.loading,
-          colorBarrier: Colors.black54,
-          child: child,
+        debugPrint('Auth Screen loading? ${state.loading}');
+        return PopupMessageWidget(
+          key: GlobalKey(),
+          child: LoadingOverlay(
+            loading: state.loading,
+            colorBarrier: Colors.black54,
+            child: child,
+          ),
         );
       },
     );
@@ -378,5 +384,46 @@ class DefaultAuthPageTextField extends StatelessWidget {
         }),
       ],
     );
+  }
+}
+
+/// used to display on top of the main screen the challenge pages
+/// instead of redirecting to the auth branch, this simplifies the routing
+/// and prevent users to navigate back in the history
+///
+/// the main screen will be hidden when the challenge is visible and its
+/// state will be kept in memory
+///
+/// if any elements needed to be rebuilt when the challenge is passed or the
+/// auth status changes, it is mostly handled by using [AuthenticatedBlocMixin]
+/// which will recreate a specific bloc and therefore any widgets that depends on it
+class AuthChallengeWrapper extends StatelessWidget {
+  const AuthChallengeWrapper({super.key, required this.child, this.splashScreen});
+  final Widget child;
+  final Widget? splashScreen;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthBloc, AuthState>(
+        buildWhen: (previous, current) => previous.challenge != current.challenge,
+        builder: (context, state) {
+          final showMain = state.challenge == null || state.challenge!.type == AuthChallengeType.reauthentication;
+          return Stack(fit: StackFit.expand, children: [
+            if (splashScreen != null && state.challenge == null && !showMain) splashScreen!,
+            if (showMain) child else if (state.challenge != null) _buildChallenge(state, context)
+          ]);
+        });
+  }
+
+  Widget _buildChallenge(AuthState state, BuildContext context) {
+    final currentRoute = state.challenge!.type.route;
+    //final fluxAuthRouteConfig = FluxAuth._instance!.pagesConfig;
+    final authBloc = context.read<AuthBloc>();
+    final AuthConfig authConfig = AuthConfigScope.of(context)!;
+    final builder = authConfig.authPageBuilder(currentRoute);
+    final arg = currentRoute.getArg(authBloc.state, GoRouterState.of(context));
+
+    final child = builder(arg);
+    return AuthScreen(child: child);
   }
 }

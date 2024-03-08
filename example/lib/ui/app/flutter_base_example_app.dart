@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
 import 'package:flutter_base/blocs/loading_bloc.dart';
 import 'package:flutter_base/ui/app/config/app_config.dart';
@@ -9,10 +10,13 @@ import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/theme/colors.dart';
 import 'package:flutter_base/ui/widgets/auth/screens/forgot_password.dart';
 import 'package:flutter_base/ui/widgets/auth/screens/sign_in.dart';
+import 'package:flutter_base/ui/widgets/auth/screens/verify_email.dart';
 import 'package:flutter_base/ui/widgets/gradients/gradient_divider.dart';
 import 'package:flutter_base/ui/widgets/gradients/gradient_text.dart';
 import 'package:flutter_base/ui/widgets/logo.dart';
 import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
+import 'package:flutter_base_example/config/constants.dart';
+import 'package:flutter_base_example/config/firebase_configs/firebase_options.dart';
 import 'package:flutter_base_example/ui/routes/routes.dart';
 import 'package:flutter_base_example/ui/theme/app_theme.dart';
 import 'package:flutter_base_example/ui/widgets/footer.dart';
@@ -237,6 +241,12 @@ class FlutterBaseAppConfig extends AppConfig {
 
 class FlutterBaseAuthConfig extends AuthConfig {
   @override
+  FirebaseOptions get firebaseOptions {
+    debugPrint('get firebaseOptions: ${AuthFirebaseOptions.fromEnvironment(Constants.environment).currentPlatform}');
+    return AuthFirebaseOptions.fromEnvironment(Constants.environment).currentPlatform;
+  }
+
+  @override
   Widget Function(Object? arg) authPageBuilder(AuthFluxRoute route) {
     switch (route) {
       case AuthFluxBranchRoute.login:
@@ -253,7 +263,7 @@ class FlutterBaseAuthConfig extends AuthConfig {
         return (_) => Container();
       case AuthFluxChallengeRoute.needAccountEmailVerification:
         //return (_) => needEmailVerificationPage();
-        return (_) => Container();
+        return (_) => const NeedEmailVerificationScreen();
       case AuthFluxBranchRoute.verifyAndChangeEmail:
         //return (arg) => verifyAndChangeEmailPage(arg as String);
         return (_) => Container();

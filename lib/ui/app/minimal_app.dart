@@ -88,7 +88,15 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
           create: createLoadingBloc,
         ),
         ...createRootBlocs(context),
-        if (authConfig != null) BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
+        if (authConfig != null && authConfig!.firebaseOptions != null)
+          BlocProvider<AuthBloc>(
+              lazy: false,
+              create: (context) {
+                debugPrint('BlocProvider: AuthBloc');
+                final bloc = AuthBloc(firebaseOptions: authConfig!.firebaseOptions!);
+                bloc.add(const InitializeAuthEvent());
+                return bloc;
+              }),
       ],
       child: BlocBuilder<LoadingBloc, LoadingState>(
         builder: handleLoadingState,
@@ -196,9 +204,11 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                   builder: (context, state, navigationShell) {
                     return AppRouterScope(
                       router: widget.router,
-                      child: MainAppScreen(
-                        config: config,
-                        child: navigationShell,
+                      child: AuthChallengeWrapper(
+                        child: MainAppScreen(
+                          config: config,
+                          child: navigationShell,
+                        ),
                       ),
                     );
                   },
@@ -233,17 +243,37 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                         final arg = route.getArg(authBloc.state, state);
 
                         return NoTransitionPage(
-                          child: BlocListener<AuthBloc, AuthState>(
-                            listener: (BuildContext context, AuthState state) {},
-                            child: AuthScreen(child: builder(arg)),
-                          ),
+                          child: AuthScreen(child: builder(arg)),
                         );
                       },
                     ),
                 ],
                 pageBuilder: (context, state, child) {
+                  final queryParams = Map<String, String>.from(state.uri.queryParameters);
+                  String? redirect = queryParams['redirect'];
+
                   return NoTransitionPage(
-                    child: child,
+                    child: BlocListener<AuthBloc, AuthState>(
+                      listenWhen: (previous, current) =>
+                          (previous.signInByPhoneProcessStarted != current.signInByPhoneProcessStarted) ||
+                          (previous.hasFirebaseUser != current.hasFirebaseUser),
+                      listener: (BuildContext context, AuthState authState) {
+                        Router.neglect(context, () {
+                          if (authState.hasFirebaseUser) {
+                            if (redirect != null) {
+                              context.go(redirect);
+                            } else {
+                              context.go('/');
+                            }
+                          } else if (authState.signInByPhoneProcessStarted) {
+                            final currentUri = state.uri;
+                            final newUri = currentUri.replace(path: AuthFluxBranchRoute.phoneVerification.fullPath);
+                            context.go(newUri.toString());
+                          }
+                        });
+                      },
+                      child: child,
+                    ),
                   );
                 },
               ),

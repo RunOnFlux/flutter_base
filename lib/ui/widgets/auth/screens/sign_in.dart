@@ -353,7 +353,7 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
       }
     }
 
-    //FluxApp.instance.authSystem.bloc.add(event);
+    debugPrint(event.toString());
     context.read<AuthBloc>().add(event);
   }
 
