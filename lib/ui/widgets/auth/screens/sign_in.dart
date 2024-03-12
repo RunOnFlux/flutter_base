@@ -89,177 +89,179 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
       }
     }
     return Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Logo2(),
-            const SizedBox(
-              height: 16,
-            ),
-            Text(
-              widget.type.title,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 32,
-                  ),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (final method in providers) _ProviderSignInButton(method: method, onPressed: _signInPressed)
-              ],
-            ),
-            const SizedBox(
-              height: 36,
-            ),
-            Row(
-              children: [
-                const Expanded(child: Divider()),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Text(
-                    'OR',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
+      key: _formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Logo2(),
+          const SizedBox(
+            height: 16,
+          ),
+          Text(
+            widget.type.title,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 32,
                 ),
-                const Expanded(child: Divider())
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              for (final method in providers) _ProviderSignInButton(method: method, onPressed: _signInPressed)
+            ],
+          ),
+          const SizedBox(
+            height: 36,
+          ),
+          Row(
+            children: [
+              const Expanded(child: Divider()),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  'OR',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ),
+              const Expanded(child: Divider())
+            ],
+          ),
+          const SizedBox(
+            height: 18,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              for (int i = 0; i < otherMethods.length; i++)
+                () {
+                  final method = otherMethods[i];
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _OtherSignInButton(
+                        method: method,
+                        onPressed: () {
+                          setState(() {
+                            _selectedMethod = method;
+                          });
+                        },
+                        selected: _selectedMethod == method,
+                      ),
+                      if (i < otherMethods.length - 1)
+                        Container(
+                          width: 1,
+                          height: 20,
+                          color: Colors.grey.shade300,
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                        )
+                    ],
+                  );
+                }()
+            ],
+          ),
+          const SizedBox(
+            height: 28,
+          ),
+          if (_selectedMethod == FirebaseSignInMethods.email) _buildEmailSignIn(),
+          if (widget.type == SignInScreenType.register) ...[
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                ValueListenableBuilder(
+                    valueListenable: _termsAccepterNotifier,
+                    builder: (context, value, child) {
+                      return Checkbox(
+                        value: value,
+                        splashRadius: 12,
+                        onChanged: (v) async {
+                          _termsAccepterNotifier.value = v ?? false;
+                        },
+                        visualDensity: VisualDensity.compact,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      );
+                    }),
+                Expanded(child: _buildTermsAndConditions(context)),
               ],
             ),
-            const SizedBox(
-              height: 18,
-            ),
+          ],
+          const SizedBox(height: 22),
+          _buildSignInbutton(),
+          const SizedBox(height: 16),
+          if (widget.type == SignInScreenType.signIn)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (AuthConfigScope.of(context)?.allowSignUp ?? false)
+                  Flexible(
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 2),
+                          child: Text(
+                            'Don\'t have an account?',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4),
+                          child: TextButton(
+                            onPressed: () {
+                              AuthScreen.goToAuthRoute(context, AuthFluxBranchRoute.register);
+                            },
+                            child: Text(
+                              'Sign Up',
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                const SizedBox(height: 16),
+                TextButton(
+                  onPressed: () {
+                    AuthScreen.goToAuthRoute(context, AuthFluxBranchRoute.forgotPassword);
+                  },
+                  child: Text(
+                    'Forgot Password?',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                  ),
+                )
+              ],
+            )
+          else
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                for (int i = 0; i < otherMethods.length; i++)
-                  () {
-                    final method = otherMethods[i];
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _OtherSignInButton(
-                          method: method,
-                          onPressed: () {
-                            setState(() {
-                              _selectedMethod = method;
-                            });
-                          },
-                          selected: _selectedMethod == method,
+                Text('Already have an account?', style: Theme.of(context).textTheme.bodyMedium),
+                TextButton(
+                  onPressed: () {
+                    AuthScreen.goToAuthRoute(context, AuthFluxBranchRoute.login);
+                  },
+                  child: Text(
+                    'Sign In',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Theme.of(context).primaryColor,
                         ),
-                        if (i < otherMethods.length - 1)
-                          Container(
-                            width: 1,
-                            height: 20,
-                            color: Colors.grey.shade300,
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                          )
-                      ],
-                    );
-                  }()
+                  ),
+                )
               ],
-            ),
-            const SizedBox(
-              height: 28,
-            ),
-            if (_selectedMethod == FirebaseSignInMethods.email) _buildEmailSignIn(),
-            if (widget.type == SignInScreenType.register) ...[
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  ValueListenableBuilder(
-                      valueListenable: _termsAccepterNotifier,
-                      builder: (context, value, child) {
-                        return Checkbox(
-                          value: value,
-                          splashRadius: 12,
-                          onChanged: (v) async {
-                            _termsAccepterNotifier.value = v ?? false;
-                          },
-                          visualDensity: VisualDensity.compact,
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        );
-                      }),
-                  Expanded(child: _buildTermsAndConditions(context)),
-                ],
-              ),
-            ],
-            const SizedBox(height: 22),
-            _buildSignInbutton(),
-            const SizedBox(height: 16),
-            if (widget.type == SignInScreenType.signIn)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (AuthConfigScope.of(context)?.allowSignUp ?? false)
-                    Flexible(
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 2),
-                            child: Text(
-                              'Don\'t have an account?',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 4),
-                            child: TextButton(
-                              onPressed: () {
-                                AuthScreen.goToAuthRoute(context, AuthFluxBranchRoute.register);
-                              },
-                              child: Text(
-                                'Sign Up',
-                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: () {
-                      AuthScreen.goToAuthRoute(context, AuthFluxBranchRoute.forgotPassword);
-                    },
-                    child: Text(
-                      'Forgot Password?',
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: Theme.of(context).primaryColor,
-                          ),
-                    ),
-                  )
-                ],
-              )
-            else
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Already have an account?', style: Theme.of(context).textTheme.bodyMedium),
-                  TextButton(
-                      onPressed: () {
-                        AuthScreen.goToAuthRoute(context, AuthFluxBranchRoute.login);
-                      },
-                      child: Text(
-                        'Sign In',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              color: Theme.of(context).primaryColor,
-                            ),
-                      ))
-                ],
-              )
-          ],
-        ));
+            )
+        ],
+      ),
+    );
   }
 
   Widget _buildEmailSignIn() {
@@ -376,7 +378,7 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
                     );
                   },
             onDisabledPressed: () {},
-            text: 'Sign In',
+            text: widget.type == SignInScreenType.signIn ? 'Sign In' : 'Sign Up',
             onPressed: _signInPressed,
             height: 46,
           );
@@ -384,7 +386,7 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
       );
     } else {
       return DefaultTextButton(
-        text: 'Sign In',
+        text: widget.type == SignInScreenType.signIn ? 'Sign In' : 'Sign Up',
         onPressed: _signInPressed,
         height: 46,
       );
