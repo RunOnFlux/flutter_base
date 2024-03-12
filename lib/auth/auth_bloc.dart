@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart' as frb;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/api/api.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
 import 'package:flutter_base/auth/connection_status.dart';
 import 'package:flutter_base/auth/service/auth_service.dart';
@@ -54,7 +56,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (event.error.type == AuthErrorType.unknown) {
         return;
       }
-      AuthService.bloc = this;
       var fluxUser = state.fluxUser;
       frb.User? firebaseUser = state.firebaseUser;
       AuthError? error = event.error;
@@ -92,11 +93,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<FirebaseAuthSignInEvent>(firebaseAuthSignInEvent, transformer: restartable());
     on<InternalAuthEvent>((event, emit) async {
       if (event is _InternalFirebaseSignIn) {
+        debugPrint('AuthBloc: _InternalFirebaseSignIn');
         final signInEvent = state.event.as<FirebaseAuthSignInEvent>();
+        debugPrint(signInEvent.toString());
         if (signInEvent is FirebaseEmailAuthEvent && signInEvent.isSignUp) {
           await restSignUp(emit, signInEvent);
         } else {
-          //await restSignIn(emit, signInEvent);
+          debugPrint('AuthBloc: restSignIn');
+          await restSignIn(emit, signInEvent);
         }
       } else if (event is _InternalFirebaseSignOut) {
         debugPrint('[AuthBloc] Signed out');
@@ -197,6 +201,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> init([Duration? timeout = const Duration(seconds: 10)]) async {
     debugPrint('Initializing Firebase');
     FirebaseApp? firebaseApp;
+    AuthService.bloc = this;
     try {
       await Future.wait([FluxAuthLocalStorage.init()]);
       debugPrint(firebaseOptions.toString());

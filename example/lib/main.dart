@@ -1,8 +1,10 @@
 //import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
+import 'package:flutter_base/api/api.dart';
 import 'package:flutter_base/utils/platform_info.dart';
 import 'package:flutter_base_example/config/constants.dart';
+import 'package:flutter_base_example/config/example_api.dart';
 import 'package:flutter_base_example/ui/app/flutter_base_example_app.dart';
 import 'package:flutter_base_example/utils/settings.dart';
 
@@ -22,6 +24,7 @@ Future<void> main() async {
   }
 
   await ExampleSettings().initialize();
+  Api.instance = ExampleAPI();
 
   // Register any singletons here
   //GetIt.I.registerSingleton<NodeList>(NodeList());

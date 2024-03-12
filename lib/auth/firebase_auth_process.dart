@@ -232,9 +232,102 @@ extension _AuthBlocExtension on AuthBloc {
         fluxUser = fluxUser.copyWith(password: event.password);
       }
       debugPrint('[AuthBloc] Signing up with user: $fluxUser');
+      var token = await getUserToken();
+      debugPrint(token);
       final result = await AuthService().signUp();
       debugPrint('[AuthBloc] Response from server: $result');
     } catch (e) {
+      debugPrint(e.toString());
+      challenge = null;
+
+      error = AuthError.from(e);
+
+      if (error.type == AuthErrorType.userNotFound) {
+        // /// if the user is not found (should not happen), it means that the user was removed from the server
+        // /// so we need to force firebase user to have a new uid
+
+        // await firebaseUser.delete();
+
+        // /// re-sign in the user with the current user's credentials if any
+        // if (_userCredential?.credential != null) {
+        //   await _firebaseInstance
+        //       .signInWithCredential(_userCredential!.credential!);
+        //   return;
+        // } else {
+        firebaseUser = null;
+        fluxUser = null;
+        await _firebaseInstance.signOut();
+        // }
+      } else {
+        firebaseUser = null;
+        fluxUser = null;
+        await _firebaseInstance.signOut();
+      }
+    }
+    emit(
+      AuthState(
+        error: error,
+        fluxUser: fluxUser,
+        firebaseUser: firebaseUser,
+        challenge: challenge,
+      ),
+    );
+  }
+
+  Future<void> restSignIn(Emitter<AuthState> emit, [FirebaseAuthSignInEvent? event]) async {
+    User? firebaseUser = _firebaseInstance.currentUser;
+
+    debugPrint('AuthBloc: restSignIn: ${firebaseUser.toString()}');
+    if (firebaseUser == null) {
+      emit(
+        AuthState(
+          error: AuthErrorType.noUserSignedIn,
+          status: AuthConnectionStatus.done,
+          event: event,
+        ),
+      );
+      return;
+    }
+    emit(state.copyWith(firebaseUser: firebaseUser));
+
+    AuthError? error;
+    AuthChallenge? challenge;
+
+    FluxUser? fluxUser = state.fluxUser ?? AuthService().createFluxUserFromFirebase(firebaseUser);
+    try {
+      if (event is FirebaseEmailAuthEvent) {
+        fluxUser = fluxUser.copyWith(password: event.password);
+      }
+      debugPrint('AuthBloc: restSignIn: Signing in with user: $fluxUser');
+      var token = await getUserToken();
+      debugPrint(token);
+      var loginPhrase = await Api.instance!.apiCall(
+        RequestType.get,
+        '/id/loginphrase',
+        backendOverride: 'https://api.runonflux.io',
+      );
+      final result = await AuthService().signIn(message: loginPhrase['data']);
+      debugPrint('AuthBloc: restSignIn: Response from server: $result');
+      if (result.success) {
+        String encodedZelid = Uri.encodeQueryComponent(result.publicAddress!);
+        String encodedLoginPhrase = Uri.encodeQueryComponent(loginPhrase['data']);
+        String encodedSignature = Uri.encodeQueryComponent(result.signature!);
+
+        var fluxLogin = await Api.instance!.apiCall(
+          RequestType.post,
+          '/id/verifylogin',
+          backendOverride: 'https://api.runonflux.io',
+          body: 'zelid=$encodedZelid&signature=$encodedSignature&loginPhrase=$encodedLoginPhrase',
+          options: Options(headers: {
+            'Content-type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json, text/plain, */*',
+          }),
+        );
+        debugPrint(fluxLogin.toString());
+        if (fluxLogin['status'] == 'success') {}
+      }
+    } catch (e) {
+      debugPrint(e.toString());
       challenge = null;
 
       error = AuthError.from(e);

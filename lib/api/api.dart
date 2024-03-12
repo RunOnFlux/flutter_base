@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_base/ui/routes/route.dart';
-import 'package:flutter_base/utils/platform_info.dart';
 import 'package:http/http.dart' as http;
 
 enum RequestType { get, post, put, patch, del, download }
@@ -203,9 +202,9 @@ abstract class Api {
 final Map<String, String> header = {
   'Content-type': 'application/json',
   'Accept': 'application/json',
-  'client-id': 'FluxCloud',
-  'package-name': 'io.runonflux.fluxcloud',
-  'platform': PlatformInfo().getCurrentPlatformType().toString(),
+  //'client-id': 'FluxCloud',
+  //'package-name': 'io.runonflux.fluxcloud',
+  //'platform': PlatformInfo().getCurrentPlatformType().toString(),
 };
 
 final Map<String, String> simpleHeaders = {
