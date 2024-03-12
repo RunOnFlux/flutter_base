@@ -90,6 +90,7 @@ extension GoRouterExtension on GoRouter {
   void goBranchRootRoute() {
     final navigator = routerDelegate.navigatorKey.currentState;
     if (navigator != null) {
+      debugPrint('goBranchRootRoute');
       navigator.popUntil((route) => route.isFirst);
     }
   }

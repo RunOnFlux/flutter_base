@@ -1,14 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart' as frb;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/api/api.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
 import 'package:flutter_base/auth/connection_status.dart';
 import 'package:flutter_base/auth/service/auth_service.dart';
@@ -17,6 +15,7 @@ import 'package:flutter_base/extensions/router_extension.dart';
 import 'package:flutter_base/extensions/try_cast.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 
 export 'package:firebase_auth/firebase_auth.dart'
@@ -196,6 +195,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       }
     }, transformer: droppable());
+    on<AuthRouteEvent>(
+      (event, emit) {
+        emit(state.copyWith(currentRoute: event.route));
+      },
+    );
   }
 
   Future<void> init([Duration? timeout = const Duration(seconds: 10)]) async {
@@ -326,6 +330,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       dateTime.millisecondsSinceEpoch,
     );
   }
+
+  void setCurrentRoute(AuthFluxRoute route) {
+    add(AuthRouteEvent(route));
+  }
 }
 
 extension GoRouterExtension on BuildContext {
@@ -342,6 +350,17 @@ extension AuthBlocExtension on AuthBloc {
     try {
       // logger.d('[AuthBloc.getUserToken] force: $force, state: $state');
       final token = state.firebaseUser?.getIdToken(force).timeout(const Duration(seconds: 5));
+      return token;
+    } catch (e) {
+      debugPrint('Error getting user token: $e');
+      return null;
+    }
+  }
+
+  FutureOr<String?> getUserTokenFromFirebaseUser({bool force = false, required User firebaseUser}) {
+    try {
+      // logger.d('[AuthBloc.getUserToken] force: $force, state: $state');
+      final token = firebaseUser.getIdToken(force).timeout(const Duration(seconds: 5));
       return token;
     } catch (e) {
       debugPrint('Error getting user token: $e');
@@ -374,6 +393,18 @@ extension AuthBlocExtension on AuthBloc {
       return true;
     } catch (e) {
       return false;
+    }
+  }
+
+  void goToAuthRoute(bool isPopup, BuildContext context, AuthFluxBranchRoute route) {
+    if (isPopup) {
+    } else {
+      final router = GoRouter.of(context);
+      final currentRoute = router.routerDelegate.currentConfiguration.uri;
+      debugPrint(currentRoute.toString());
+      final newRoute = currentRoute.replace(path: route.fullPath);
+      debugPrint('goToAuthRoute: ${newRoute.toString()}');
+      router.go(newRoute.toString());
     }
   }
 }

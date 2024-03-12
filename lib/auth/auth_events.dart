@@ -175,6 +175,14 @@ class TwoFactorValidateEvent extends AuthEvent {
   List<Object?> get props => [code];
 }
 
+class AuthRouteEvent extends AuthEvent {
+  final AuthFluxRoute route;
+
+  const AuthRouteEvent(this.route);
+  @override
+  List<Object?> get props => [route];
+}
+
 ///
 ///
 ///

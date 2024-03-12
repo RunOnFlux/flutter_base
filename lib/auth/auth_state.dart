@@ -14,17 +14,18 @@ part of 'auth_bloc.dart';
 /// instance of the state are considered equal if they have the same event, error,
 /// and status, and if the delta between the two states is less than 500ms
 class AuthState {
-  AuthState(
-      {this.error,
-      this.result,
-      this.fluxUser,
-      this.challenge,
-      this.status = AuthConnectionStatus.done,
-      this.event,
-      this.phoneVerificationRequest,
-      this.phoneSignInOTPRequest,
-      this.firebaseUser})
-      : _timestamp = DateTime.now().millisecondsSinceEpoch;
+  AuthState({
+    this.error,
+    this.result,
+    this.fluxUser,
+    this.challenge,
+    this.status = AuthConnectionStatus.done,
+    this.event,
+    this.phoneVerificationRequest,
+    this.phoneSignInOTPRequest,
+    this.firebaseUser,
+    this.currentRoute,
+  }) : _timestamp = DateTime.now().millisecondsSinceEpoch;
 
   factory AuthState.initial() => AuthState(status: AuthConnectionStatus.idle);
 
@@ -39,6 +40,8 @@ class AuthState {
   final AuthResult? result;
   final PhoneSigninRequest? phoneSignInOTPRequest;
   final PhoneVerificationRequest? phoneVerificationRequest;
+  final AuthFluxRoute? currentRoute;
+
   AuthError? get authError {
     if (error == null) {
       return null;
@@ -189,16 +192,18 @@ class AuthState {
   /// as well as any extra of type [ExtraKeepAliveMixin] with [keepAlive] set to false
   /// Any other type of extra is kept. Meaning that if a new state is emit using copyWith
   /// the extra will still be present in the new state
-  AuthState copyWith(
-      {AuthEvent? event,
-      Object? error,
-      AuthResult? result,
-      FluxUser? fluxUser,
-      PhoneVerificationRequest? phoneVerificationRequest,
-      PhoneSigninRequest? phoneSignInOTPRequest,
-      AuthChallenge? challenge,
-      AuthConnectionStatus? status,
-      User? firebaseUser}) {
+  AuthState copyWith({
+    AuthEvent? event,
+    Object? error,
+    AuthResult? result,
+    FluxUser? fluxUser,
+    PhoneVerificationRequest? phoneVerificationRequest,
+    PhoneSigninRequest? phoneSignInOTPRequest,
+    AuthChallenge? challenge,
+    AuthConnectionStatus? status,
+    User? firebaseUser,
+    AuthFluxRoute? currentRoute,
+  }) {
     return AuthState(
         challenge: challenge ?? this.challenge,
         phoneSignInOTPRequest: phoneSignInOTPRequest,
@@ -206,6 +211,7 @@ class AuthState {
         firebaseUser: firebaseUser ?? this.firebaseUser,
         fluxUser: fluxUser ?? this.fluxUser,
         status: status ?? this.status,
+        currentRoute: currentRoute ?? this.currentRoute,
         error: error,
         event: event,
         result: result);

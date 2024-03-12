@@ -285,7 +285,6 @@ extension _AuthBlocExtension on AuthBloc {
       );
       return;
     }
-    emit(state.copyWith(firebaseUser: firebaseUser));
 
     AuthError? error;
 
@@ -295,18 +294,23 @@ extension _AuthBlocExtension on AuthBloc {
         fluxUser = fluxUser.copyWith(password: event.password);
       }
       debugPrint('AuthBloc: restSignIn: Signing in with user: $fluxUser');
-      var token = await getUserToken();
+      var token = await getUserTokenFromFirebaseUser(firebaseUser: firebaseUser);
       debugPrint(token);
-      var loginPhrase = await AuthService().getLoginPhrase();
-      final result = await AuthService().signIn(message: loginPhrase.loginPhrase);
-      debugPrint('AuthBloc: restSignIn: Response from server: $result');
-      if (result.success) {
-        var fluxLogin = await AuthService().verifyLogin(
-          zelid: result.publicAddress!,
-          loginPhrase: loginPhrase.loginPhrase,
-          signature: result.signature!,
+      if (token != null) {
+        var loginPhrase = await AuthService().getLoginPhrase();
+        final result = await AuthService().signIn(
+          token: token,
+          message: loginPhrase.loginPhrase,
         );
-      }
+        debugPrint('AuthBloc: restSignIn: Response from server: $result');
+        if (result.success) {
+          var fluxLogin = await AuthService().verifyLogin(
+            zelid: result.publicAddress!,
+            loginPhrase: loginPhrase.loginPhrase,
+            signature: result.signature!,
+          );
+        } else {}
+      } else {}
     } catch (e) {
       debugPrint(e.toString());
 

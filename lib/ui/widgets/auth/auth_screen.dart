@@ -13,11 +13,13 @@ import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/ui/widgets/specifal_focus_nodes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class AuthScreen extends StatelessWidget {
   final Widget child;
+  final bool isPopup;
 
-  const AuthScreen({super.key, required this.child});
+  const AuthScreen({super.key, required this.child, this.isPopup = false});
 
   @override
   Widget build(BuildContext context) {
@@ -33,22 +35,34 @@ class AuthScreen extends StatelessWidget {
           if (state.needReauthentication) {
             //wrapper = (child) => _DialogWrapperWidget(child: child);
           }
-          return _AuthWrapperWidget(child: wrapper(child));
+          return Provider<bool>(
+            create: (BuildContext context) => isPopup,
+            child: _AuthWrapperWidget(
+              child: wrapper(child),
+            ),
+          );
         });
   }
 
   static void goToAuthRoute(BuildContext context, AuthFluxBranchRoute route) {
-    final router = GoRouter.of(context);
-    final currentRoute = router.routerDelegate.currentConfiguration.uri;
-    debugPrint(currentRoute.toString());
-    final newRoute = currentRoute.replace(path: route.fullPath);
-    debugPrint(newRoute.toString());
-    router.go(newRoute.toString());
+    bool isPopup = context.read<bool>();
+    if (isPopup) {
+      context.read<AuthBloc>().setCurrentRoute(route);
+    } else {
+      final router = GoRouter.of(context);
+      final currentRoute = router.routerDelegate.currentConfiguration.uri;
+      debugPrint(currentRoute.toString());
+      final newRoute = currentRoute.replace(path: route.fullPath);
+      debugPrint('goToAuthRoute: ${newRoute.toString()}');
+      router.go(newRoute.toString());
+    }
   }
 }
 
 class _DefaultWrapperWidget extends StatelessWidget {
-  const _DefaultWrapperWidget({required this.child});
+  const _DefaultWrapperWidget({
+    required this.child,
+  });
   final Widget child;
 
   @override
@@ -175,7 +189,9 @@ class _AuthWrapperRightSide extends StatelessWidget {
 }
 
 class _AuthScreenCloseButton extends StatelessWidget {
-  const _AuthScreenCloseButton({this.invertColor = false});
+  const _AuthScreenCloseButton({
+    this.invertColor = false,
+  });
   final bool invertColor;
 
   @override
@@ -183,28 +199,36 @@ class _AuthScreenCloseButton extends StatelessWidget {
     return Positioned(
       top: 16,
       left: 16,
-      child: CloseButton(
-        color: invertColor ? Theme.of(context).colorScheme.onBackground : Colors.white,
-        onPressed: () {
-          debugPrint(context.canPop().toString());
-          debugPrint(GoRouter.of(context).routerDelegate.currentConfiguration.toString());
-          if (context.isAuthBranch()) {
-            if (context.canPop()) {
-              context.pop(false);
+      child: Consumer<bool>(
+        builder: (BuildContext context, bool isPopup, Widget? child) => CloseButton(
+          color: invertColor ? Theme.of(context).colorScheme.onBackground : Colors.white,
+          onPressed: () {
+            debugPrint(context.canPop().toString());
+            debugPrint(GoRouter.of(context).routerDelegate.currentConfiguration.toString());
+            if (isPopup) {
+              context.pop();
             } else {
-              context.historyBack((success) {
-                if (!success) {
-                  context.goInitialBranch();
-                }
-              });
-              // if (!context.goBackIfReferrerIsNotCurrent()) {
-              //   context.goInitialBranch();
-              // }
+              close(context);
             }
-          }
-        },
+          },
+        ),
       ),
     );
+  }
+
+  close(BuildContext context) {
+    if (context.isAuthBranch()) {
+      debugPrint('default closer');
+      if (context.canPop()) {
+        context.pop(false);
+      } else {
+        context.historyBack((success) {
+          if (!success) {
+            context.goInitialBranch();
+          }
+        });
+      }
+    }
   }
 }
 

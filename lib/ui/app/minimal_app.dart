@@ -261,8 +261,10 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                         Router.neglect(context, () {
                           if (authState.hasFirebaseUser) {
                             if (redirect != null) {
+                              debugPrint('going with redirect');
                               context.go(redirect);
                             } else {
+                              debugPrint('going without redirect to /');
                               context.go('/');
                             }
                           } else if (authState.signInByPhoneProcessStarted) {

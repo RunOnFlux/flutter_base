@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
+import 'package:flutter_base/extensions/modal_sheet_extensions.dart';
+import 'package:flutter_base/ui/app/config/auth_config.dart';
+import 'package:flutter_base/ui/app/scope/auth_config_scope.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
+import 'package:flutter_base/ui/widgets/auth/auth_screen.dart';
 import 'package:flutter_base/ui/widgets/popup_message.dart';
 import 'package:flutter_base_example/ui/screens/home/home_screen.dart';
 import 'package:flutter_base_example/ui/screens/params/params_screen.dart';
 import 'package:flutter_base_example/ui/screens/tabs/tabbed_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class ExampleAppRouter extends AppRouter {
@@ -157,6 +163,39 @@ class ExampleAppRouter extends AppRouter {
         title: 'Auth Screen',
         action: (BuildContext context) {
           context.go(AuthFluxBranchRoute.login.fullPath);
+        },
+        icon: Icons.add,
+      ),
+      ActionRoute(
+        title: 'Auth Popup',
+        action: (BuildContext context) {
+          context.read<AuthBloc>().setCurrentRoute(AuthFluxBranchRoute.login);
+          context.showBottomSheet(
+            (context) => BlocListener<AuthBloc, AuthState>(
+              listenWhen: (previous, current) =>
+                  (previous.signInByPhoneProcessStarted != current.signInByPhoneProcessStarted) ||
+                  (previous.hasFirebaseUser != current.hasFirebaseUser),
+              listener: (BuildContext context, AuthState authState) {
+                Router.neglect(context, () {
+                  if (authState.hasFirebaseUser) {
+                    debugPrint('popping because hasFirebaseUser');
+                    context.pop();
+                  }
+                });
+              },
+              child: AuthScreen(
+                isPopup: true,
+                child: BlocBuilder<AuthBloc, AuthState>(
+                  buildWhen: (previous, current) => previous.currentRoute != current.currentRoute,
+                  builder: (BuildContext context, state) {
+                    final AuthConfig authConfig = AuthConfigScope.of(context)!;
+                    final builder = authConfig.authPageBuilder(state.currentRoute!);
+                    return builder(null);
+                  },
+                ),
+              ),
+            ),
+          );
         },
         icon: Icons.add,
       ),

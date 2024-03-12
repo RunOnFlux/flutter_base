@@ -36,7 +36,10 @@ class AuthService {
     throw ApiException(message: 'Invalid Data');
   }
 
-  Future<SignInResult> signIn({required String message}) async {
+  Future<SignInResult> signIn({
+    required String message,
+    required String token,
+  }) async {
     if (bloc == null) {
       throw ApiException(message: 'No AuthBloc');
     }
@@ -44,7 +47,7 @@ class AuthService {
     if (api == null) {
       throw ApiException(message: 'No API');
     }
-    var token = await bloc!.getUserToken();
+    //var token = await bloc!.getUserToken();
     debugPrint(token);
     dynamic response = await api.apiCall(
       RequestType.post,
