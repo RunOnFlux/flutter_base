@@ -224,7 +224,6 @@ extension _AuthBlocExtension on AuthBloc {
     }
 
     AuthError? error;
-    AuthChallenge? challenge;
 
     FluxUser? fluxUser = state.fluxUser ?? AuthService().createFluxUserFromFirebase(firebaseUser);
     try {
@@ -238,7 +237,6 @@ extension _AuthBlocExtension on AuthBloc {
       debugPrint('[AuthBloc] Response from server: $result');
     } catch (e) {
       debugPrint(e.toString());
-      challenge = null;
 
       error = AuthError.from(e);
 
@@ -269,7 +267,6 @@ extension _AuthBlocExtension on AuthBloc {
         error: error,
         fluxUser: fluxUser,
         firebaseUser: firebaseUser,
-        challenge: challenge,
       ),
     );
   }
@@ -291,7 +288,6 @@ extension _AuthBlocExtension on AuthBloc {
     emit(state.copyWith(firebaseUser: firebaseUser));
 
     AuthError? error;
-    AuthChallenge? challenge;
 
     FluxUser? fluxUser = state.fluxUser ?? AuthService().createFluxUserFromFirebase(firebaseUser);
     try {
@@ -301,34 +297,18 @@ extension _AuthBlocExtension on AuthBloc {
       debugPrint('AuthBloc: restSignIn: Signing in with user: $fluxUser');
       var token = await getUserToken();
       debugPrint(token);
-      var loginPhrase = await Api.instance!.apiCall(
-        RequestType.get,
-        '/id/loginphrase',
-        backendOverride: 'https://api.runonflux.io',
-      );
-      final result = await AuthService().signIn(message: loginPhrase['data']);
+      var loginPhrase = await AuthService().getLoginPhrase();
+      final result = await AuthService().signIn(message: loginPhrase.loginPhrase);
       debugPrint('AuthBloc: restSignIn: Response from server: $result');
       if (result.success) {
-        String encodedZelid = Uri.encodeQueryComponent(result.publicAddress!);
-        String encodedLoginPhrase = Uri.encodeQueryComponent(loginPhrase['data']);
-        String encodedSignature = Uri.encodeQueryComponent(result.signature!);
-
-        var fluxLogin = await Api.instance!.apiCall(
-          RequestType.post,
-          '/id/verifylogin',
-          backendOverride: 'https://api.runonflux.io',
-          body: 'zelid=$encodedZelid&signature=$encodedSignature&loginPhrase=$encodedLoginPhrase',
-          options: Options(headers: {
-            'Content-type': 'application/x-www-form-urlencoded',
-            'Accept': 'application/json, text/plain, */*',
-          }),
+        var fluxLogin = await AuthService().verifyLogin(
+          zelid: result.publicAddress!,
+          loginPhrase: loginPhrase.loginPhrase,
+          signature: result.signature!,
         );
-        debugPrint(fluxLogin.toString());
-        if (fluxLogin['status'] == 'success') {}
       }
     } catch (e) {
       debugPrint(e.toString());
-      challenge = null;
 
       error = AuthError.from(e);
 
@@ -359,7 +339,6 @@ extension _AuthBlocExtension on AuthBloc {
         error: error,
         fluxUser: fluxUser,
         firebaseUser: firebaseUser,
-        challenge: challenge,
       ),
     );
   }

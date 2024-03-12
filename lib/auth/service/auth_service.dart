@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as frb;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_base/api/api.dart';
+import 'package:flutter_base/api/model/id/id_model.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:flutter_base/data/flux_user.dart';
 
@@ -83,6 +84,53 @@ class AuthService {
         uid: firebaseUser.uid,
         otp: false,
         active: true);
+  }
+
+  Future<LoginPhrase> getLoginPhrase({String? nodeIP}) async {
+    dynamic response = await Api.instance!.apiCall(
+      RequestType.get,
+      '/id/loginphrase',
+      backendOverride: nodeIP == null ? 'https://api.runonflux.io' : 'http://$nodeIP',
+    );
+    debugPrint(response.toString());
+    if (response is Map) {
+      if (response['status'].toString().toLowerCase() == 'success') {
+        return LoginPhrase.fromJson(response as Map<String, dynamic>);
+      }
+    }
+    throw ApiException(message: 'Bad Data: ${response.toString()}');
+  }
+
+  Future<VerifyLogin> verifyLogin({
+    required String zelid,
+    required String loginPhrase,
+    required String signature,
+    String? nodeIP,
+  }) async {
+    String encodedZelid = Uri.encodeQueryComponent(zelid);
+    String encodedLoginPhrase = Uri.encodeQueryComponent(loginPhrase);
+    String encodedSignature = Uri.encodeQueryComponent(signature);
+
+    dynamic response = await Api.instance!.apiCall(
+      RequestType.post,
+      '/id/verifylogin',
+      body: 'zelid=$encodedZelid&signature=$encodedSignature&loginPhrase=$encodedLoginPhrase',
+      options: Options(headers: {
+        'Content-type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json, text/plain, */*',
+      }),
+      backendOverride: nodeIP == null ? 'https://api.runonflux.io' : 'http://$nodeIP',
+    );
+    debugPrint(response.toString());
+    if (response is Map) {
+      if (response['status'].toString().toLowerCase() == 'success') {
+        return VerifyLogin.fromJson(response as Map<String, dynamic>);
+      } else {
+        debugPrint(response['data']['message']);
+        throw ApiException(message: '${response['data']['message']}');
+      }
+    }
+    throw ApiException(message: 'Bad Data: ${response.toString()}');
   }
 }
 

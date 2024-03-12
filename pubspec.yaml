@@ -4,7 +4,7 @@ version: 0.0.12
 publish_to: none
 
 environment:
-  sdk: '>=3.1.5 <4.0.0'
+  sdk: '>=3.2.3 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
@@ -33,23 +33,21 @@ dependencies:
   flutter_html: ^3.0.0-beta.2
   flutter_svg: ^2.0.7
   flutter_wizard: ^2.0.5
+  json_annotation: ^4.8.1
   get_it: ^7.2.0
   get_it_mixin: ^3.1.4
   get_storage:
   go_router: ^13.2.0
   hive: ^2.2.3
   http: ^1.2.0
-  #i18n_extension: ^9.0.2
+  #i18n_extension: ^11.0.12
   loading_indicator: ^3.0.2
   modal_bottom_sheet:
     git:
       url: https://github.com/CoolDude53/modal_bottom_sheet.git
       ref: d3779be7d661481cc0d99090d6356a286ae4f86b
       path: modal_bottom_sheet
-  package_info_plus:
-    git:
-      url: https://github.com/fluttercommunity/plus_plugins.git
-      path: packages/package_info_plus/package_info_plus
+  package_info_plus: ^5.0.1
   provider: ^6.0.2
   responsive_framework: ^1.1.0
   shared_preferences: ^2.2.2
@@ -62,13 +60,17 @@ dependencies:
       url: https://github.com/google/flutter-desktop-embedding.git
       path: plugins/window_size
 
-#dependency_overrides:
-#  win32: ^5.0.5
+dependency_overrides:
+  #win32: ^5.0.5
+  #i18n_extension: ^11.0.12
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.1
+  intl_utils: ^2.8.2
+  build_runner:
+  json_serializable: ^6.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

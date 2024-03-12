@@ -356,9 +356,9 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
 
 class AppBody extends StatefulWidget {
   const AppBody({
-    Key? key,
+    super.key,
     required this.route,
-  }) : super(key: key);
+  });
 
   final NavigationRoute route;
 

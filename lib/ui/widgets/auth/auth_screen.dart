@@ -34,28 +34,6 @@ class AuthScreen extends StatelessWidget {
             //wrapper = (child) => _DialogWrapperWidget(child: child);
           }
           return _AuthWrapperWidget(child: wrapper(child));
-
-          /*return Scaffold(
-            body: Stack(
-              fit: StackFit.expand,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (!smallScreen)
-                      Expanded(
-                        child: _AuthScreenLeftSide(
-                          image: authOptions.getImage(context),
-                          content: authOptions.rightChild(context),
-                        ),
-                      ),
-                    _AuthScreenRightSide(),
-                  ],
-                ),
-                _AuthScreenCloseButton(invertColor: smallScreen),
-              ],
-            ),
-          );*/
         });
   }
 
