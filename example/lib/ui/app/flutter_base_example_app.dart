@@ -1,16 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
-import 'package:flutter_base/auth/auth_routes.dart';
 import 'package:flutter_base/blocs/loading_bloc.dart';
 import 'package:flutter_base/ui/app/config/app_config.dart';
 import 'package:flutter_base/ui/app/config/auth_config.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/theme/colors.dart';
-import 'package:flutter_base/ui/widgets/auth/screens/forgot_password.dart';
-import 'package:flutter_base/ui/widgets/auth/screens/sign_in.dart';
-import 'package:flutter_base/ui/widgets/auth/screens/verify_email.dart';
 import 'package:flutter_base/ui/widgets/gradients/gradient_divider.dart';
 import 'package:flutter_base/ui/widgets/gradients/gradient_text.dart';
 import 'package:flutter_base/ui/widgets/logo.dart';
@@ -244,47 +240,6 @@ class FlutterBaseAuthConfig extends AuthConfig {
   FirebaseOptions get firebaseOptions {
     debugPrint('get firebaseOptions: ${AuthFirebaseOptions.fromEnvironment(Constants.environment).currentPlatform}');
     return AuthFirebaseOptions.fromEnvironment(Constants.environment).currentPlatform;
-  }
-
-  @override
-  Widget Function(Object? arg) authPageBuilder(AuthFluxRoute route) {
-    switch (route) {
-      case AuthFluxBranchRoute.login:
-        return (_) => const SignInScreen();
-      case AuthFluxBranchRoute.register:
-        return (_) => const SignInScreen(type: SignInScreenType.register);
-      case AuthFluxBranchRoute.forgotPassword:
-        return (_) => const ForgotPasswordScreen();
-      case AuthFluxBranchRoute.resetPassword:
-        //return (arg) => resetPasswordPage(arg as String);
-        return (_) => Container();
-      case AuthFluxBranchRoute.verifyEmail:
-        //return (arg) => verifyEmailPage(arg as String);
-        return (_) => Container();
-      case AuthFluxChallengeRoute.needAccountEmailVerification:
-        //return (_) => needEmailVerificationPage();
-        return (_) => const NeedEmailVerificationScreen();
-      case AuthFluxBranchRoute.verifyAndChangeEmail:
-        //return (arg) => verifyAndChangeEmailPage(arg as String);
-        return (_) => Container();
-      case AuthFluxChallengeRoute.needReauthentication:
-        //return (_) => needReauthenticationPage();
-        return (_) => Container();
-      case AuthFluxChallengeRoute.needTwoFactorAuth:
-        //return (_) => needTwoFactorAuthenticationPage();
-        return (_) => Container();
-      case AuthFluxChallengeRoute.confTwoFactorAuth:
-        //return (arg) => confTwoFactorAuthenticationPage(arg as TwoFactorConfigRequest);
-        return (_) => Container();
-      case AuthFluxChallengeRoute.saveTwoFactorAuthCodes:
-        //return (arg) => backupCodesPage(arg as Validate2FAOTPResult);
-        return (_) => Container();
-      case AuthFluxBranchRoute.phoneVerification:
-        //return (arg) => phoneVerificationPage(arg as PhoneSigninRequest);
-        return (_) => Container();
-      default:
-        throw Exception('Unknown route: $route');
-    }
   }
 
   @override
