@@ -189,6 +189,8 @@ class ExampleAppRouter extends AppRouter {
                   buildWhen: (previous, current) => previous.currentRoute != current.currentRoute,
                   builder: (BuildContext context, state) {
                     final AuthConfig authConfig = AuthConfigScope.of(context)!;
+                    debugPrint('state.currentRoute: ${state.currentRoute}');
+
                     final builder = authConfig.authPageBuilder(state.currentRoute!);
                     return builder(null);
                   },

@@ -31,7 +31,13 @@ extension _AuthBlocExtension on AuthBloc {
       AuthProvider provider, FirebaseProviderAuthEvent event, Emitter<AuthState> emit) async {
     frb.UserCredential? userCredential;
     if (!kIsWeb) {
-      emit(AuthState(status: AuthConnectionStatus.waiting, event: event));
+      emit(
+        AuthState(
+          status: AuthConnectionStatus.waiting,
+          event: event,
+          currentRoute: state.currentRoute,
+        ),
+      );
     }
 
     //if (provider is GitlabAuthProvider) {
@@ -170,7 +176,13 @@ extension _AuthBlocExtension on AuthBloc {
         // }
       } else if (event is FirebaseEmailAuthEvent) {
         debugPrint('AuthBloc: received FirebaseEmailAuthEvent');
-        emit(AuthState(status: AuthConnectionStatus.waiting, event: event));
+        emit(
+          AuthState(
+            status: AuthConnectionStatus.waiting,
+            event: event,
+            currentRoute: state.currentRoute,
+          ),
+        );
 
         final signUp = event.isSignUp;
         if (signUp) {
@@ -184,12 +196,25 @@ extension _AuthBlocExtension on AuthBloc {
               .timeout(const Duration(seconds: 30));
         }
       } else if (event is FirebasePhoneAuthEvent) {
-        emit(AuthState(status: AuthConnectionStatus.waiting, event: event, phoneSignInOTPRequest: event.request));
+        emit(
+          AuthState(
+            status: AuthConnectionStatus.waiting,
+            event: event,
+            phoneSignInOTPRequest: event.request,
+            currentRoute: state.currentRoute,
+          ),
+        );
 
-        userCredential = await event.request.result.confirm(event.smsCode).timeout(const Duration(seconds: 30));
+        userCredential = await event.request.result.confirm(event.smsCode).timeout(
+              const Duration(seconds: 30),
+            );
       }
     } catch (e) {
-      emit(state.copyWith(error: AuthErrorType.from(e), status: AuthConnectionStatus.done, event: event));
+      emit(state.copyWith(
+        error: AuthErrorType.from(e),
+        status: AuthConnectionStatus.done,
+        event: event,
+      ));
     }
   }
 
@@ -203,6 +228,7 @@ extension _AuthBlocExtension on AuthBloc {
           error: AuthErrorType.noUserSignedIn,
           status: AuthConnectionStatus.done,
           event: event,
+          currentRoute: state.currentRoute,
         ),
       );
       return;
@@ -217,6 +243,7 @@ extension _AuthBlocExtension on AuthBloc {
           challenge: const AuthChallenge(
             type: AuthChallengeType.emailVerification,
           ),
+          currentRoute: state.currentRoute,
         ),
       );
 
@@ -267,6 +294,7 @@ extension _AuthBlocExtension on AuthBloc {
         error: error,
         fluxUser: fluxUser,
         firebaseUser: firebaseUser,
+        currentRoute: state.currentRoute,
       ),
     );
   }
@@ -281,6 +309,7 @@ extension _AuthBlocExtension on AuthBloc {
           error: AuthErrorType.noUserSignedIn,
           status: AuthConnectionStatus.done,
           event: event,
+          currentRoute: state.currentRoute,
         ),
       );
       return;
@@ -349,6 +378,7 @@ extension _AuthBlocExtension on AuthBloc {
         fluxUser: fluxUser,
         firebaseUser: firebaseUser,
         fluxLogin: fluxLogin,
+        currentRoute: state.currentRoute,
       ),
     );
   }
