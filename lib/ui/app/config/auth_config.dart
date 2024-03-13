@@ -1,5 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
 import 'package:flutter_base/ui/widgets/auth/screens/forgot_password.dart';
 import 'package:flutter_base/ui/widgets/auth/screens/sign_in.dart';
@@ -48,6 +48,8 @@ abstract class AuthConfig {
 
   Image getImage(BuildContext context);
   Widget rightChild(BuildContext context);
+
+  Color? getBackgroundColor(BuildContext context) => null;
 
   bool get allowSignUp => true;
 

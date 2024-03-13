@@ -71,6 +71,7 @@ class _DefaultWrapperWidget extends StatelessWidget {
     final smallScreen = width < 1280;
     final authOptions = AuthConfigScope.of(context)!;
     final child = Scaffold(
+      backgroundColor: authOptions.getBackgroundColor(context) ?? Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
         fit: StackFit.expand,
         children: [
