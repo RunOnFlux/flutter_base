@@ -78,4 +78,25 @@ class FluxLogin {
 
   factory FluxLogin.fromJson(Map<String, dynamic> json) => _$FluxLoginFromJson(json);
   Map<String, dynamic> toJson() => _$FluxLoginToJson(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (runtimeType != other.runtimeType) return false;
+    return other is FluxLogin &&
+        other.message == message &&
+        other.zelid == zelid &&
+        other.loginPhrase == loginPhrase &&
+        other.signature == signature &&
+        other.privilege == privilege;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        message,
+        zelid,
+        loginPhrase,
+        signature,
+        privilege,
+      );
 }
