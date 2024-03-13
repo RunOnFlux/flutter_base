@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="27"
+   height="26"
+   viewBox="0 0 27 26"
+   fill="none"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="twitter_icon.svg"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="22.903846"
+     inkscape:cx="-1.1133501"
+     inkscape:cy="22.201511"
+     inkscape:window-width="2560"
+     inkscape:window-height="1387"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g1" />
+  <g
+     clip-path="url(#clip0_1570_45150)"
+     id="g1">
+    <rect
+       x="0.5"
+       width="26"
+       height="26"
+       rx="13"
+       fill="#2B61D1"
+       id="rect1" />
+    <path
+       id="path1009"
+       class="st1"
+       d="m 7.1941796,7.3635593 4.6988384,6.2826777 -4.7284512,5.108121 h 1.0642676 l 4.1398446,-4.472337 3.344756,4.472337 h 3.621498 L 14.371614,12.118354 18.772877,7.3635593 H 17.70861 L 13.896152,11.482366 10.815676,7.3635593 Z m 1.5650537,0.7838542 h 1.6636997 l 7.346742,9.8230905 h -1.6637 z"
+       style="fill:#ffffff;stroke-width:0.0204235" />
+  </g>
+  <defs
+     id="defs2">
+    <clipPath
+       id="clip0_1570_45150">
+      <rect
+         width="26"
+         height="26"
+         fill="white"
+         transform="translate(0.5)"
+         id="rect2" />
+    </clipPath>
+  </defs>
+</svg>
