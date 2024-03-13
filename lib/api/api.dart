@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_base/ui/routes/route.dart';
+import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:http/http.dart' as http;
 
 enum RequestType { get, post, put, patch, del, download }

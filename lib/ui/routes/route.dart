@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:flutter_base/ui/widgets/app_screen.dart';
 
 abstract class AbstractRoute {
@@ -75,24 +76,6 @@ class NavigationRoute extends AbstractRoute {
       GetIt.I<ScreenInfo>().currentState = body!.stateInfo;
     });
   }*/
-}
-
-enum PrivilegeLevel {
-  none('none'),
-  user('user'),
-  admin('admin'),
-  fluxteam('fluxteam');
-
-  const PrivilegeLevel(this.level);
-  final String level;
-
-  static PrivilegeLevel? fromString(String level) {
-    List<PrivilegeLevel> levels = PrivilegeLevel.values;
-    for (var element in levels) {
-      if (element.level == level) return element;
-    }
-    return null;
-  }
 }
 
 class RouteSet extends AbstractRoute {

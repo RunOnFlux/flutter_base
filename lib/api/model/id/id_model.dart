@@ -1,5 +1,5 @@
 import 'package:flutter_base/api/api.dart';
-import 'package:flutter_base/ui/routes/route.dart';
+import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'id_model.g.dart';
@@ -71,6 +71,9 @@ class FluxLogin {
   String get loginPhrase => data['loginPhrase'];
   String get signature => data['signature'];
   String get privilege => data['privilage'];
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  PrivilegeLevel privilegeLevel = PrivilegeLevel.none;
 
   FluxLogin({
     required this.data,

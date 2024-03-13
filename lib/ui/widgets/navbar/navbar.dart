@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:flutter_base/ui/app/config/app_config.dart';
 import 'package:flutter_base/ui/app/main_app_screen.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
