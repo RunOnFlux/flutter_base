@@ -29,20 +29,22 @@ class Logo extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         MaterialButton(
-            minWidth: 0,
-            padding: EdgeInsets.zero,
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            onPressed: clickRedirectHomePage
-                ? () {
-                    context.goInitialRoute();
-                  }
-                : onPressed,
-            shape: const CircleBorder(),
-            color: color,
-            child: SvgPicture.asset(
-              'assets/images/svg/logo.svg',
-              height: height ?? 28,
-            )),
+          minWidth: 0,
+          padding: EdgeInsets.zero,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          onPressed: clickRedirectHomePage
+              ? () {
+                  context.goInitialRoute();
+                }
+              : onPressed,
+          shape: const CircleBorder(),
+          color: color,
+          child: SvgPicture.asset(
+            'assets/images/svg/logo.svg',
+            height: height ?? 28,
+            package: 'flutter_base',
+          ),
+        ),
         if (title != null) ...[
           const SizedBox(
             width: 6,
@@ -89,7 +91,10 @@ class Logo2 extends StatelessWidget {
           Theme.of(context).shadow,
         ],
       ),
-      child: SvgPicture.asset('assets/images/svg/logo_2.svg'),
+      child: SvgPicture.asset(
+        'assets/images/svg/logo_2.svg',
+        package: 'flutter_base',
+      ),
     );
   }
 }
