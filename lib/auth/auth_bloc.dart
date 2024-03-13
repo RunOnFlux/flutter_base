@@ -201,6 +201,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(state.copyWith(currentRoute: event.route));
       },
     );
+    on<SignOutEvent>(
+      (event, emit) {
+        emit(state.copyWith(fluxLogin: null));
+      },
+    );
   }
 
   Future<void> init([Duration? timeout = const Duration(seconds: 10)]) async {
