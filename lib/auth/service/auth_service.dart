@@ -104,7 +104,7 @@ class AuthService {
     throw ApiException(message: 'Bad Data: ${response.toString()}');
   }
 
-  Future<VerifyLogin> verifyLogin({
+  Future<FluxLogin> verifyLogin({
     required String zelid,
     required String loginPhrase,
     required String signature,
@@ -127,7 +127,7 @@ class AuthService {
     debugPrint(response.toString());
     if (response is Map) {
       if (response['status'].toString().toLowerCase() == 'success') {
-        return VerifyLogin.fromJson(response as Map<String, dynamic>);
+        return FluxLogin.fromJson(response as Map<String, dynamic>);
       } else {
         debugPrint(response['data']['message']);
         throw ApiException(message: '${response['data']['message']}');

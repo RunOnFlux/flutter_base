@@ -20,13 +20,11 @@ Map<String, dynamic> _$SessionToJson(Session instance) => <String, dynamic>{
       'expireAt': instance.expireAt,
     };
 
-CheckPrivilege _$CheckPrivilegeFromJson(Map<String, dynamic> json) =>
-    CheckPrivilege(
+CheckPrivilege _$CheckPrivilegeFromJson(Map<String, dynamic> json) => CheckPrivilege(
       privilege: $enumDecodeNullable(_$PrivilegeLevelEnumMap, json['message']),
     );
 
-Map<String, dynamic> _$CheckPrivilegeToJson(CheckPrivilege instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$CheckPrivilegeToJson(CheckPrivilege instance) => <String, dynamic>{
       'message': _$PrivilegeLevelEnumMap[instance.privilege],
     };
 
@@ -41,28 +39,22 @@ LoginPhrase _$LoginPhraseFromJson(Map<String, dynamic> json) => LoginPhrase(
       loginPhrase: json['data'] as String,
     );
 
-Map<String, dynamic> _$LoginPhraseToJson(LoginPhrase instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$LoginPhraseToJson(LoginPhrase instance) => <String, dynamic>{
       'data': instance.loginPhrase,
     };
 
-LogoutCurrentSession _$LogoutCurrentSessionFromJson(
-        Map<String, dynamic> json) =>
-    LogoutCurrentSession(
+LogoutCurrentSession _$LogoutCurrentSessionFromJson(Map<String, dynamic> json) => LogoutCurrentSession(
       data: json['data'] as Map<String, dynamic>,
     );
 
-Map<String, dynamic> _$LogoutCurrentSessionToJson(
-        LogoutCurrentSession instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$LogoutCurrentSessionToJson(LogoutCurrentSession instance) => <String, dynamic>{
       'data': instance.data,
     };
 
-VerifyLogin _$VerifyLoginFromJson(Map<String, dynamic> json) => VerifyLogin(
+FluxLogin _$FluxLoginFromJson(Map<String, dynamic> json) => FluxLogin(
       data: json['data'] as Map<String, dynamic>,
     );
 
-Map<String, dynamic> _$VerifyLoginToJson(VerifyLogin instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$FluxLoginToJson(FluxLogin instance) => <String, dynamic>{
       'data': instance.data,
     };

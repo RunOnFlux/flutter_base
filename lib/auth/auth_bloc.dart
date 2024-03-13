@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/api/model/id/id_model.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
 import 'package:flutter_base/auth/connection_status.dart';
 import 'package:flutter_base/auth/service/auth_service.dart';

@@ -25,6 +25,7 @@ class AuthState {
     this.phoneSignInOTPRequest,
     this.firebaseUser,
     this.currentRoute,
+    this.fluxLogin,
   }) : _timestamp = DateTime.now().millisecondsSinceEpoch;
 
   factory AuthState.initial() => AuthState(status: AuthConnectionStatus.idle);
@@ -41,6 +42,7 @@ class AuthState {
   final PhoneSigninRequest? phoneSignInOTPRequest;
   final PhoneVerificationRequest? phoneVerificationRequest;
   final AuthFluxRoute? currentRoute;
+  final FluxLogin? fluxLogin;
 
   AuthError? get authError {
     if (error == null) {
@@ -95,6 +97,8 @@ class AuthState {
           other.challenge == challenge &&
           other.fluxUser == fluxUser &&
           other.firebaseUser?.uid == firebaseUser?.uid &&
+          other.currentRoute == currentRoute &&
+          other.fluxLogin == fluxLogin &&
           other.status == status;
       final timeDt = _timestamp - other._timestamp;
       return equals && timeDt.abs() < 500;
@@ -203,6 +207,7 @@ class AuthState {
     AuthConnectionStatus? status,
     User? firebaseUser,
     AuthFluxRoute? currentRoute,
+    FluxLogin? fluxLogin,
   }) {
     return AuthState(
         challenge: challenge ?? this.challenge,
@@ -212,6 +217,7 @@ class AuthState {
         fluxUser: fluxUser ?? this.fluxUser,
         status: status ?? this.status,
         currentRoute: currentRoute ?? this.currentRoute,
+        fluxLogin: fluxLogin ?? this.fluxLogin,
         error: error,
         event: event,
         result: result);

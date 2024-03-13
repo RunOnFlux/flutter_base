@@ -63,7 +63,7 @@ class LogoutCurrentSession {
 }
 
 @JsonSerializable()
-class VerifyLogin {
+class FluxLogin {
   @JsonKey(name: 'data')
   Map<String, dynamic> data;
   String get message => data['message'];
@@ -72,10 +72,10 @@ class VerifyLogin {
   String get signature => data['signature'];
   String get privilege => data['privilage'];
 
-  VerifyLogin({
+  FluxLogin({
     required this.data,
   });
 
-  factory VerifyLogin.fromJson(Map<String, dynamic> json) => _$VerifyLoginFromJson(json);
-  Map<String, dynamic> toJson() => _$VerifyLoginToJson(this);
+  factory FluxLogin.fromJson(Map<String, dynamic> json) => _$FluxLoginFromJson(json);
+  Map<String, dynamic> toJson() => _$FluxLoginToJson(this);
 }

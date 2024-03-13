@@ -287,6 +287,7 @@ extension _AuthBlocExtension on AuthBloc {
     }
 
     AuthError? error;
+    FluxLogin? fluxLogin;
 
     FluxUser? fluxUser = state.fluxUser ?? AuthService().createFluxUserFromFirebase(firebaseUser);
     try {
@@ -304,11 +305,14 @@ extension _AuthBlocExtension on AuthBloc {
         );
         debugPrint('AuthBloc: restSignIn: Response from server: $result');
         if (result.success) {
-          var fluxLogin = await AuthService().verifyLogin(
+          fluxLogin = await AuthService().verifyLogin(
             zelid: result.publicAddress!,
             loginPhrase: loginPhrase.loginPhrase,
             signature: result.signature!,
           );
+          FluxAuthLocalStorage.instance.put('zelid', result.publicAddress!);
+          FluxAuthLocalStorage.instance.put('loginPhrase', loginPhrase.loginPhrase);
+          FluxAuthLocalStorage.instance.put('signature', result.signature!);
         } else {}
       } else {}
     } catch (e) {
@@ -343,6 +347,7 @@ extension _AuthBlocExtension on AuthBloc {
         error: error,
         fluxUser: fluxUser,
         firebaseUser: firebaseUser,
+        fluxLogin: fluxLogin,
       ),
     );
   }
