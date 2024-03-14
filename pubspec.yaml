@@ -40,6 +40,7 @@ dependencies:
   go_router: ^13.2.0
   hive: ^2.2.3
   http: ^1.2.0
+  http_query_string: ^1.0.0
   #i18n_extension: ^11.0.12
   loading_indicator: ^3.0.2
   modal_bottom_sheet:
@@ -49,12 +50,14 @@ dependencies:
       path: modal_bottom_sheet
   package_info_plus: ^5.0.1
   provider: ^6.0.2
+  qr_flutter: ^4.0.0
   responsive_framework: ^1.1.0
   shared_preferences: ^2.2.2
   theme_provider: ^0.6.0
   tinycolor2: ^3.0.1
   universal_html: ^2.0.8
   url_launcher: ^6.2.5
+  web_socket_channel: ^2.4.3
   window_size:
     git:
       url: https://github.com/google/flutter-desktop-embedding.git
@@ -121,3 +124,4 @@ flutter:
     - assets/
     - assets/images/
     - assets/images/svg/
+    - assets/images/png/
