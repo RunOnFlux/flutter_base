@@ -3,7 +3,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:flutter_base/ui/app/config/app_config.dart';
 import 'package:flutter_base/ui/app/main_app_screen.dart';
-import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/app/scope/app_config_scope.dart';
 import 'package:flutter_base/ui/app/scope/app_router_scope.dart';
 import 'package:flutter_base/ui/routes/route.dart';
@@ -11,8 +10,8 @@ import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/navbar/footer.dart';
 import 'package:flutter_base/ui/widgets/sidemenu/menu_category.dart';
 import 'package:flutter_base/ui/widgets/sidemenu/menu_item.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get_it/get_it.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 
 import 'menu.dart';
@@ -73,42 +72,43 @@ class CollapsedSidebar extends StatelessWidget with GetItMixin {
 
   @override
   Widget build(BuildContext context) {
-    PrivilegeLevel privilege = PrivilegeLevel.none;
-    if (GetIt.instance.isRegistered<LoginState>()) {
-      privilege = watchOnly((LoginState state) => state.privilege);
-    }
-
     List<AbstractRoute> routes = AppRouterScope.of(context).buildRoutes(context);
     List<AbstractRoute> active = routes.where((element) => element.active ?? true).toList();
     List<AbstractRoute> inactive = routes.where((element) => !(element.active ?? true)).toList();
     List allRoutes = [active, inactive];
 
-    return Container(
-      width: 64,
-      padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 23),
-      alignment: Alignment.topCenter,
-      child: Column(
-        children: [
-          const SideBarButton(),
-          const SizedBox(
-            height: 16,
+    return BlocBuilder<AuthBloc, AuthState>(
+      buildWhen: (previous, current) => previous.fluxLogin != current.fluxLogin,
+      builder: (BuildContext context, AuthState state) {
+        PrivilegeLevel privilege = state.fluxLogin?.privilegeLevel ?? PrivilegeLevel.none;
+        return Container(
+          width: 64,
+          padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 23),
+          alignment: Alignment.topCenter,
+          child: Column(
+            children: [
+              const SideBarButton(),
+              const SizedBox(
+                height: 16,
+              ),
+              Expanded(
+                child: ListView.separated(
+                    itemBuilder: (context, index) {
+                      final items = allRoutes[index];
+                      return ListView(
+                        shrinkWrap: true,
+                        children: _buildCollapsedMenuItems(items, privilege),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const Divider();
+                    },
+                    itemCount: allRoutes.length),
+              )
+            ],
           ),
-          Expanded(
-            child: ListView.separated(
-                itemBuilder: (context, index) {
-                  final items = allRoutes[index];
-                  return ListView(
-                    shrinkWrap: true,
-                    children: _buildCollapsedMenuItems(items, privilege),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return const Divider();
-                },
-                itemCount: allRoutes.length),
-          )
-        ],
-      ),
+        );
+      },
     );
   }
 

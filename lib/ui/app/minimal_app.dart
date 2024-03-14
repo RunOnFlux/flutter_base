@@ -264,8 +264,10 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                               debugPrint('going with redirect');
                               context.go(redirect);
                             } else {
-                              debugPrint('going without redirect to /');
-                              context.go('/');
+                              if (redirectToRootAfterLogin) {
+                                debugPrint('going without redirect to /');
+                                context.go('/');
+                              }
                             }
                           } else if (authState.signInByPhoneProcessStarted) {
                             final currentUri = state.uri;
@@ -306,6 +308,8 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
       return null;
     }
   }
+
+  bool get redirectToRootAfterLogin => true;
 
   Widget buildMainApp(BuildContext context) {
     if (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS()) {
@@ -405,7 +409,7 @@ class AppBodyState extends State<AppBody> {
   }
 }
 
-class LoginState with ChangeNotifier {
+/*class LoginState with ChangeNotifier {
   PrivilegeLevel _privilege = PrivilegeLevel.none;
 
   PrivilegeLevel get privilege => _privilege;
@@ -414,7 +418,7 @@ class LoginState with ChangeNotifier {
     _privilege = p;
     notifyListeners();
   }
-}
+}*/
 
 GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 GlobalKey<NavigatorState> authNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'auth');

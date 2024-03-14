@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
-import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/app/scope/app_router_scope.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/no_scroll_glow.dart';
 import 'package:flutter_base/ui/widgets/sidemenu/menu_category.dart';
 import 'package:flutter_base/ui/widgets/sidemenu/menu_item.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get_it/get_it.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 
 class SideBarMenuWidget extends StatefulWidget with GetItStatefulWidgetMixin {
@@ -31,43 +30,44 @@ class _SideBarMenuWidgetState extends State<SideBarMenuWidget> with GetItStateMi
 
   @override
   Widget build(BuildContext context) {
-    PrivilegeLevel? privilege;
-    if (GetIt.I.isRegistered<LoginState>()) {
-      privilege = watchOnly((LoginState state) => state.privilege);
-    }
-
     /// To rebuild on page change
-    final items = _buildMenu(context, privilege ?? PrivilegeLevel.none);
-    return NoScrollGlowWidget(
-      child: ScrollbarTheme(
-        data: Theme.of(context).scrollbarTheme.copyWith(
-              thickness: const MaterialStatePropertyAll(4),
-              trackColor: const MaterialStatePropertyAll(Colors.transparent),
-              minThumbLength: 2,
-            ),
-        child: Builder(
-          builder: (context) {
-            return Scrollbar(
-              controller: _controller,
-              thumbVisibility: true,
-              notificationPredicate: (notification) {
-                if (notification is ScrollUpdateNotification) {
-                  return notification.dragDetails != null;
-                }
-                return false;
+    return BlocBuilder<AuthBloc, AuthState>(
+      buildWhen: (previous, current) => previous.fluxLogin != current.fluxLogin,
+      builder: (BuildContext context, state) {
+        PrivilegeLevel? privilege = state.fluxLogin?.privilegeLevel;
+        final items = _buildMenu(context, privilege ?? PrivilegeLevel.none);
+        return NoScrollGlowWidget(
+          child: ScrollbarTheme(
+            data: Theme.of(context).scrollbarTheme.copyWith(
+                  thickness: const MaterialStatePropertyAll(4),
+                  trackColor: const MaterialStatePropertyAll(Colors.transparent),
+                  minThumbLength: 2,
+                ),
+            child: Builder(
+              builder: (context) {
+                return Scrollbar(
+                  controller: _controller,
+                  thumbVisibility: true,
+                  notificationPredicate: (notification) {
+                    if (notification is ScrollUpdateNotification) {
+                      return notification.dragDetails != null;
+                    }
+                    return false;
+                  },
+                  interactive: true,
+                  trackVisibility: true,
+                  child: ListView(
+                    controller: _controller,
+                    padding: const EdgeInsets.only(bottom: 10),
+                    shrinkWrap: true,
+                    children: items,
+                  ),
+                );
               },
-              interactive: true,
-              trackVisibility: true,
-              child: ListView(
-                controller: _controller,
-                padding: const EdgeInsets.only(bottom: 10),
-                shrinkWrap: true,
-                children: items,
-              ),
-            );
-          },
-        ),
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 
