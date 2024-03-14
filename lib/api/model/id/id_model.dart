@@ -71,6 +71,9 @@ class FluxLogin {
   String get loginPhrase => data['loginPhrase'];
   String get signature => data['signature'];
   String get privilege => data['privilage'];
+  set privilege(String p) {
+    data['privilage'] = p;
+  }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   PrivilegeLevel privilegeLevel = PrivilegeLevel.none;

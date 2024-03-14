@@ -204,7 +204,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
     on<UpdateFluxLoginEvent>(
       (event, emit) {
-        debugPrint('UpdateFluxLoginEvent: ${event.login}');
         if (event.login != null) {
           event.login!.privilegeLevel = PrivilegeLevel.fromString(event.login!.privilege) ?? PrivilegeLevel.none;
           FluxAuthLocalStorage.putFluxLogin(event.login!);
@@ -241,7 +240,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (privilege.privilege != PrivilegeLevel.none) {
         final FluxLogin? login = FluxAuthLocalStorage.getFluxLogin();
         if (login != null) {
-          login.privilegeLevel = privilege.privilege ?? PrivilegeLevel.none;
+          login.privilege = (privilege.privilege ?? PrivilegeLevel.none).name;
           add(UpdateFluxLoginEvent(login));
         }
       }
