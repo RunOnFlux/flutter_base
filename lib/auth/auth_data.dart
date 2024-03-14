@@ -4,7 +4,7 @@ enum FirebaseSignInMethods {
   email,
   google,
   github,
-  //gitlab(canBeLinked: false),
+  gitlab(canBeLinked: false),
   phone(canBeLinked: false);
 
   bool isProvider() {
@@ -36,7 +36,7 @@ enum FirebaseSignInMethods {
   static const List<FirebaseSignInMethods> supportedProviders = [
     FirebaseSignInMethods.google,
     FirebaseSignInMethods.github,
-    //FirebaseSignInMethods.gitlab
+    FirebaseSignInMethods.gitlab
   ];
 
   static const List<FirebaseSignInMethods> otherMethods = [FirebaseSignInMethods.email, FirebaseSignInMethods.phone];
@@ -65,8 +65,8 @@ enum FirebaseSignInMethods {
         return 'phone';
       case FirebaseSignInMethods.github:
         return 'github.com';
-      //case FirebaseSignInMethods.gitlab:
-      //  return 'gitlab.com';
+      case FirebaseSignInMethods.gitlab:
+        return 'gitlab.com';
     }
   }
 
@@ -82,8 +82,8 @@ enum FirebaseSignInMethods {
         return 'Phone number';
       case FirebaseSignInMethods.github:
         return 'Github';
-      //case FirebaseSignInMethods.gitlab:
-      //  return 'Gitlab';
+      case FirebaseSignInMethods.gitlab:
+        return 'Gitlab';
     }
   }
 
@@ -111,8 +111,8 @@ enum FirebaseSignInMethods {
       case FirebaseSignInMethods.phone:
         assetName = 'assets/images/svg/phone.svg';
 
-      //case FirebaseSignInMethods.gitlab:
-      //  assetName = 'assets/images/svg/gitlab.svg';
+      case FirebaseSignInMethods.gitlab:
+        assetName = 'assets/images/svg/gitlab.svg';
     }
     return SvgPicture.asset(assetName, package: 'flutter_base');
   }
@@ -128,8 +128,8 @@ enum FirebaseSignInMethods {
         return PhoneAuthProvider();
       case FirebaseSignInMethods.github:
         return GithubAuthProvider();
-      //case FirebaseSignInMethods.gitlab:
-      //  return GitlabAuthProvider();
+      case FirebaseSignInMethods.gitlab:
+        return GitlabAuthProvider();
     }
   }
 }
