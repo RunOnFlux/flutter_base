@@ -7,6 +7,7 @@ import 'package:flutter_base/ui/app/scope/auth_config_scope.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
 import 'package:flutter_base/ui/widgets/auth/auth_screen.dart';
+import 'package:flutter_base/ui/widgets/dialogs/confirm_dialog.dart';
 import 'package:flutter_base/ui/widgets/popup_message.dart';
 import 'package:flutter_base_example/ui/screens/home/home_screen.dart';
 import 'package:flutter_base_example/ui/screens/params/params_screen.dart';
@@ -198,6 +199,31 @@ class ExampleAppRouter extends AppRouter {
                 ),
               ),
             ),
+          );
+        },
+        icon: Icons.add,
+      ),
+      ActionRoute(
+        title: 'Log Out',
+        action: (BuildContext context) {
+          if (context.read<AuthBloc>().state.fluxLogin == null) {
+            debugPrint('Not logged in');
+            return;
+          }
+          ConfirmDialog.showConfirmDialog(
+            context: context,
+            title: const Text('Sign Out'),
+            content: const Text('Are you sure you want to sign out?'),
+            onOK: () {
+              context.read<AuthBloc>().add(const SignOutEvent());
+              PopupMessage.success(
+                message: 'You have successfully signed out of FluxCloud',
+                maxLines: 2,
+              ).show();
+            },
+            cancelButton: const Text('Cancel'),
+            cancelColor: Colors.red,
+            okColor: Theme.of(context).primaryColor,
           );
         },
         icon: Icons.add,

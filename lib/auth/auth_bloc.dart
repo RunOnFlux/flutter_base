@@ -199,7 +199,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }, transformer: droppable());
     on<AuthRouteEvent>(
       (event, emit) {
-        emit(state.copyWith(currentRoute: event.route));
+        emit(state.copyWith(currentRoute: () => event.route));
       },
     );
     on<UpdateFluxLoginEvent>(
@@ -211,12 +211,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         } else {
           FluxAuthLocalStorage.deleteFluxLogin();
         }
-        emit(state.copyWith(fluxLogin: event.login));
+        emit(state.copyWith(fluxLogin: () => event.login));
       },
     );
     on<SignOutEvent>(
       (event, emit) {
-        emit(state.copyWith(fluxLogin: null));
+        FluxAuthLocalStorage.deleteFluxLogin();
+        emit(state.copyWith(fluxLogin: () => null));
       },
     );
   }

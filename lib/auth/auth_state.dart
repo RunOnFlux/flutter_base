@@ -206,8 +206,8 @@ class AuthState {
     AuthChallenge? challenge,
     AuthConnectionStatus? status,
     User? firebaseUser,
-    AuthFluxRoute? currentRoute,
-    FluxLogin? fluxLogin,
+    ValueGetter<AuthFluxRoute?>? currentRoute,
+    ValueGetter<FluxLogin?>? fluxLogin,
   }) {
     return AuthState(
         challenge: challenge ?? this.challenge,
@@ -216,8 +216,8 @@ class AuthState {
         firebaseUser: firebaseUser ?? this.firebaseUser,
         fluxUser: fluxUser ?? this.fluxUser,
         status: status ?? this.status,
-        currentRoute: currentRoute ?? this.currentRoute,
-        fluxLogin: fluxLogin ?? this.fluxLogin,
+        currentRoute: currentRoute != null ? currentRoute() : this.currentRoute,
+        fluxLogin: fluxLogin != null ? fluxLogin() : this.fluxLogin,
         error: error,
         event: event,
         result: result);
