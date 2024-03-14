@@ -492,4 +492,8 @@ abstract class FluxAuthLocalStorage {
     }
     return null;
   }
+
+  static String? get zelid => instance.get('zelid');
+  static String? get loginPhrase => instance.get('loginPhrase');
+  static String? get signature => instance.get('signature');
 }
