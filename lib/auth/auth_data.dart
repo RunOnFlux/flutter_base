@@ -12,7 +12,7 @@ enum FirebaseSignInMethods {
   }
 
   bool get active {
-    if (this == phone) {
+    if (this == phone || this == gitlab) {
       //return !FluxAuthSystem.config.disablePhoneAuth;
       return false;
     }
