@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
+import 'package:flutter_base/extensions/modal_sheet_extensions.dart';
 import 'package:flutter_base/ui/app/scope/auth_config_scope.dart';
 import 'package:flutter_base/ui/widgets/auth/auth_screen.dart';
 import 'package:flutter_base/ui/widgets/default_button.dart';
+import 'package:flutter_base/ui/widgets/dialogs/login/login_dialog.dart';
 import 'package:flutter_base/ui/widgets/logo.dart';
 import 'package:flutter_base/ui/widgets/popup_message.dart';
 import 'package:flutter_base/utils/validators/password_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -23,7 +26,7 @@ class SignInScreen extends StatelessWidget {
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 16),
         child: SizedBox(
-          width: 500,
+          width: 560,
           child: _SignInScreenDelegate(type: type),
         ),
       ),
@@ -88,6 +91,7 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
         otherMethods.add(method);
       }
     }
+    final config = context.read<AuthScreenConfig>();
     return Form(
       key: _formKey,
       child: Column(
@@ -112,7 +116,26 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              for (final method in providers) _ProviderSignInButton(method: method, onPressed: _signInPressed)
+              for (final method in providers)
+                _ProviderSignInButton(
+                  method: method,
+                  onPressed: _signInPressed,
+                ),
+              if (config.zelCore)
+                _ZelCoreSignInButton(
+                  onPressed: () {
+                    if (config.isPopup) {
+                      context.pop();
+                      context.showBottomSheet((_) {
+                        return LoginDialog(
+                          showMessage: (message) {
+                            PopupMessage.success(message: message).show();
+                          },
+                        );
+                      });
+                    }
+                  },
+                ),
             ],
           ),
           const SizedBox(
@@ -394,7 +417,9 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
   }
 
   Widget _buildTermsAndConditions(BuildContext context) {
-    final String termsAndConditions = 'A terms and conditions document';
+    final authOptions = AuthConfigScope.of(context)!;
+    final String termsAndConditions =
+        'By creating an account, you agree to InFlux Technology Limited <a href=\'${authOptions.termsOfServiceUrl}\'>Terms of Service</a> and consent to its <a href=\'${authOptions.privacyPolicyUrl}\'>Privacy Policy</a>.';
 
     return Html(
         data: termsAndConditions,
@@ -455,6 +480,49 @@ class _ProviderSignInButton extends StatelessWidget {
         icon: method.icon,
         label: Text(
           method.providerName,
+          maxLines: 1,
+          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+              ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ZelCoreSignInButton extends StatelessWidget {
+  const _ZelCoreSignInButton({this.onPressed, this.size = const Size(130, 50)});
+  final Size size;
+  final void Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: TextButton.icon(
+        onPressed: () {
+          onPressed?.call();
+        },
+        style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
+              side: BorderSide(color: Colors.grey.shade300),
+            ),
+            minimumSize: size,
+            backgroundColor: Colors.transparent),
+        icon: SizedBox(
+          width: 24,
+          height: 24,
+          child: Image.asset(
+            'assets/images/png/zelcore_logo.png',
+            package: 'flutter_base',
+            width: 24,
+            height: 24,
+          ),
+        ),
+        label: Text(
+          'ZelCore',
           maxLines: 1,
           style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                 fontWeight: FontWeight.bold,
