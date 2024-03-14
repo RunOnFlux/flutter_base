@@ -89,7 +89,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<InitializeAuthEvent>((event, emit) async {
       debugPrint('AuthBloc: init');
       await init();
-      emit(AuthState(status: AuthConnectionStatus.done));
+      emit(state.copyWith(status: AuthConnectionStatus.done));
     });
     on<FirebaseAuthSignInEvent>(firebaseAuthSignInEvent, transformer: restartable());
     on<InternalAuthEvent>((event, emit) async {
