@@ -18,8 +18,14 @@ import 'package:provider/provider.dart';
 class AuthScreen extends StatelessWidget {
   final Widget child;
   final bool isPopup;
+  final bool zelCore;
 
-  const AuthScreen({super.key, required this.child, this.isPopup = false});
+  const AuthScreen({
+    super.key,
+    required this.child,
+    this.isPopup = false,
+    this.zelCore = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +41,11 @@ class AuthScreen extends StatelessWidget {
           if (state.needReauthentication) {
             //wrapper = (child) => _DialogWrapperWidget(child: child);
           }
-          return Provider<bool>(
-            create: (BuildContext context) => isPopup,
+          return Provider<AuthScreenConfig>(
+            create: (BuildContext context) => AuthScreenConfig(
+              isPopup: isPopup,
+              zelCore: zelCore,
+            ),
             child: _AuthWrapperWidget(
               child: wrapper(child),
             ),
@@ -45,7 +54,7 @@ class AuthScreen extends StatelessWidget {
   }
 
   static void goToAuthRoute(BuildContext context, AuthFluxBranchRoute route) {
-    bool isPopup = context.read<bool>();
+    bool isPopup = context.read<AuthScreenConfig>().isPopup;
     if (isPopup) {
       context.read<AuthBloc>().setCurrentRoute(route);
     } else {
@@ -200,13 +209,13 @@ class _AuthScreenCloseButton extends StatelessWidget {
     return Positioned(
       top: 16,
       left: 16,
-      child: Consumer<bool>(
-        builder: (BuildContext context, bool isPopup, Widget? child) => CloseButton(
+      child: Consumer<AuthScreenConfig>(
+        builder: (BuildContext context, AuthScreenConfig config, Widget? child) => CloseButton(
           color: invertColor ? Theme.of(context).colorScheme.onBackground : Colors.white,
           onPressed: () {
             debugPrint(context.canPop().toString());
             debugPrint(GoRouter.of(context).routerDelegate.currentConfiguration.toString());
-            if (isPopup) {
+            if (config.isPopup) {
               context.pop();
             } else {
               close(context);
@@ -429,4 +438,11 @@ class AuthChallengeWrapper extends StatelessWidget {
     final child = builder(arg);
     return AuthScreen(child: child);
   }
+}
+
+class AuthScreenConfig {
+  final bool isPopup;
+  final bool zelCore;
+
+  AuthScreenConfig({required this.isPopup, required this.zelCore});
 }

@@ -135,6 +135,49 @@ class AuthService {
     }
     throw ApiException(message: 'Bad Data: ${response.toString()}');
   }
+
+  Future<LoginPhrase?> getEmergencyLoginPhrase({required String nodeIP}) async {
+    dynamic response =
+        await Api.instance!.apiCall(RequestType.get, '/id/emergencyphrase', backendOverride: 'https://$nodeIP');
+    debugPrint(response.toString());
+    if (response is Map) {
+      if (response['status'] == 'success') {
+        return LoginPhrase.fromJson(response as Map<String, dynamic>);
+      }
+    }
+    throw ApiException(message: 'Bad Data: ${response.toString()}');
+  }
+
+  Future<String?> getFluxNodeIP() async {
+    var result = await Dio().request(
+      'https://api.runonflux.io/flux/info',
+      options: Options(
+        headers: {'method': 'HEAD'},
+      ),
+    );
+    return result.headers.value('fluxnode');
+  }
+
+  Future<CheckPrivilege> checkUserLogged() async {
+    dynamic response = await Api.instance!.apiCall(
+      RequestType.post,
+      '/id/checkprivilege',
+      body: FluxAuthLocalStorage.authString,
+      options: Options(headers: {
+        'Content-type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json, text/plain, */*',
+      }),
+    );
+    debugPrint(response.toString());
+    if (response is Map) {
+      if (response['status'] == 'success') {
+        var privilege = CheckPrivilege.fromJson(response['data']);
+        privilege.privilege ??= PrivilegeLevel.none;
+        return privilege;
+      }
+    }
+    return CheckPrivilege(privilege: PrivilegeLevel.none);
+  }
 }
 
 class SignInResult {

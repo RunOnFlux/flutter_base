@@ -197,19 +197,19 @@ abstract class Api {
       throw ApiException(message: error.toString());
     }
   }
+
+  Map<String, String> get header => {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        //'client-id': 'FluxCloud',
+        //'package-name': 'io.runonflux.fluxcloud',
+        //'platform': PlatformInfo().getCurrentPlatformType().toString(),
+      };
+
+  final Map<String, String> simpleHeaders = {
+    'Content-type': 'text/plain',
+  };
 }
-
-final Map<String, String> header = {
-  'Content-type': 'application/json',
-  'Accept': 'application/json',
-  //'client-id': 'FluxCloud',
-  //'package-name': 'io.runonflux.fluxcloud',
-  //'platform': PlatformInfo().getCurrentPlatformType().toString(),
-};
-
-final Map<String, String> simpleHeaders = {
-  'Content-type': 'text/plain',
-};
 
 class ApiException {
   int? code;

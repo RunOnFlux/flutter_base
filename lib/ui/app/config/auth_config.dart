@@ -54,4 +54,7 @@ abstract class AuthConfig {
   bool get allowSignUp => true;
 
   FirebaseOptions? get firebaseOptions => null;
+
+  String get termsOfServiceUrl => 'https://runonflux.io/termsandconditions';
+  String get privacyPolicyUrl => 'https://runonflux.io/privacyPolicy';
 }

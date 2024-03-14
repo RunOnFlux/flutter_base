@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/api/model/id/id_model.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
 import 'package:flutter_base/auth/connection_status.dart';
+import 'package:flutter_base/auth/providers/gitlab/gitlab_auth_provider.dart';
 import 'package:flutter_base/auth/service/auth_service.dart';
 import 'package:flutter_base/data/flux_user.dart';
 import 'package:flutter_base/extensions/router_extension.dart';
@@ -201,6 +202,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(state.copyWith(currentRoute: event.route));
       },
     );
+    on<UpdateFluxLoginEvent>(
+      (event, emit) {
+        debugPrint('UpdateFluxLoginEvent: ${event.login}');
+        if (event.login != null) {
+          event.login!.privilegeLevel = PrivilegeLevel.fromString(event.login!.privilege) ?? PrivilegeLevel.none;
+          FluxAuthLocalStorage.putFluxLogin(event.login!);
+        } else {
+          FluxAuthLocalStorage.deleteFluxLogin();
+        }
+        emit(state.copyWith(fluxLogin: event.login));
+      },
+    );
     on<SignOutEvent>(
       (event, emit) {
         emit(state.copyWith(fluxLogin: null));
@@ -221,8 +234,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await _firebaseInstance.setPersistence(frb.Persistence.LOCAL);
       }
       _listenToFirebaseAuthSub();
-    } catch (e) {
+
+      // Check if the user is already logged into Flux
+      CheckPrivilege privilege = await AuthService().checkUserLogged();
+      if (privilege.privilege != PrivilegeLevel.none) {
+        final FluxLogin? login = FluxAuthLocalStorage.getFluxLogin();
+        if (login != null) {
+          login.privilegeLevel = privilege.privilege ?? PrivilegeLevel.none;
+          add(UpdateFluxLoginEvent(login));
+        }
+      }
+    } catch (e, s) {
       debugPrint(e.toString());
+      debugPrint(s.toString());
     }
     /*if (FluxAuth.config.disableAuthentication) {
       return;
@@ -431,5 +455,41 @@ abstract class FluxAuthLocalStorage {
 
   static Future<Box> _init() {
     return Hive.openBox('flux_auth');
+  }
+
+  static String get authString {
+    String zelID = Uri.encodeQueryComponent(instance.get('zelid') ?? '');
+    String loginPhrase = Uri.encodeQueryComponent(instance.get('loginPhrase') ?? '');
+    String signature = Uri.encodeQueryComponent(instance.get('signature') ?? '');
+    String encodedAuthString = 'zelid=$zelID&signature=$signature&loginPhrase=$loginPhrase';
+    return encodedAuthString;
+  }
+
+  static putFluxLogin(FluxLogin login) {
+    FluxAuthLocalStorage.instance.put('zelid', login.zelid);
+    FluxAuthLocalStorage.instance.put('loginPhrase', login.loginPhrase);
+    FluxAuthLocalStorage.instance.put('signature', login.signature);
+  }
+
+  static deleteFluxLogin() {
+    FluxAuthLocalStorage.instance.delete('zelid');
+    FluxAuthLocalStorage.instance.delete('loginPhrase');
+    FluxAuthLocalStorage.instance.delete('signature');
+  }
+
+  static FluxLogin? getFluxLogin() {
+    final zelid = instance.get('zelid');
+    final loginPhrase = instance.get('loginPhrase');
+    final signature = instance.get('signature');
+    if (zelid != null && loginPhrase != null && signature != null) {
+      return FluxLogin(data: {
+        'zelid': zelid,
+        'loginPhrase': loginPhrase,
+        'signature': signature,
+        'message': '',
+        'privilage': '',
+      });
+    }
+    return null;
   }
 }

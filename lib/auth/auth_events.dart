@@ -183,6 +183,14 @@ class AuthRouteEvent extends AuthEvent {
   List<Object?> get props => [route];
 }
 
+class UpdateFluxLoginEvent extends AuthEvent {
+  final FluxLogin? login;
+
+  const UpdateFluxLoginEvent(this.login);
+  @override
+  List<Object?> get props => [login];
+}
+
 ///
 ///
 ///
@@ -240,7 +248,7 @@ class FirebaseProviderAuthEvent extends FirebaseAuthSignInEvent {
   // factory FirebaseProviderAuthEvent.facebook() =>
   //     const FirebaseProviderAuthEvent._(FirebaseSignInMethods.facebook);
 
-  //factory FirebaseProviderAuthEvent.gitlab() => const FirebaseProviderAuthEvent._(FirebaseSignInMethods.gitlab);
+  factory FirebaseProviderAuthEvent.gitlab() => const FirebaseProviderAuthEvent._(FirebaseSignInMethods.gitlab);
 
   factory FirebaseProviderAuthEvent.github() => const FirebaseProviderAuthEvent._(FirebaseSignInMethods.github);
 

@@ -339,14 +339,12 @@ extension _AuthBlocExtension on AuthBloc {
             loginPhrase: loginPhrase.loginPhrase,
             signature: result.signature!,
           );
-          fluxLogin.privilegeLevel = PrivilegeLevel.fromString(fluxLogin.privilege) ?? PrivilegeLevel.none;
-          FluxAuthLocalStorage.instance.put('zelid', result.publicAddress!);
-          FluxAuthLocalStorage.instance.put('loginPhrase', loginPhrase.loginPhrase);
-          FluxAuthLocalStorage.instance.put('signature', result.signature!);
+          add(UpdateFluxLoginEvent(fluxLogin));
         } else {}
       } else {}
-    } catch (e) {
+    } catch (e, s) {
       debugPrint(e.toString());
+      debugPrint(s.toString());
 
       error = AuthError.from(e);
 
