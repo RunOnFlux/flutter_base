@@ -185,6 +185,7 @@ class ExampleAppRouter extends AppRouter {
               },
               child: AuthScreen(
                 isPopup: true,
+                zelCore: true,
                 child: BlocBuilder<AuthBloc, AuthState>(
                   buildWhen: (previous, current) => previous.currentRoute != current.currentRoute,
                   builder: (BuildContext context, state) {
