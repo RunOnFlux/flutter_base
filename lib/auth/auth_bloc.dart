@@ -105,7 +105,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       } else if (event is _InternalFirebaseSignOut) {
         debugPrint('[AuthBloc] Signed out');
-        emit(AuthState());
+        emit(
+          AuthState(
+            currentRoute: state.currentRoute,
+          ),
+        );
       } else if (event is _AuthErrorEvent) {
         await onError(event, emit);
       }
