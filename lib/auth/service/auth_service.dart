@@ -96,7 +96,8 @@ class AuthService {
       return SignMessageResult(
         success: success,
         error: response['error'],
-        signature: response['signed_message'],
+        signature: response['signature'],
+        publicAddress: response['public_address'],
       );
     }
     throw ApiException(message: 'Invalid Data');
@@ -223,12 +224,14 @@ class SignInResult {
 
 class SignMessageResult {
   String? signature;
+  String? publicAddress;
   bool success;
   String? error;
 
   SignMessageResult({
     required this.success,
     this.signature,
+    this.publicAddress,
     this.error,
   });
 }
