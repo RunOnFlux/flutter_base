@@ -7,9 +7,9 @@ import 'package:url_launcher/url_launcher_string.dart';
 abstract class AppContentScreen extends StatefulWidget {
   final AppScreenStateInfo stateInfo;
   const AppContentScreen({
-    Key? key,
+    super.key,
     required this.stateInfo,
-  }) : super(key: key);
+  });
 }
 
 abstract class AppScreenState<T extends AppContentScreen> extends State<T> {

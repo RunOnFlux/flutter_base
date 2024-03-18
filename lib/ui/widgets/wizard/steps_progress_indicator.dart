@@ -4,13 +4,12 @@ import 'animated_linear_progress_indicator.dart';
 
 class StepsProgressIndicator extends StatelessWidget {
   const StepsProgressIndicator({
-    Key? key,
+    super.key,
     this.duration = const Duration(milliseconds: 150),
     required this.count,
     required this.index,
   })  : assert(index >= 0),
-        assert(index < count),
-        super(key: key);
+        assert(index < count);
 
   final Duration duration;
   final int count;

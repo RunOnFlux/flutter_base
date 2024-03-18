@@ -20,15 +20,13 @@ class BackgroundThemeBuilder extends StatelessWidget {
           : Stack(
               fit: StackFit.expand,
               children: [
-                ...themeOptions.backgroundGradientEllipses
-                    .map(
-                      (e) => _buildGradientEllipsis(
-                        e.$1,
-                        e.$2,
-                        context,
-                      ),
-                    )
-                    .toList(),
+                ...themeOptions.backgroundGradientEllipses.map(
+                  (e) => _buildGradientEllipsis(
+                    e.$1,
+                    e.$2,
+                    context,
+                  ),
+                ),
                 child
               ],
             ),

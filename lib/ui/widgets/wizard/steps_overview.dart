@@ -4,7 +4,7 @@ import 'package:flutter_wizard/flutter_wizard.dart';
 import 'step_provider.dart';
 
 class StepsOverview extends StatelessWidget {
-  const StepsOverview({Key? key}) : super(key: key);
+  const StepsOverview({super.key});
 
   @override
   Widget build(

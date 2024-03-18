@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wizard/flutter_wizard.dart';
 
 class PreviousButton extends StatelessWidget {
-  const PreviousButton({Key? key}) : super(key: key);
+  const PreviousButton({super.key});
 
   @override
   Widget build(BuildContext context) {

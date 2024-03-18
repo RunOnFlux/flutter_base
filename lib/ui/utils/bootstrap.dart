@@ -99,12 +99,12 @@ double bootstrapMaxWidthNonFluid(double width) {
 ///
 class BootstrapContainer extends StatelessWidget {
   const BootstrapContainer({
-    Key? key,
+    super.key,
     required this.children,
     this.fluid = false,
     this.decoration,
     this.padding,
-  }) : super(key: key);
+  });
 
   ///
   /// Is the container fluid => if yes, takes the whole width
@@ -186,12 +186,12 @@ class BootstrapContainer extends StatelessWidget {
 ///
 class BootstrapRow extends StatelessWidget {
   const BootstrapRow({
-    Key? key,
+    super.key,
     required this.children,
     this.decoration,
     this.height,
     this.absoluteSizes = false,
-  }) : super(key: key);
+  });
 
   ///
   /// Min container height
@@ -251,7 +251,7 @@ class BootstrapRow extends StatelessWidget {
 ///
 class BootstrapCol extends StatelessWidget {
   BootstrapCol({
-    Key? key,
+    super.key,
     required this.child,
     this.fit = FlexFit.loose,
     this.absoluteSizes = true,
@@ -261,8 +261,7 @@ class BootstrapCol extends StatelessWidget {
     this.invisibleForSizes,
   })  : sizes = sizes.trim(),
         offsets = offsets.trim(),
-        orders = orders.trim(),
-        super(key: key) {
+        orders = orders.trim() {
     _initialize();
   }
 
@@ -582,11 +581,10 @@ class BootstrapCol extends StatelessWidget {
 ///
 class BootstrapVisibility extends StatelessWidget {
   BootstrapVisibility({
-    Key? key,
+    super.key,
     required this.child,
     String sizes = "",
-  })  : sizes = sizes.trim(),
-        super(key: key) {
+  }) : sizes = sizes.trim() {
     _initialize();
   }
 

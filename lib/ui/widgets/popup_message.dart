@@ -179,7 +179,7 @@ extension PopupMessageContext on BuildContext {
 }
 
 class PopupMessageScope extends InheritedWidget {
-  const PopupMessageScope(this._state, {Key? key, required Widget child}) : super(key: key, child: child);
+  const PopupMessageScope(this._state, {super.key, required super.child});
 
   final PopupMessageWidgetState _state;
 

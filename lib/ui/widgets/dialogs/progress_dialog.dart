@@ -57,12 +57,11 @@ class _ProgressDialogState extends State<ProgressDialog> {
             context: context,
           ),
           height: MediaQuery.of(context).size.height - 100,
-          child: WillPopScope(
-            onWillPop: () {
+          child: PopScope(
+            onPopInvoked: (didPop) {
               if (widget.onComplete != null) {
                 widget.onComplete!();
               }
-              return Future.value(true);
             },
             child: Scaffold(
               appBar: AppBar(
@@ -154,12 +153,11 @@ class _ProgressDialogWithUpdatesState extends State<ProgressDialogWithUpdates> {
             context: context,
           ),
           height: MediaQuery.of(context).size.height - 100,
-          child: WillPopScope(
-            onWillPop: () {
+          child: PopScope(
+            onPopInvoked: (didPop) {
               if (widget.onComplete != null) {
                 widget.onComplete!();
               }
-              return Future.value(true);
             },
             child: Scaffold(
               appBar: AppBar(

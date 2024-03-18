@@ -15,11 +15,11 @@ class NavigationMenuItem extends StatefulWidget {
   final bool collapsed;
 
   const NavigationMenuItem({
-    Key? key,
+    super.key,
     required this.route,
     required this.level,
     this.collapsed = false,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _NavigationMenuItemState();

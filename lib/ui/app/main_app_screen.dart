@@ -219,7 +219,7 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
 }
 
 class AppDrawerScope extends InheritedWidget {
-  const AppDrawerScope({Key? key, required Widget child, required this.state}) : super(key: key, child: child);
+  const AppDrawerScope({super.key, required super.child, required this.state});
   final AppScreenState state;
 
   static AppScreenState? of(BuildContext context) {

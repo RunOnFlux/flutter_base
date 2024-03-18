@@ -9,7 +9,7 @@ const double kSmallPadding = 8.0;
 const double kRegularPadding = 16.0;
 
 class ActionBar extends StatelessWidget {
-  const ActionBar({Key? key}) : super(key: key);
+  const ActionBar({super.key});
 
   @override
   Widget build(BuildContext context) {

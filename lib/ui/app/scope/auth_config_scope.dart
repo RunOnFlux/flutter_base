@@ -3,10 +3,10 @@ import 'package:flutter_base/ui/app/config/auth_config.dart';
 
 class AuthConfigScope extends InheritedWidget {
   const AuthConfigScope({
-    Key? key,
-    required Widget child,
+    super.key,
+    required super.child,
     required this.config,
-  }) : super(key: key, child: child);
+  });
   final AuthConfig config;
 
   static AuthConfig? of(BuildContext context) {

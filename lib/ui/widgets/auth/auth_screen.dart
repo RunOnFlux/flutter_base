@@ -9,7 +9,6 @@ import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/copy_button.dart';
 import 'package:flutter_base/ui/widgets/loading_overlay.dart';
 import 'package:flutter_base/ui/widgets/popup_message.dart';
-import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/ui/widgets/specifal_focus_nodes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -29,7 +28,7 @@ class AuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final smallScreen = context.isSmallWidth();
+    //final smallScreen = context.isSmallWidth();
 
     return BlocBuilder<AuthBloc, AuthState>(
         buildWhen: (previous, current) => previous.status.isIdle(),
@@ -173,7 +172,7 @@ class _AuthWrapperLeftSide extends StatelessWidget {
 class _AuthWrapperRightSide extends StatelessWidget {
   final Widget child;
 
-  const _AuthWrapperRightSide({super.key, required this.child});
+  const _AuthWrapperRightSide({required this.child});
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -342,14 +341,14 @@ class DefaultAuthPageTextField extends StatelessWidget {
                             ),
                         ])
                       : ListenableBuilder(
-                          listenable: _controller!,
+                          listenable: _controller,
                           builder: (context, child) {
-                            return _controller!.text.isEmpty ? const SizedBox.shrink() : child!;
+                            return _controller.text.isEmpty ? const SizedBox.shrink() : child!;
                           },
                           child: Row(mainAxisSize: MainAxisSize.min, children: [
                             if (showCopyButton)
                               CopyButton(
-                                text: _controller!.text,
+                                text: _controller.text,
                                 focusNode: SkipFocusNode(),
                               ),
                             if (this.obscureText)
@@ -366,7 +365,7 @@ class DefaultAuthPageTextField extends StatelessWidget {
                               IconButton(
                                 focusNode: SkipFocusNode(),
                                 onPressed: () {
-                                  _controller!.clear();
+                                  _controller.clear();
                                 },
                                 icon: const Icon(Icons.clear),
                               )

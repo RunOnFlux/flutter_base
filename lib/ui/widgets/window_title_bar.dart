@@ -4,7 +4,7 @@ import 'package:flutter_base/ui/theme/interface_brightness.dart';
 
 class WindowTitleBar extends StatelessWidget {
   final InterfaceBrightness brightness;
-  const WindowTitleBar({Key? key, required this.brightness}) : super(key: key);
+  const WindowTitleBar({super.key, required this.brightness});
 
   @override
   Widget build(BuildContext context) {

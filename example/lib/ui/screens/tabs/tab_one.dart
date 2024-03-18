@@ -25,7 +25,7 @@ class TabOneScreen extends TabContentScreen {
 class TabOneScreenState extends TabContentScreenState<TabOneScreen> {
   @override
   void initState() {
-    widget.stateInfo!.items = [
+    widget.stateInfo.items = [
       FloatingMenuItem(
         title: 'Menu Item 1',
         icon: Icons.ac_unit_outlined,

@@ -21,7 +21,6 @@ import 'package:flutter_base/ui/widgets/auth/auth_screen.dart';
 import 'package:flutter_base/ui/widgets/banner.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
-import 'package:flutter_base/ui/widgets/snack.dart';
 import 'package:flutter_base/utils/platform_info.dart';
 import 'package:flutter_base/utils/settings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,8 +57,8 @@ abstract class MinimalApp extends StatefulWidget {
   MinimalApp({
     required this.router,
     required this.settings,
-    Key? key,
-  }) : super(key: key) {
+    super.key,
+  }) {
     GetIt.I.registerSingleton<ScreenInfo>(ScreenInfo());
     GetIt.I.registerSingleton<AppScreenRegistry>(AppScreenRegistry());
     registerTheme();
@@ -423,3 +422,5 @@ class AppBodyState extends State<AppBody> {
 GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 GlobalKey<NavigatorState> authNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'auth');
 GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'main');
+
+final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();

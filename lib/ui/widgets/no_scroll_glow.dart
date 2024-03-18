@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NoScrollGlowWidget extends StatelessWidget {
-  const NoScrollGlowWidget({Key? key, required this.child}) : super(key: key);
+  const NoScrollGlowWidget({super.key, required this.child});
   final Widget child;
 
   @override
@@ -17,8 +17,7 @@ class NoScrollGlowBehavior extends ScrollBehavior {
   const NoScrollGlowBehavior();
 
   @override
-  Widget buildOverscrollIndicator(
-      BuildContext context, Widget child, ScrollableDetails details) {
+  Widget buildOverscrollIndicator(BuildContext context, Widget child, ScrollableDetails details) {
     return child;
   }
 }
@@ -37,7 +36,6 @@ class DisabledScrollWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScrollConfiguration(
-        behavior: const DisabledScrollBehavior(), child: child);
+    return ScrollConfiguration(behavior: const DisabledScrollBehavior(), child: child);
   }
 }

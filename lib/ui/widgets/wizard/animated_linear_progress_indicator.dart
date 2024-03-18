@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 
 class AnimatedLinearProgressIndicator extends StatefulWidget {
   const AnimatedLinearProgressIndicator({
-    Key? key,
+    super.key,
     this.duration = const Duration(milliseconds: 150),
     required this.value,
   })  : assert(value >= 0),
-        assert(value <= 1),
-        super(key: key);
+        assert(value <= 1);
 
   final Duration duration;
   final double value;

@@ -69,7 +69,6 @@ class GradientText extends StatelessWidget implements Text {
           softWrap: softWrap,
           overflow: overflow,
           textScaler: textScaler,
-          textScaleFactor: textScaleFactor,
           maxLines: maxLines,
           semanticsLabel: semanticsLabel,
           textWidthBasis: textWidthBasis,

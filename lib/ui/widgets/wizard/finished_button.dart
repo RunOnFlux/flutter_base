@@ -4,7 +4,7 @@ import 'package:flutter_wizard/flutter_wizard.dart';
 import 'step_provider.dart';
 
 class FinishedButton extends StatelessWidget {
-  const FinishedButton({Key? key}) : super(key: key);
+  const FinishedButton({super.key});
 
   @override
   Widget build(

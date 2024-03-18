@@ -114,14 +114,14 @@ class RequestDeleteAccountEvent extends AuthEvent {
   const RequestDeleteAccountEvent();
 }
 
-class _CancelActionEvent extends AuthEvent {
+/*class _CancelActionEvent extends AuthEvent {
   /// used to log out user if the canceled challenge is not skippable
   final bool logUserOut;
   const _CancelActionEvent([this.logUserOut = false]);
 
   @override
   List<Object?> get props => super.props..add(logUserOut);
-}
+}*/
 
 class RequestReauthenticateEvent extends AuthEvent {
   final AuthEvent? event;
@@ -137,8 +137,6 @@ class RequestReauthenticateEvent extends AuthEvent {
 /// use this event to validate a reauthenticate challenge
 class ValidateReauthenticateEvent extends AuthEvent {
   const ValidateReauthenticateEvent(this.code) : force = false;
-
-  const ValidateReauthenticateEvent._({required this.code, this.force = false});
 
   /// code to pass the reauthenticate challenge, if its a phone number, it should
   /// be the sms code, if its an email, it should be the password

@@ -3,10 +3,10 @@ import 'package:flutter_base/ui/app/config/app_config.dart';
 
 class AppConfigScope extends InheritedWidget {
   const AppConfigScope({
-    Key? key,
-    required Widget child,
+    super.key,
+    required super.child,
     required this.config,
-  }) : super(key: key, child: child);
+  });
   final AppConfig config;
 
   static AppConfig? of(BuildContext context) {

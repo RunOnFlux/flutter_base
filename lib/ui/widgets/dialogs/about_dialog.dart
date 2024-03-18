@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class FluxOSAboutDialog extends StatefulWidget {
-  const FluxOSAboutDialog({Key? key}) : super(key: key);
+  const FluxOSAboutDialog({super.key});
 
   @override
   State<FluxOSAboutDialog> createState() => _FluxOSAboutDialogState();

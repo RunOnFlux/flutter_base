@@ -456,9 +456,11 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
 }
 
 class _ProviderSignInButton extends StatelessWidget {
-  _ProviderSignInButton({required this.method, this.onPressed, this.size = const Size(130, 50)})
-      : assert(method.authProvider != null);
-  final Size size;
+  _ProviderSignInButton({
+    required this.method,
+    this.onPressed,
+  }) : assert(method.authProvider != null);
+  final Size size = const Size(130, 50);
   final FirebaseSignInMethods method;
   final void Function(FirebaseProviderAuthEvent event)? onPressed;
 
@@ -492,8 +494,10 @@ class _ProviderSignInButton extends StatelessWidget {
 }
 
 class _ZelCoreSignInButton extends StatelessWidget {
-  const _ZelCoreSignInButton({this.onPressed, this.size = const Size(130, 50)});
-  final Size size;
+  const _ZelCoreSignInButton({
+    this.onPressed,
+  });
+  final Size size = const Size(130, 50);
   final void Function()? onPressed;
 
   @override

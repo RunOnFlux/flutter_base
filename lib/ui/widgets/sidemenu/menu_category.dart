@@ -15,12 +15,12 @@ class SideMenuCategory extends StatefulWidget {
   final bool collapsed;
 
   const SideMenuCategory({
-    Key? key,
+    super.key,
     required this.route,
     required this.level,
     required this.children,
     this.collapsed = false,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _SideMenuCategoryState();

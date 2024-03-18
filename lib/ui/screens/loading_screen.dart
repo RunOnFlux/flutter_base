@@ -5,7 +5,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import '../theme/colors.dart';
 
 class LoadingScreen extends StatelessWidget {
-  const LoadingScreen({Key? key}) : super(key: key);
+  const LoadingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

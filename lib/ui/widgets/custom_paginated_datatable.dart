@@ -5,7 +5,7 @@ typedef OnRowChange = void Function(int? index)?;
 
 class CustomPaginatedTable extends StatelessWidget {
   const CustomPaginatedTable({
-    Key? key,
+    super.key,
     this.rowsPerPage = PaginatedDataTable.defaultRowsPerPage,
     required AsyncDataTableSource source,
     required List<DataColumn> dataColumns,
@@ -25,8 +25,7 @@ class CustomPaginatedTable extends StatelessWidget {
         _header = header,
         _showActions = showActions,
         _actions = actions,
-        assert((sortColumnIndex >= 0 && sortColumnIndex < dataColumns.length), 'Check the sortColumnIndex value'),
-        super(key: key);
+        assert((sortColumnIndex >= 0 && sortColumnIndex < dataColumns.length), 'Check the sortColumnIndex value');
 
   /// This is the source / model which will be binded
   ///

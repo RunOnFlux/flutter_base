@@ -3,10 +3,10 @@ import 'package:flutter_base/ui/routes/routes.dart';
 
 class AppRouterScope extends InheritedWidget {
   const AppRouterScope({
-    Key? key,
-    required Widget child,
+    super.key,
+    required super.child,
     required this.router,
-  }) : super(key: key, child: child);
+  });
   final AppRouter router;
 
   static AppRouter of(BuildContext context) {
