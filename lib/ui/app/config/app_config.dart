@@ -3,7 +3,6 @@ import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/widgets/logo.dart';
 import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
 import 'package:flutter_base/utils/settings.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 class AppConfig {
   String? get banner => null;
@@ -57,11 +56,12 @@ class AppConfig {
     return null;
   }
 
-  List<LocalizationsDelegate> get localizationDelegates => const [
+  List<LocalizationsDelegate> get localizationDelegates => [];
+  /*const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
-      ];
+      ];*/
 
   Iterable<Locale> get supportedLocales => const [
         Locale('en', "US"),

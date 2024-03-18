@@ -10,9 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations: # add this
-    sdk: flutter
-    version: ^0.0.0
+  #flutter_localizations: # add this
+  #  sdk: flutter
+  #  version: ^0.0.0
 
   android_intent_plus: ^4.0.3
   auto_size_text: ^3.0.0
