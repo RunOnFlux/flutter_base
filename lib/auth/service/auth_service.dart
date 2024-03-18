@@ -47,7 +47,6 @@ class AuthService {
     if (api == null) {
       throw ApiException(message: 'No API');
     }
-    //var token = await bloc!.getUserToken();
     debugPrint(token);
     dynamic response = await api.apiCall(
       RequestType.post,
@@ -71,8 +70,36 @@ class AuthService {
     throw ApiException(message: 'Invalid Data');
   }
 
-  Future<SignMessageResult> signMessage({required String message}) async {
-    return SignMessageResult();
+  Future<SignMessageResult> signMessage({
+    required String message,
+    required String token,
+  }) async {
+    if (bloc == null) {
+      throw ApiException(message: 'No AuthBloc');
+    }
+    Api? api = Api.instance;
+    if (api == null) {
+      throw ApiException(message: 'No API');
+    }
+    dynamic response = await api.apiCall(
+      RequestType.post,
+      '/api/signMessage',
+      backendOverride: 'https://pouwdev.runonflux.io',
+      options: Options(headers: {'Authorization': 'Bearer $token'}),
+      body: {
+        'message': message,
+      },
+    );
+    debugPrint(response.toString());
+    if (response is Map && response.containsKey('status')) {
+      var success = response['status'].toString().toLowerCase() == 'success';
+      return SignMessageResult(
+        success: success,
+        error: response['error'],
+        signature: response['signed_message'],
+      );
+    }
+    throw ApiException(message: 'Invalid Data');
   }
 
   FluxUser createFluxUserFromFirebase(frb.User firebaseUser) {
@@ -194,4 +221,14 @@ class SignInResult {
   });
 }
 
-class SignMessageResult {}
+class SignMessageResult {
+  String? signature;
+  bool success;
+  String? error;
+
+  SignMessageResult({
+    required this.success,
+    this.signature,
+    this.error,
+  });
+}
