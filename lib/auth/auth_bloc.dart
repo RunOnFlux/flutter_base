@@ -152,7 +152,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           );
           await restSignUp(emit);
         } else {
-          emit(state.copyWith(firebaseUser: newUser));
+          emit(state.copyWith(firebaseUser: () => newUser));
         }
       } catch (e) {
         final error = AuthError.from(e);
@@ -218,9 +218,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       },
     );
     on<SignOutEvent>(
-      (event, emit) {
+      (event, emit) async {
+        emit(state.copyWith(status: AuthConnectionStatus.waiting));
         FluxAuthLocalStorage.deleteFluxLogin();
         emit(state.copyWith(fluxLogin: () => null));
+        try {
+          await _firebaseInstance.signOut();
+        } catch (e) {
+          emit(state.copyWith(error: AuthError.from(e), status: AuthConnectionStatus.done));
+        }
+        emit(state.copyWith(status: AuthConnectionStatus.done, fluxUser: null, firebaseUser: null));
       },
     );
   }
