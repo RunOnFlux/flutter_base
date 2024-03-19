@@ -444,8 +444,7 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
     if (accepted == false) {
       PopupMessageScope.of(context).addMessage(
         PopupMessage.error(
-            //message: context.authTr.authAgreeToTermsAndConditionsRequired));
-            message: 'Agree to terms etc...'),
+            message: 'You need to agree to our terms of service and privacy policy in order to create an account.'),
       );
     }
     return accepted;
