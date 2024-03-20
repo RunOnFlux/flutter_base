@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_base/auth/service/auth_service.dart';
 import 'package:flutter_base/data/flux_user.dart';
 import 'package:flutter_base/extensions/router_extension.dart';
 import 'package:flutter_base/extensions/try_cast.dart';
+import 'package:flutter_base/ui/app/config/auth_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -51,8 +53,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   final FirebaseOptions firebaseOptions;
+  final AuthConfig config;
 
-  AuthBloc({required this.firebaseOptions}) : super(AuthState.initial()) {
+  AuthBloc({required this.config})
+      : firebaseOptions = config.firebaseOptions!,
+        super(AuthState.initial()) {
     FutureOr<void> onError(_AuthErrorEvent event, emit) async {
       if (event.error.type == AuthErrorType.unknown) {
         return;
@@ -97,12 +102,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         debugPrint('AuthBloc: _InternalFirebaseSignIn');
         final signInEvent = state.event.as<FirebaseAuthSignInEvent>();
         debugPrint(signInEvent.toString());
-        if (signInEvent is FirebaseEmailAuthEvent && signInEvent.isSignUp) {
-          await restSignUp(emit, signInEvent);
-        } else {
-          debugPrint('AuthBloc: restSignIn');
-          await restSignIn(emit, signInEvent);
-        }
+        debugPrint('AuthBloc: call restSignInOrUp');
+        await restSignInOrUp(emit, signInEvent);
       } else if (event is _InternalFirebaseSignOut) {
         debugPrint('[AuthBloc] Signed out');
         emit(
@@ -118,15 +119,75 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthState(status: AuthConnectionStatus.waiting, event: event));
 
       try {
-        await _firebaseInstance.sendPasswordResetEmail(email: event.email);
+        await _firebaseInstance.sendPasswordResetEmail(
+          email: event.email,
+          actionCodeSettings: ActionCodeSettings(
+            url: '${config.authRedirect}/auth?',
+          ),
+        );
         emit(AuthState(
           result: AuthResult.emailSent,
           event: event,
           status: AuthConnectionStatus.done,
         ));
       } on frb.FirebaseAuthException catch (e) {
-        emit(AuthState(status: AuthConnectionStatus.done, error: AuthError.from(e), event: event));
+        emit(AuthState(
+          status: AuthConnectionStatus.done,
+          error: AuthError.from(e),
+          event: event,
+          currentRoute: state.currentRoute,
+        ));
       }
+    }, transformer: droppable());
+
+    on<CompleteEmailVerificationEvent>((event, emit) async {
+      emit(state.copyWith(status: AuthConnectionStatus.waiting, event: () => event));
+      AuthResult? result;
+      AuthError? error;
+      frb.User? firebaseUser = _firebaseInstance.currentUser;
+      try {
+        _pauseFirebaseAuthSub();
+        await _firebaseInstance.applyActionCode(event.oobCode).timeout(const Duration(seconds: 30));
+        if (event.isChangeEmail) {
+          result = AuthResult.emailVerifiedAndUpdated;
+        } else {
+          result = AuthResult.emailVerified;
+        }
+        log('[AuthBloc.CompleteEmailVerificationEvent] Email verified', name: 'AuthBloc');
+
+        await firebaseUser?.reload();
+        await firebaseUser?.getIdToken(true);
+
+        if (firebaseUser != null) {
+          firebaseUser = _firebaseInstance.currentUser;
+
+          log('[AuthBloc.CompleteEmailVerificationEvent] User reloaded', name: 'AuthBloc');
+        }
+      } on frb.FirebaseAuthException catch (e) {
+        log('[AuthBloc.CompleteEmailVerificationEvent] Email Verification error: ${e.toString()}', name: 'AuthBloc');
+
+        error = AuthError.from(e);
+
+        log('[AuthBloc.CompleteEmailVerificationEvent] Error: ${error.toString()}', name: 'AuthBloc');
+        if (error.type == AuthErrorType.invalidActionCode && firebaseUser?.emailVerified == true) {
+          error = const AuthError(type: AuthErrorType.emailAlreadyVerified);
+        } else if (error.type == AuthErrorType.noUserSignedIn) {
+          error = null;
+          firebaseUser = null;
+        }
+      }
+
+      emit(
+        state.copyWith(
+          firebaseUser: () => firebaseUser,
+          fluxUser: () => state.fluxUser,
+          result: () => result,
+          error: () => error,
+          status: AuthConnectionStatus.done,
+          currentRoute: () => state.currentRoute,
+        ),
+      );
+      _resumeFirebaseAuthSub();
     }, transformer: droppable());
 
     /// used mostly to periodically check if email verification is done
@@ -148,15 +209,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               firebaseUser: newUser,
               result: AuthResult.emailVerified,
               status: AuthConnectionStatus.done,
+              currentRoute: state.currentRoute,
             ),
           );
-          await restSignUp(emit);
+          await restSignInOrUp(emit);
         } else {
           emit(state.copyWith(firebaseUser: () => newUser));
         }
       } catch (e) {
         final error = AuthError.from(e);
-        emit(state.copyWith(error: error));
+        emit(state.copyWith(error: () => error));
       }
     }, transformer: droppable());
     on<RequestEmailVerificationEvent>((event, emit) async {
@@ -184,7 +246,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (event.redirectUrl != null) {
           redirectUrl += event.redirectUrl!;
         }
-        final settings = ActionCodeSettings(url: 'https://beta.cloud.runonflux.io/$redirectUrl');
+        final settings = ActionCodeSettings(url: '${config.authRedirect}/auth?action=verify');
 
         await currentUser!.sendEmailVerification(settings);
         await setLastEmailVerificationRequest(DateTime.now());
@@ -195,41 +257,35 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (!silent) {
         emit(
           state.copyWith(
-            error: error,
-            result: error == null ? AuthResult.emailSent : null,
+            error: () => error,
+            result: () => error == null ? AuthResult.emailSent : null,
           ),
         );
       }
     }, transformer: droppable());
-    on<AuthRouteEvent>(
-      (event, emit) {
-        emit(state.copyWith(currentRoute: () => event.route));
-      },
-    );
-    on<UpdateFluxLoginEvent>(
-      (event, emit) {
-        if (event.login != null) {
-          event.login!.privilegeLevel = PrivilegeLevel.fromString(event.login!.privilege) ?? PrivilegeLevel.none;
-          FluxAuthLocalStorage.putFluxLogin(event.login!);
-        } else {
-          FluxAuthLocalStorage.deleteFluxLogin();
-        }
-        emit(state.copyWith(fluxLogin: () => event.login));
-      },
-    );
-    on<SignOutEvent>(
-      (event, emit) async {
-        emit(state.copyWith(status: AuthConnectionStatus.waiting));
+    on<AuthRouteEvent>((event, emit) {
+      emit(state.copyWith(currentRoute: () => event.route));
+    });
+    on<UpdateFluxLoginEvent>((event, emit) {
+      if (event.login != null) {
+        event.login!.privilegeLevel = PrivilegeLevel.fromString(event.login!.privilege) ?? PrivilegeLevel.none;
+        FluxAuthLocalStorage.putFluxLogin(event.login!);
+      } else {
         FluxAuthLocalStorage.deleteFluxLogin();
-        emit(state.copyWith(fluxLogin: () => null));
-        try {
-          await _firebaseInstance.signOut();
-        } catch (e) {
-          emit(state.copyWith(error: AuthError.from(e), status: AuthConnectionStatus.done));
-        }
-        emit(state.copyWith(status: AuthConnectionStatus.done, fluxUser: null, firebaseUser: null));
-      },
-    );
+      }
+      emit(state.copyWith(fluxLogin: () => event.login));
+    });
+    on<SignOutEvent>((event, emit) async {
+      emit(state.copyWith(status: AuthConnectionStatus.waiting));
+      FluxAuthLocalStorage.deleteFluxLogin();
+      emit(state.copyWith(fluxLogin: () => null));
+      try {
+        await _firebaseInstance.signOut();
+      } catch (e) {
+        emit(state.copyWith(error: () => AuthError.from(e), status: AuthConnectionStatus.done));
+      }
+      emit(state.copyWith(status: AuthConnectionStatus.done, fluxUser: null, firebaseUser: null));
+    });
   }
 
   Future<void> init([Duration? timeout = const Duration(seconds: 10)]) async {
@@ -311,12 +367,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (kSignoutIfAlreadySignedIn) {
           await _firebaseInstance.signOut();
         } else {
-          emit(state.copyWith(error: AuthErrorType.alreadySignedIn));
+          emit(state.copyWith(error: () => AuthErrorType.alreadySignedIn));
           return false;
         }
       }
     } catch (e) {
-      emit(state.copyWith(error: AuthErrorType.firebaseNotInitialized));
+      emit(state.copyWith(error: () => AuthErrorType.firebaseNotInitialized));
       return false;
     }
     return true;

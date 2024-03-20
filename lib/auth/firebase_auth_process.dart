@@ -139,13 +139,13 @@ extension _AuthBlocExtension on AuthBloc {
         if (kSignoutIfAlreadySignedIn) {
           await _firebaseInstance.signOut();
         } else {
-          emit(state.copyWith(error: AuthErrorType.alreadySignedIn));
+          emit(state.copyWith(error: () => AuthErrorType.alreadySignedIn));
           return false;
         }
       }
     } catch (e) {
       debugPrint(e.toString());
-      emit(state.copyWith(error: AuthErrorType.firebaseNotInitialized));
+      emit(state.copyWith(error: () => AuthErrorType.firebaseNotInitialized));
       return false;
     }
     return true;
@@ -211,15 +211,15 @@ extension _AuthBlocExtension on AuthBloc {
       }
     } catch (e) {
       emit(state.copyWith(
-        error: AuthErrorType.from(e),
+        error: () => AuthErrorType.from(e),
         status: AuthConnectionStatus.done,
-        event: event,
+        event: () => event,
       ));
     }
   }
 
   /// REST sign up
-  Future<void> restSignUp(Emitter<AuthState> emit, [FirebaseAuthSignInEvent? event]) async {
+  /*Future<void> restSignUp(Emitter<AuthState> emit, [FirebaseAuthSignInEvent? event]) async {
     User? firebaseUser = _firebaseInstance.currentUser;
 
     if (firebaseUser == null) {
@@ -260,7 +260,7 @@ extension _AuthBlocExtension on AuthBloc {
       debugPrint('[AuthBloc] Signing up with user: $fluxUser');
       var token = await getUserToken();
       debugPrint(token);
-      final result = await AuthService().signUp();
+      final result = await AuthService().signIn();
       debugPrint('[AuthBloc] Response from server: $result');
     } catch (e) {
       debugPrint(e.toString());
@@ -297,12 +297,12 @@ extension _AuthBlocExtension on AuthBloc {
         currentRoute: state.currentRoute,
       ),
     );
-  }
+  }*/
 
-  Future<void> restSignIn(Emitter<AuthState> emit, [FirebaseAuthSignInEvent? event]) async {
+  Future<void> restSignInOrUp(Emitter<AuthState> emit, [FirebaseAuthSignInEvent? event]) async {
     User? firebaseUser = _firebaseInstance.currentUser;
 
-    debugPrint('AuthBloc: restSignIn: ${firebaseUser.toString()}');
+    debugPrint('AuthBloc: restSignInOrUp: ${firebaseUser.toString()}');
     if (firebaseUser == null) {
       emit(
         AuthState(
@@ -312,6 +312,22 @@ extension _AuthBlocExtension on AuthBloc {
           currentRoute: state.currentRoute,
         ),
       );
+      return;
+    }
+
+    // Don't do the REST sign up until the email has been verified
+    final isAuthByEmail = firebaseUser.providerData.firstOrNull?.providerId == 'password';
+    if (isAuthByEmail && firebaseUser.emailVerified == false) {
+      emit(
+        AuthState(
+          firebaseUser: firebaseUser,
+          challenge: const AuthChallenge(
+            type: AuthChallengeType.emailVerification,
+          ),
+          currentRoute: state.currentRoute,
+        ),
+      );
+
       return;
     }
 

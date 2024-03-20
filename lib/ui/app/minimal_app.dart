@@ -92,7 +92,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
               lazy: false,
               create: (context) {
                 debugPrint('BlocProvider: AuthBloc');
-                final bloc = AuthBloc(firebaseOptions: authConfig!.firebaseOptions!);
+                final bloc = AuthBloc(config: authConfig!);
                 bloc.add(const InitializeAuthEvent());
                 return bloc;
               }),

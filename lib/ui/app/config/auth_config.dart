@@ -2,8 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
 import 'package:flutter_base/ui/widgets/auth/screens/forgot_password.dart';
+import 'package:flutter_base/ui/widgets/auth/screens/need_email_verification.dart';
 import 'package:flutter_base/ui/widgets/auth/screens/sign_in.dart';
-import 'package:flutter_base/ui/widgets/auth/screens/verify_email.dart';
+import 'package:flutter_base/ui/widgets/auth/screens/verify_email_screen.dart';
 
 abstract class AuthConfig {
   Widget Function(Object? arg) authPageBuilder(AuthFluxRoute route) {
@@ -18,10 +19,8 @@ abstract class AuthConfig {
         //return (arg) => resetPasswordPage(arg as String);
         return (_) => Container();
       case AuthFluxBranchRoute.verifyEmail:
-        //return (arg) => verifyEmailPage(arg as String);
-        return (_) => Container();
+        return (arg) => VerifyEmailScreen(oobCode: arg as String);
       case AuthFluxChallengeRoute.needAccountEmailVerification:
-        //return (_) => needEmailVerificationPage();
         return (_) => const NeedEmailVerificationScreen();
       case AuthFluxBranchRoute.verifyAndChangeEmail:
         //return (arg) => verifyAndChangeEmailPage(arg as String);
@@ -57,4 +56,6 @@ abstract class AuthConfig {
 
   String get termsOfServiceUrl => 'https://runonflux.io/termsandconditions';
   String get privacyPolicyUrl => 'https://runonflux.io/privacyPolicy';
+
+  String get authRedirect => 'https://beta.cloud.runonflux.io';
 }

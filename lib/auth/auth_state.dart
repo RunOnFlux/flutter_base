@@ -197,30 +197,31 @@ class AuthState {
   /// Any other type of extra is kept. Meaning that if a new state is emit using copyWith
   /// the extra will still be present in the new state
   AuthState copyWith({
-    AuthEvent? event,
-    Object? error,
-    AuthResult? result,
+    ValueGetter<AuthEvent?>? event,
+    ValueGetter<Object?>? error,
+    ValueGetter<AuthResult?>? result,
     ValueGetter<FluxUser?>? fluxUser,
-    PhoneVerificationRequest? phoneVerificationRequest,
-    PhoneSigninRequest? phoneSignInOTPRequest,
-    AuthChallenge? challenge,
+    ValueGetter<PhoneVerificationRequest?>? phoneVerificationRequest,
+    ValueGetter<PhoneSigninRequest?>? phoneSignInOTPRequest,
+    ValueGetter<AuthChallenge?>? challenge,
     AuthConnectionStatus? status,
     ValueGetter<User?>? firebaseUser,
     ValueGetter<AuthFluxRoute?>? currentRoute,
     ValueGetter<FluxLogin?>? fluxLogin,
   }) {
     return AuthState(
-        challenge: challenge ?? this.challenge,
-        phoneSignInOTPRequest: phoneSignInOTPRequest,
-        phoneVerificationRequest: phoneVerificationRequest,
+        challenge: challenge != null ? challenge() : this.challenge,
+        phoneSignInOTPRequest: phoneSignInOTPRequest != null ? phoneSignInOTPRequest() : this.phoneSignInOTPRequest,
+        phoneVerificationRequest:
+            phoneVerificationRequest != null ? phoneVerificationRequest() : this.phoneVerificationRequest,
         firebaseUser: firebaseUser != null ? firebaseUser() : this.firebaseUser,
         fluxUser: fluxUser != null ? fluxUser() : this.fluxUser,
         status: status ?? this.status,
         currentRoute: currentRoute != null ? currentRoute() : this.currentRoute,
         fluxLogin: fluxLogin != null ? fluxLogin() : this.fluxLogin,
-        error: error,
-        event: event,
-        result: result);
+        error: error != null ? error() : this.error,
+        event: event != null ? event() : this.event,
+        result: result != null ? result() : this.result);
   }
 
   @override
