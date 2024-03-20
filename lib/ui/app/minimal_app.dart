@@ -232,11 +232,48 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                 parentNavigatorKey: rootNavigatorKey,
                 navigatorKey: authNavigatorKey,
                 routes: [
+                  GoRoute(
+                    parentNavigatorKey: authNavigatorKey,
+                    path: AuthFluxBranchRoute.rootPath,
+                    redirect: (context, state) {
+                      final currentURI = state.uri;
+                      final queryParams = Map<String, String>.from(currentURI.queryParameters);
+                      final modeFromQueryIfAny = queryParams['mode'] ?? 'login';
+                      final redirectIfAny = queryParams['continueUrl'];
+                      if (redirectIfAny != null) {
+                        queryParams.remove('continueUrl');
+                        queryParams['redirect'] = redirectIfAny;
+                      }
+                      queryParams.remove('mode');
+
+                      final mode = AuthFluxBranchRoute.fromName(modeFromQueryIfAny) ?? AuthFluxBranchRoute.login;
+                      final newUri = currentURI.replace(path: mode.fullPath, queryParameters: queryParams);
+
+                      return newUri.toString();
+                    },
+                  ),
                   for (final route in AuthFluxBranchRoute.signInRoutes)
                     GoRoute(
                       path: route.fullPath,
                       parentNavigatorKey: authNavigatorKey,
                       pageBuilder: (context, state) {
+                        final authBloc = context.read<AuthBloc>();
+                        final builder = authConfig!.authPageBuilder(route);
+                        final arg = route.getArg(authBloc.state, state);
+
+                        return NoTransitionPage(
+                          child: AuthScreen(child: builder(arg)),
+                        );
+                      },
+                    ),
+                  for (final route in AuthFluxBranchRoute.actionRoutes)
+                    GoRoute(
+                      parentNavigatorKey: authNavigatorKey,
+                      path: route.fullPath,
+                      pageBuilder: (context, state) {
+                        final queryParams = Map<String, String>.from(state.uri.queryParameters);
+                        String? redirect = queryParams['redirect'];
+
                         final authBloc = context.read<AuthBloc>();
                         final builder = authConfig!.authPageBuilder(route);
                         final arg = route.getArg(authBloc.state, state);
