@@ -35,13 +35,13 @@ enum AuthFluxChallengeRoute<T> with AuthFluxRoute<T> {
 
 /// All the routes of the Auth section
 enum AuthFluxBranchRoute<T> with AuthFluxRoute<T> {
-  verifyEmail<String>(),
+  verifyEmail<String?>(),
   login(isSignIn: true),
   register(isSignIn: true),
   phoneVerification<PhoneSigninRequest>(isSignIn: true),
   forgotPassword(),
-  resetPassword<String>(),
-  verifyAndChangeEmail<String>();
+  resetPassword<String?>(),
+  verifyAndChangeEmail<String?>();
 
   static const List<AuthFluxBranchRoute> signInRoutes = [
     AuthFluxBranchRoute.login,
