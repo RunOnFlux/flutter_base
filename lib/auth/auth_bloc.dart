@@ -122,7 +122,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await _firebaseInstance.sendPasswordResetEmail(
           email: event.email,
           actionCodeSettings: ActionCodeSettings(
-            url: '${config.authRedirect}/auth?',
+            url: '${config.authRedirect}/auth?mode=resetPassword',
           ),
         );
         emit(AuthState(
@@ -246,7 +246,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (event.redirectUrl != null) {
           redirectUrl += event.redirectUrl!;
         }
-        final settings = ActionCodeSettings(url: '${config.authRedirect}/auth?action=verify');
+        final settings = ActionCodeSettings(url: '${config.authRedirect}/auth?mode=verifyEmail');
 
         await currentUser!.sendEmailVerification(settings);
         await setLastEmailVerificationRequest(DateTime.now());
