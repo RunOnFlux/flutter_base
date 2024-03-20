@@ -14,7 +14,7 @@ class AuthService {
 
   static AuthBloc? bloc;
 
-  Future<bool> signUp() async {
+  /*Future<bool> signUp() async {
     if (bloc == null) {
       throw ApiException(message: 'No AuthBloc');
     }
@@ -34,7 +34,7 @@ class AuthService {
       return response['status'].toString().toLowerCase() == 'success';
     }
     throw ApiException(message: 'Invalid Data');
-  }
+  }*/
 
   Future<SignInResult> signIn({
     required String message,
@@ -50,7 +50,7 @@ class AuthService {
     debugPrint(token);
     dynamic response = await api.apiCall(
       RequestType.post,
-      '/api/signIn',
+      '/api/signInOrUp',
       backendOverride: 'https://pouwdev.runonflux.io',
       options: Options(headers: {'Authorization': 'Bearer $token'}),
       body: {
