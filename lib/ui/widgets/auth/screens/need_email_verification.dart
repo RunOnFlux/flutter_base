@@ -31,7 +31,7 @@ class _NeedEmailVerificationScreenState extends State<NeedEmailVerificationScree
 
   void _requestNewEmail([bool silent = false]) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      log('Request new email verification', name: 'VerifyEmailScreen');
+      log('Request new email verification', name: 'NeedEmailVerificationScreen');
       final String? redirectUrl = GoRouterState.of(context).uri.queryParameters['redirect'];
       context.read<AuthBloc>().add(
             RequestEmailVerificationEvent(
