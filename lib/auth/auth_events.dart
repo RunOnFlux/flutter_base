@@ -442,4 +442,87 @@ enum AuthErrorType {
     }
     return AuthErrorType.unknown;
   }
+
+  String errorMessage(bool? showCode) {
+    //showCode ??= config.showAuthErrorCode;
+
+    final message = () {
+      switch (this) {
+        case AuthErrorType.alreadySignedInWithPhone:
+          return 'A phone number is already linked to this account';
+        case AuthErrorType.emailVerificationCooldown:
+          return 'Please wait for the cooldown time to finish before sending another email.';
+        case AuthErrorType.accountHasEmail:
+          return 'This account already has an email address';
+        case AuthErrorType.accountHasNoEmail:
+          return 'This account has no email address';
+        case AuthErrorType.serverError:
+          return 'Server error';
+        case AuthErrorType.emailAlreadyInUse:
+          return 'Email already in use';
+        case AuthErrorType.disablingTwoFactorAuthenticationFailed:
+          return 'Skip two factor authentication failed';
+        case AuthErrorType.captchaCheckFailed:
+          return 'Captcha check failed';
+        case AuthErrorType.invalidDisposableEmail:
+          return 'The email address you entered is not allowed. Please enter a valid email address.';
+        case AuthErrorType.twoFactorOTPFail:
+          return 'Two factor authentication failed';
+        case AuthErrorType.networkRequestFailed:
+          return 'Network request failed';
+        case AuthErrorType.timeout:
+          return 'Connection timeout, please try again later';
+        case AuthErrorType.needTwoFactorAuthentication:
+          return 'Need two factor authentication';
+        case AuthErrorType.invalidEmail:
+          return 'Invalid email';
+        case AuthErrorType.userDisabled:
+          return 'User disabled';
+        case AuthErrorType.userNotFound:
+          return 'User not found';
+        case AuthErrorType.wrongPassword:
+          return 'Wrong password';
+        case AuthErrorType.tooManyRequests:
+          return 'Too many requests. Please try again later.';
+        case AuthErrorType.operationNotAllowed:
+          return 'Operation not allowed';
+        case AuthErrorType.expiredActionCode:
+          return 'Expired action code';
+        case AuthErrorType.invalidActionCode:
+          return 'Invalid action code, the code has expired or has already been used';
+        case AuthErrorType.weakPassword:
+          return 'Weak password';
+        case AuthErrorType.invalidCredential:
+          return 'Invalid credentials';
+        case AuthErrorType.accountExistsWithDifferentCredential:
+          return 'Account exists with different credentials';
+        case AuthErrorType.noUserSignedIn:
+          return 'No user signed in';
+        case AuthErrorType.emailAlreadyVerified:
+          return 'Email already verified';
+        case AuthErrorType.wrongEmail:
+          return 'Wrong email';
+        case AuthErrorType.alreadySignedIn:
+          return 'Already signed in';
+        case AuthErrorType.unknown:
+          return 'Unknown error';
+        case AuthErrorType.firebaseNotInitialized:
+          return 'Firebase not initialized';
+        case AuthErrorType.invalidPhoneNumber:
+          return 'Invalid phone number';
+        case AuthErrorType.quotaExceeded:
+          return 'Quota exceeded';
+        case AuthErrorType.popupClosedByUser:
+          return 'Authentication popup closed by user. Please make sure you have allowed popups for this website, and try again.';
+        case AuthErrorType.credentialAlreadyInUse:
+          return 'These credentials are already in use';
+        case AuthErrorType.phoneAuthDisabled:
+          return 'Phone authentication disabled';
+      }
+    }();
+    if (showCode == true) {
+      return '$message ($index)';
+    }
+    return message;
+  }
 }
