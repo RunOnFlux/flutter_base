@@ -122,7 +122,6 @@ class _AuthWrapperWidget extends StatelessWidget {
     return BlocBuilder<AuthBloc, AuthState>(
       buildWhen: (previous, current) => previous.loading != current.loading,
       builder: (context, state) {
-        debugPrint('Auth Screen loading? ${state.loading}');
         return PopupMessageWidget(
           key: GlobalKey(),
           child: LoadingOverlay(

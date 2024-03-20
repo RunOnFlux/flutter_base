@@ -4,7 +4,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
+import 'package:flutter_base/ui/widgets/default_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
   const VerifyEmailScreen({super.key, required this.oobCode, this.changingEmail = false});
@@ -97,6 +99,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
 
   Timer? _timer;
   void _scheduleVerifyEmail() {
+    if (context.read<AuthBloc>().state.error != null) return;
+    if (context.read<AuthBloc>().state.firebaseUser?.emailVerified ?? false) return;
     if (context.read<AuthBloc>().state.error == null) {
       _timer?.cancel();
       _timer = Timer(const Duration(milliseconds: 1000), () {
@@ -150,6 +154,29 @@ class _VerificationProgress extends StatelessWidget {
                   style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
                 ),
                 const SizedBox(height: 12),
+              ],
+            );
+          }
+          if (state.firebaseUser?.emailVerified ?? false) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: Icon(Icons.check_circle_outline_rounded),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Email verified',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+                ),
+                const SizedBox(height: 12),
+                DefaultTextButton(
+                  text: 'Continue',
+                  onPressed: () => context.go('/'),
+                ),
               ],
             );
           }
