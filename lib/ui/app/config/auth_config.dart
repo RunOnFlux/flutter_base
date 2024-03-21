@@ -7,6 +7,8 @@ import 'package:flutter_base/ui/widgets/auth/screens/sign_in.dart';
 import 'package:flutter_base/ui/widgets/auth/screens/verify_email_screen.dart';
 
 abstract class AuthConfig {
+  String get ssoURL;
+
   Widget Function(Object? arg) authPageBuilder(AuthFluxRoute route) {
     switch (route) {
       case AuthFluxBranchRoute.login:

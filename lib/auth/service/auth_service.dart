@@ -14,28 +14,6 @@ class AuthService {
 
   static AuthBloc? bloc;
 
-  /*Future<bool> signUp() async {
-    if (bloc == null) {
-      throw ApiException(message: 'No AuthBloc');
-    }
-    Api? api = Api.instance;
-    if (api == null) {
-      throw ApiException(message: 'No API');
-    }
-    var token = await bloc!.getUserToken();
-    dynamic response = await api.apiCall(
-      RequestType.get,
-      '/api/signUp',
-      backendOverride: 'https://pouwdev.runonflux.io',
-      options: Options(headers: {'Authorization': token}),
-    );
-    debugPrint(response.toString());
-    if (response is Map && response.containsKey('status')) {
-      return response['status'].toString().toLowerCase() == 'success';
-    }
-    throw ApiException(message: 'Invalid Data');
-  }*/
-
   Future<SignInResult> signIn({
     required String message,
     required String token,
@@ -51,7 +29,7 @@ class AuthService {
     dynamic response = await api.apiCall(
       RequestType.post,
       '/api/signInOrUp',
-      backendOverride: 'https://pouwdev.runonflux.io',
+      backendOverride: bloc!.config.ssoURL,
       options: Options(headers: {'Authorization': 'Bearer $token'}),
       body: {
         'message': message,
@@ -84,7 +62,7 @@ class AuthService {
     dynamic response = await api.apiCall(
       RequestType.post,
       '/api/signMessage',
-      backendOverride: 'https://pouwdev.runonflux.io',
+      backendOverride: bloc!.config.ssoURL,
       options: Options(headers: {'Authorization': 'Bearer $token'}),
       body: {
         'message': message,

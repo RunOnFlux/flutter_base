@@ -271,4 +271,7 @@ class FlutterBaseAuthConfig extends AuthConfig {
           ),
         ),
       );
+
+  @override
+  String get ssoURL => 'https://pouwdev.runonflux.io';
 }
