@@ -190,6 +190,31 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
           const SizedBox(
             height: 28,
           ),
+          BlocBuilder<AuthBloc, AuthState>(
+            buildWhen: (previous, current) => current.authError != previous.authError,
+            builder: (context, state) {
+              if (state.authError != null) {
+                return Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: Icon(Icons.error_outline),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      state.authError!.type.errorMessage(false), //state.authError!.type.tr(context),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+                    ),
+                  ],
+                );
+              }
+              return Container();
+            },
+          ),
           if (_selectedMethod == FirebaseSignInMethods.email) _buildEmailSignIn(),
           if (widget.type == SignInScreenType.register) ...[
             const SizedBox(height: 12),
