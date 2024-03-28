@@ -249,6 +249,7 @@ class FirebaseProviderAuthEvent extends FirebaseAuthSignInEvent {
 
   // factory FirebaseProviderAuthEvent.facebook() =>
   //     const FirebaseProviderAuthEvent._(FirebaseSignInMethods.facebook);
+  factory FirebaseProviderAuthEvent.apple() => const FirebaseProviderAuthEvent._(FirebaseSignInMethods.apple);
 
   factory FirebaseProviderAuthEvent.gitlab() => const FirebaseProviderAuthEvent._(FirebaseSignInMethods.gitlab);
 

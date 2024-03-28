@@ -22,11 +22,14 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    if (width >= 1280) width = width / 2;
+    if (width < 560) width = 560;
     return Center(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 56),
         child: SizedBox(
-          width: 560,
+          width: width,
           child: _SignInScreenDelegate(type: type),
         ),
       ),
@@ -113,8 +116,11 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
           const SizedBox(
             height: 16,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Wrap(
+            runAlignment: WrapAlignment.spaceAround,
+            alignment: WrapAlignment.center,
+            spacing: 10,
+            runSpacing: 10,
             children: [
               for (final method in providers)
                 _ProviderSignInButton(
@@ -484,7 +490,7 @@ class _ProviderSignInButton extends StatelessWidget {
     required this.method,
     this.onPressed,
   }) : assert(method.authProvider != null);
-  final Size size = const Size(130, 50);
+  final Size size = const Size(120, 50);
   final FirebaseSignInMethods method;
   final void Function(FirebaseProviderAuthEvent event)? onPressed;
 
@@ -521,7 +527,7 @@ class _ZelCoreSignInButton extends StatelessWidget {
   const _ZelCoreSignInButton({
     this.onPressed,
   });
-  final Size size = const Size(130, 50);
+  final Size size = const Size(120, 50);
   final void Function()? onPressed;
 
   @override

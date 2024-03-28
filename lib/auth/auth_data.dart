@@ -4,6 +4,7 @@ enum FirebaseSignInMethods {
   email,
   google,
   github,
+  apple,
   gitlab(canBeLinked: false),
   phone(canBeLinked: false);
 
@@ -36,7 +37,8 @@ enum FirebaseSignInMethods {
   static const List<FirebaseSignInMethods> supportedProviders = [
     FirebaseSignInMethods.google,
     FirebaseSignInMethods.github,
-    FirebaseSignInMethods.gitlab
+    FirebaseSignInMethods.apple,
+    //FirebaseSignInMethods.gitlab
   ];
 
   static const List<FirebaseSignInMethods> otherMethods = [FirebaseSignInMethods.email, FirebaseSignInMethods.phone];
@@ -63,6 +65,8 @@ enum FirebaseSignInMethods {
         return 'password';
       case FirebaseSignInMethods.phone:
         return 'phone';
+      case FirebaseSignInMethods.apple:
+        return 'apple';
       case FirebaseSignInMethods.github:
         return 'github.com';
       case FirebaseSignInMethods.gitlab:
@@ -80,6 +84,8 @@ enum FirebaseSignInMethods {
         return 'E-mail address';
       case FirebaseSignInMethods.phone:
         return 'Phone number';
+      case FirebaseSignInMethods.apple:
+        return 'Apple ID';
       case FirebaseSignInMethods.github:
         return 'Github';
       case FirebaseSignInMethods.gitlab:
@@ -110,7 +116,8 @@ enum FirebaseSignInMethods {
         assetName = 'assets/images/svg/email.svg';
       case FirebaseSignInMethods.phone:
         assetName = 'assets/images/svg/phone.svg';
-
+      case FirebaseSignInMethods.apple:
+        assetName = 'assets/images/svg/apple.svg';
       case FirebaseSignInMethods.gitlab:
         assetName = 'assets/images/svg/gitlab.svg';
     }
@@ -126,6 +133,8 @@ enum FirebaseSignInMethods {
         return null;
       case FirebaseSignInMethods.phone:
         return PhoneAuthProvider();
+      case FirebaseSignInMethods.apple:
+        return AppleAuthProvider();
       case FirebaseSignInMethods.github:
         return GithubAuthProvider();
       case FirebaseSignInMethods.gitlab:
