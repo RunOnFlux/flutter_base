@@ -142,9 +142,12 @@ class AuthService {
     throw ApiException(message: 'Bad Data: ${response.toString()}');
   }
 
-  Future<LoginPhrase?> getEmergencyLoginPhrase({required String nodeIP}) async {
-    dynamic response =
-        await Api.instance!.apiCall(RequestType.get, '/id/emergencyphrase', backendOverride: 'https://$nodeIP');
+  Future<LoginPhrase?> getEmergencyLoginPhrase({String? nodeIP}) async {
+    dynamic response = await Api.instance!.apiCall(
+      RequestType.get,
+      '/id/emergencyphrase',
+      backendOverride: nodeIP ?? 'https://api.runonflux.io',
+    );
     debugPrint(response.toString());
     if (response is Map) {
       if (response['status'] == 'success') {
