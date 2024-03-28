@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
 import 'package:flutter_base/ui/widgets/auth/screens/forgot_password.dart';
 import 'package:flutter_base/ui/widgets/auth/screens/need_email_verification.dart';
+import 'package:flutter_base/ui/widgets/auth/screens/reset_password.dart';
 import 'package:flutter_base/ui/widgets/auth/screens/sign_in.dart';
 import 'package:flutter_base/ui/widgets/auth/screens/verify_email_screen.dart';
 
@@ -18,8 +19,7 @@ abstract class AuthConfig {
       case AuthFluxBranchRoute.forgotPassword:
         return (_) => const ForgotPasswordScreen();
       case AuthFluxBranchRoute.resetPassword:
-        //return (arg) => resetPasswordPage(arg as String);
-        return (_) => Container();
+        return (arg) => ResetPasswordScreen(oobCode: arg as String);
       case AuthFluxBranchRoute.verifyEmail:
         return (arg) => VerifyEmailScreen(oobCode: arg as String);
       case AuthFluxChallengeRoute.needAccountEmailVerification:

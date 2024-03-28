@@ -25,7 +25,7 @@ class AuthScreen extends StatelessWidget {
     super.key,
     required this.child,
     this.isPopup = false,
-    this.zelCore = false,
+    this.zelCore = true,
   });
 
   @override
@@ -33,38 +33,48 @@ class AuthScreen extends StatelessWidget {
     //final smallScreen = context.isSmallWidth();
 
     return BlocBuilder<AuthBloc, AuthState>(
-        buildWhen: (previous, current) => previous.status.isIdle(),
-        builder: (context, state) {
-          if (state.isIdle) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          wrapper(child) => _DefaultWrapperWidget(child: child);
-          if (state.needReauthentication) {
-            //wrapper = (child) => _DialogWrapperWidget(child: child);
-          }
-          return Provider<AuthScreenConfig>(
-            create: (BuildContext context) => AuthScreenConfig(
-              isPopup: isPopup,
-              zelCore: zelCore,
-            ),
-            child: _AuthWrapperWidget(
-              child: wrapper(child),
-            ),
-          );
-        });
+      buildWhen: (previous, current) => previous.status.isIdle(),
+      builder: (context, state) {
+        if (state.isIdle) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        wrapper(child) => _DefaultWrapperWidget(child: child);
+        if (state.needReauthentication) {
+          //wrapper = (child) => _DialogWrapperWidget(child: child);
+        }
+        return Provider<AuthScreenConfig>(
+          create: (BuildContext context) => AuthScreenConfig(
+            isPopup: isPopup,
+            zelCore: zelCore,
+          ),
+          child: _AuthWrapperWidget(
+            child: wrapper(child),
+          ),
+        );
+      },
+    );
   }
 
-  static void goToAuthRoute(BuildContext context, AuthFluxBranchRoute route) {
+  static void goToAuthRoute(
+    BuildContext context,
+    AuthFluxBranchRoute route, {
+    bool keepParameters = true,
+  }) {
     bool isPopup = context.read<AuthScreenConfig>().isPopup;
     if (isPopup) {
       context.read<AuthBloc>().setCurrentRoute(route);
     } else {
       final router = GoRouter.of(context);
-      final currentRoute = router.routerDelegate.currentConfiguration.uri;
-      debugPrint(currentRoute.toString());
-      final newRoute = currentRoute.replace(path: route.fullPath);
-      debugPrint('goToAuthRoute: ${newRoute.toString()}');
-      router.go(newRoute.toString());
+      if (keepParameters) {
+        final currentRoute = router.routerDelegate.currentConfiguration.uri;
+        debugPrint(currentRoute.toString());
+        final newRoute = currentRoute.replace(path: route.fullPath);
+        debugPrint('goToAuthRoute: ${newRoute.toString()}');
+        router.go(newRoute.toString());
+      } else {
+        debugPrint('goToAuthRoute without parameters: ${route.toString()}');
+        router.go(route.fullPath);
+      }
     }
   }
 }
@@ -121,18 +131,27 @@ class _AuthWrapperWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      buildWhen: (previous, current) => previous.loading != current.loading,
-      builder: (context, state) {
-        return PopupMessageWidget(
-          key: GlobalKey(),
-          child: LoadingOverlay(
+    return PopupMessageWidget(
+      key: GlobalKey(),
+      child: BlocConsumer<AuthBloc, AuthState>(
+        listener: (BuildContext context, AuthState state) {
+          log('hasError? ${state.hasError}', name: 'Auth Screen');
+          if (state.hasError) {
+            PopupMessageScope.of(context).addMessage(
+              PopupMessage.error(message: state.authError!.type.errorMessage(false)),
+            );
+          }
+        },
+        listenWhen: (previous, current) => previous.hasError != current.hasError,
+        buildWhen: (previous, current) => previous.loading != current.loading,
+        builder: (context, state) {
+          return LoadingOverlay(
             loading: state.loading,
             colorBarrier: Colors.black54,
             child: child,
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

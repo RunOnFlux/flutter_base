@@ -119,7 +119,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     }, transformer: droppable());
     on<ResetPasswordEvent>((event, emit) async {
-      emit(AuthState(status: AuthConnectionStatus.waiting, event: event));
+      emit(
+        AuthState(
+          status: AuthConnectionStatus.waiting,
+          event: event,
+          currentRoute: state.currentRoute,
+        ),
+      );
 
       try {
         await _firebaseInstance.sendPasswordResetEmail(
@@ -132,8 +138,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           result: AuthResult.emailSent,
           event: event,
           status: AuthConnectionStatus.done,
+          currentRoute: state.currentRoute,
         ));
       } on frb.FirebaseAuthException catch (e) {
+        log(e.toString(), name: 'Auth Bloc');
         emit(AuthState(
           status: AuthConnectionStatus.done,
           error: AuthError.from(e),
@@ -193,6 +201,37 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         ),
       );
       _resumeFirebaseAuthSub();
+    }, transformer: droppable());
+    on<CompletePasswordResetEvent>((event, emit) async {
+      emit(
+        AuthState(
+          status: AuthConnectionStatus.waiting,
+          event: event,
+          currentRoute: state.currentRoute,
+        ),
+      );
+
+      AuthError? error;
+
+      try {
+        await _firebaseInstance
+            .confirmPasswordReset(
+              code: event.oobCode,
+              newPassword: event.password,
+            )
+            .timeout(const Duration(seconds: 30));
+      } catch (e) {
+        error = AuthError.from(e);
+      }
+
+      emit(
+        state.copyWith(
+          status: AuthConnectionStatus.done,
+          error: () => error,
+          result: () => error == null ? AuthResult.passwordResetCompleted : null,
+          currentRoute: () => state.currentRoute,
+        ),
+      );
     }, transformer: droppable());
 
     /// used mostly to periodically check if email verification is done
