@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
@@ -213,6 +215,7 @@ class _AuthScreenCloseButton extends StatelessWidget {
           onPressed: () {
             debugPrint(context.canPop().toString());
             debugPrint(GoRouter.of(context).routerDelegate.currentConfiguration.toString());
+            context.read<AuthBloc>().add(const ClearChallengeEvent());
             if (config.isPopup) {
               context.pop();
             } else {
@@ -417,6 +420,7 @@ class AuthChallengeWrapper extends StatelessWidget {
     return BlocBuilder<AuthBloc, AuthState>(
         buildWhen: (previous, current) => previous.challenge != current.challenge,
         builder: (context, state) {
+          log('challenge: ${state.challenge.toString()}', name: 'Auth Challenge');
           final showMain = state.challenge == null || state.challenge!.type == AuthChallengeType.reauthentication;
           return Stack(fit: StackFit.expand, children: [
             if (splashScreen != null && state.challenge == null && !showMain) splashScreen!,

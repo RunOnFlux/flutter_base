@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -272,6 +273,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                       path: route.fullPath,
                       pageBuilder: (context, state) {
                         final queryParams = Map<String, String>.from(state.uri.queryParameters);
+                        log(queryParams.toString(), name: 'Auth Router');
                         String? redirect = queryParams['redirect'];
 
                         final authBloc = context.read<AuthBloc>();
@@ -295,15 +297,17 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                           (previous.hasFirebaseUser != current.hasFirebaseUser),
                       listener: (BuildContext context, AuthState authState) {
                         Router.neglect(context, () {
+                          log('Firebase user changed', name: 'Auth Router');
                           if (authState.hasFirebaseUser) {
+                            log('Firebase user not null', name: 'Auth Router');
                             if (redirect != null) {
                               debugPrint('going with redirect');
                               context.go(redirect);
                             } else {
-                              if (redirectToRootAfterLogin) {
-                                debugPrint('going without redirect to /');
-                                context.go('/');
-                              }
+                              //if (redirectToRootAfterLogin) {
+                              debugPrint('going without redirect to /');
+                              context.go('/');
+                              //}
                             }
                           } else if (authState.signInByPhoneProcessStarted) {
                             final currentUri = state.uri;

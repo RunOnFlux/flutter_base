@@ -20,6 +20,10 @@ class RefreshFirebaseUserEvent extends AuthEvent {
   const RefreshFirebaseUserEvent();
 }
 
+class ClearChallengeEvent extends AuthEvent {
+  const ClearChallengeEvent();
+}
+
 class AuthNotificationsEvent extends AuthEvent {
   const AuthNotificationsEvent(this.enable);
 

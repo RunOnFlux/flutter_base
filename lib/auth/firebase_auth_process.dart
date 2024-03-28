@@ -210,6 +210,7 @@ extension _AuthBlocExtension on AuthBloc {
             );
       }
     } catch (e) {
+      debugPrint(e.toString());
       emit(state.copyWith(
         error: () => AuthErrorType.from(e),
         status: AuthConnectionStatus.done,

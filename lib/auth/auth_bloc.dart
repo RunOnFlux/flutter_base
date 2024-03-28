@@ -96,6 +96,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await init();
       emit(state.copyWith(status: AuthConnectionStatus.done));
     });
+    on<ClearChallengeEvent>((event, emit) {
+      emit(state.copyWith(challenge: () => null));
+    });
     on<FirebaseAuthSignInEvent>(firebaseAuthSignInEvent, transformer: restartable());
     on<InternalAuthEvent>((event, emit) async {
       if (event is _InternalFirebaseSignIn) {
@@ -153,7 +156,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         } else {
           result = AuthResult.emailVerified;
         }
-        log('[AuthBloc.CompleteEmailVerificationEvent] Email verified', name: 'AuthBloc');
+        log('[CompleteEmailVerificationEvent] Email verified', name: 'AuthBloc');
 
         await firebaseUser?.reload();
         await firebaseUser?.getIdToken(true);
@@ -161,14 +164,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (firebaseUser != null) {
           firebaseUser = _firebaseInstance.currentUser;
 
-          log('[AuthBloc.CompleteEmailVerificationEvent] User reloaded', name: 'AuthBloc');
+          log('[CompleteEmailVerificationEvent] User reloaded', name: 'AuthBloc');
         }
       } on frb.FirebaseAuthException catch (e) {
-        log('[AuthBloc.CompleteEmailVerificationEvent] Email Verification error: ${e.toString()}', name: 'AuthBloc');
+        log('[CompleteEmailVerificationEvent] Email Verification error: ${e.toString()}', name: 'AuthBloc');
 
         error = AuthError.from(e);
 
-        log('[AuthBloc.CompleteEmailVerificationEvent] Error: ${error.toString()}', name: 'AuthBloc');
+        log('[CompleteEmailVerificationEvent] Error: ${error.toString()}', name: 'AuthBloc');
         if (error.type == AuthErrorType.invalidActionCode && firebaseUser?.emailVerified == true) {
           error = const AuthError(type: AuthErrorType.emailAlreadyVerified);
         } else if (error.type == AuthErrorType.noUserSignedIn) {
@@ -177,6 +180,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       }
 
+      log('Firebase user: ${firebaseUser.toString()}', name: 'AuthBloc');
       emit(
         state.copyWith(
           firebaseUser: () => firebaseUser,
@@ -185,6 +189,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           error: () => error,
           status: AuthConnectionStatus.done,
           currentRoute: () => state.currentRoute,
+          challenge: () => null,
         ),
       );
       _resumeFirebaseAuthSub();
