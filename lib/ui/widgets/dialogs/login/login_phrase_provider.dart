@@ -13,7 +13,7 @@ class LoginPhraseProvider with ChangeNotifier {
     clearData();
 
     nodeIP = await AuthService().getFluxNodeIP();
-    nodeIP = '${nodeIP!.replaceAll('.', '-').replaceAll(':', '-')}.node.api.runonflux.io';
+    nodeIP = 'https://${nodeIP!.replaceAll('.', '-').replaceAll(':', '-')}.node.api.runonflux.io';
     debugPrint(nodeIP);
     if (nodeIP != null) {
       try {

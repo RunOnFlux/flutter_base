@@ -99,7 +99,7 @@ class AuthService {
     dynamic response = await Api.instance!.apiCall(
       RequestType.get,
       '/id/loginphrase',
-      backendOverride: nodeIP == null ? 'https://api.runonflux.io' : 'http://$nodeIP',
+      backendOverride: nodeIP ?? 'https://api.runonflux.io',
     );
     debugPrint(response.toString());
     if (response is Map) {
