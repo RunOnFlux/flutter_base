@@ -55,10 +55,10 @@ class LoginDialogState extends State<LoginDialog> with DialogSizes, TickerProvid
   void refreshLoginPhrase() {
     final authBloc = context.read<AuthBloc>();
     loginPhraseProvider.fetchData().then((_) {
-      debugPrint(loginPhraseProvider.nodeIP);
+      //debugPrint(loginPhraseProvider.nodeIP);
       debugPrint(loginPhraseProvider.loginPhrase);
       initiateLoginWS(
-        loginPhraseProvider.nodeIP!,
+        //loginPhraseProvider.nodeIP!,
         loginPhraseProvider.loginPhrase!,
         () {
           if (mounted && Navigator.of(context).canPop()) {
@@ -145,9 +145,9 @@ class LoginDialogState extends State<LoginDialog> with DialogSizes, TickerProvid
                                 child: Consumer<LoginPhraseProvider>(
                                   builder: (_, loginProvider, __) => InkWell(
                                     onTap: () async {
-                                      if (loginProvider.nodeIP != null && loginProvider.loginPhrase != null) {
+                                      if (loginProvider.loginPhrase != null) {
                                         openZelCore(
-                                          loginProvider.nodeIP!,
+                                          //loginProvider.nodeIP!,
                                           loginProvider.loginPhrase!,
                                           () {
                                             if (context.mounted) {
@@ -298,7 +298,7 @@ mixin ZelCoreWebSockets {
   WebSocketChannel? channel;
 
   initiateLoginWS(
-    String nodeIP,
+    //String nodeIP,
     String loginPhrase,
     Function() success,
     Function()? onClose,
@@ -306,11 +306,11 @@ mixin ZelCoreWebSockets {
     AuthBloc authBloc,
   ) {
     closeWebSocket();
-    var backendUrl = 'https://$nodeIP';
+    //var backendUrl = nodeIP;
     //var backendUrl = 'http${Constants.httpLogin ? '' : 's'}://$nodeIP';
-    backendUrl = backendUrl.replaceAll('https://', 'wss://');
-    backendUrl = backendUrl.replaceAll('http://', 'ws://');
-    debugPrint(backendUrl);
+    //backendUrl = backendUrl.replaceAll('https://', 'wss://');
+    //backendUrl = backendUrl.replaceAll('http://', 'ws://');
+    const backendUrl = 'wss://api.runonflux.io';
     final wsuri = '$backendUrl/ws/id/$loginPhrase';
     channel = WebSocketChannel.connect(Uri.parse(wsuri));
     channel!.stream.listen((message) async {
@@ -350,14 +350,14 @@ mixin ZelCoreWebSockets {
   }
 
   void openZelCore(
-    String nodeIP,
+    //String nodeIP,
     String loginPhrase,
     Function() success,
     AuthBloc authBloc,
   ) {
-    ZelCore.openZelCoreSign(loginPhrase, callbackValue(nodeIP)).then((value) {
+    ZelCore.openZelCoreSign(loginPhrase, callbackValue()).then((value) {
       initiateLoginWS(
-        nodeIP,
+        //nodeIP,
         loginPhrase,
         success,
         null,
@@ -367,8 +367,8 @@ mixin ZelCoreWebSockets {
     });
   }
 
-  String callbackValue(String nodeIP) {
-    return Uri.encodeFull('https://$nodeIP/id/verifylogin');
+  String callbackValue() {
+    return Uri.encodeFull('https://api.runonflux.io/id/verifylogin');
   }
 
   void storeLoginDetails(AuthBloc authBloc, FluxLogin fluxLogin) {

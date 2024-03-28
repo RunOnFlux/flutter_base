@@ -78,10 +78,10 @@ class _SecondCardState extends State<SecondCard> with TickerProviderStateMixin, 
         : Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white);
     return Consumer<LoginPhraseProvider>(
       builder: (_, loginProvider, __) {
-        if (loginProvider.loginPhrase != null && loginProvider.nodeIP != null) {
+        if (loginProvider.loginPhrase != null) {
           zelCoreAction = ZelCore.openZelCoreSignAction(
             loginProvider.loginPhrase!,
-            callbackValue(loginProvider.nodeIP!),
+            callbackValue(),
           );
         }
         return Positioned(
@@ -106,8 +106,8 @@ class _SecondCardState extends State<SecondCard> with TickerProviderStateMixin, 
                             padding: const EdgeInsets.symmetric(vertical: 20),
                             child: ImageFiltered(
                               imageFilter: ImageFilter.blur(
-                                sigmaX: loginProvider.nodeIP == null || loginProvider.loginPhrase == null ? 8 : 0,
-                                sigmaY: loginProvider.nodeIP == null || loginProvider.loginPhrase == null ? 8 : 0,
+                                sigmaX: loginProvider.loginPhrase == null ? 8 : 0,
+                                sigmaY: loginProvider.loginPhrase == null ? 8 : 0,
                               ),
                               child: QrImageView(
                                 backgroundColor: Colors.white,
@@ -145,7 +145,6 @@ class _SecondCardState extends State<SecondCard> with TickerProviderStateMixin, 
                             ElevatedButton(
                               onPressed: () {
                                 doManualLogin(
-                                  loginProvider.nodeIP!,
                                   addressTextController.text,
                                   messageTextController.text,
                                   signatureTextController.text,
@@ -227,7 +226,6 @@ class _SecondCardState extends State<SecondCard> with TickerProviderStateMixin, 
   }
 
   void doManualLogin(
-    String nodeIP,
     String zelid,
     String loginPhrase,
     String signature,
@@ -238,7 +236,6 @@ class _SecondCardState extends State<SecondCard> with TickerProviderStateMixin, 
       zelid: zelid,
       loginPhrase: loginPhrase,
       signature: signature,
-      nodeIP: nodeIP,
     )
         .then((value) {
       closeWebSocket();
@@ -313,7 +310,7 @@ class _SecondCardState extends State<SecondCard> with TickerProviderStateMixin, 
       );
 
   @override
-  String callbackValue(String nodeIP) {
-    return Uri.encodeFull('http://$nodeIP/id/verifylogin');
+  String callbackValue() {
+    return Uri.encodeFull('https://api.runonflux.io/id/verifylogin');
   }
 }

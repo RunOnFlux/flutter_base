@@ -60,8 +60,8 @@ class _FirstCardState extends State<FirstCard> with ZelCoreWebSockets {
                   height: 50,
                   child: ImageFiltered(
                     imageFilter: ImageFilter.blur(
-                      sigmaX: loginProvider.nodeIP == null || loginProvider.loginPhrase == null ? 8 : 0,
-                      sigmaY: loginProvider.nodeIP == null || loginProvider.loginPhrase == null ? 8 : 0,
+                      sigmaX: loginProvider.loginPhrase == null ? 8 : 0,
+                      sigmaY: loginProvider.loginPhrase == null ? 8 : 0,
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -70,7 +70,6 @@ class _FirstCardState extends State<FirstCard> with ZelCoreWebSockets {
                         ElevatedButton(
                           onPressed: () {
                             openZelCore(
-                              loginProvider.nodeIP!,
                               loginProvider.loginPhrase!,
                               () {},
                               context.read<AuthBloc>(),
