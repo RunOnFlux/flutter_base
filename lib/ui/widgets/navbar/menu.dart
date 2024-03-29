@@ -19,12 +19,10 @@ class SideBarMenuWidget extends StatefulWidget with GetItStatefulWidgetMixin {
 
 class _SideBarMenuWidgetState extends State<SideBarMenuWidget> with GetItStateMixin {
   final _controller = ScrollController();
-  final _controller2 = ScrollController();
 
   @override
   void dispose() {
     _controller.dispose();
-    _controller2.dispose();
     super.dispose();
   }
 
@@ -48,14 +46,8 @@ class _SideBarMenuWidgetState extends State<SideBarMenuWidget> with GetItStateMi
                 return Scrollbar(
                   controller: _controller,
                   thumbVisibility: true,
-                  notificationPredicate: (notification) {
-                    if (notification is ScrollUpdateNotification) {
-                      return notification.dragDetails != null;
-                    }
-                    return false;
-                  },
                   interactive: true,
-                  trackVisibility: true,
+                  trackVisibility: false,
                   child: ListView(
                     controller: _controller,
                     padding: const EdgeInsets.only(bottom: 10),
