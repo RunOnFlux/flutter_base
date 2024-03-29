@@ -12,7 +12,6 @@ import 'package:flutter_base/ui/widgets/sidemenu/menu_category.dart';
 import 'package:flutter_base/ui/widgets/sidemenu/menu_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get_it_mixin/get_it_mixin.dart';
 
 import 'menu.dart';
 
@@ -67,8 +66,8 @@ class NavBar extends StatelessWidget {
   }
 }
 
-class CollapsedSidebar extends StatelessWidget with GetItMixin {
-  CollapsedSidebar({super.key});
+class CollapsedSidebar extends StatelessWidget {
+  const CollapsedSidebar({super.key});
 
   @override
   Widget build(BuildContext context) {

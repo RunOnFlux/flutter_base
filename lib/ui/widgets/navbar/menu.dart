@@ -8,16 +8,15 @@ import 'package:flutter_base/ui/widgets/sidemenu/menu_category.dart';
 import 'package:flutter_base/ui/widgets/sidemenu/menu_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get_it_mixin/get_it_mixin.dart';
 
-class SideBarMenuWidget extends StatefulWidget with GetItStatefulWidgetMixin {
-  SideBarMenuWidget({super.key});
+class SideBarMenuWidget extends StatefulWidget {
+  const SideBarMenuWidget({super.key});
 
   @override
   State<SideBarMenuWidget> createState() => _SideBarMenuWidgetState();
 }
 
-class _SideBarMenuWidgetState extends State<SideBarMenuWidget> with GetItStateMixin {
+class _SideBarMenuWidgetState extends State<SideBarMenuWidget> {
   final _controller = ScrollController();
 
   @override

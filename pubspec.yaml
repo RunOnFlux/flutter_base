@@ -36,7 +36,7 @@ dependencies:
   json_annotation: ^4.8.1
   get_it: ^7.2.0
   get_it_mixin: ^3.1.4
-  get_storage:
+  #get_storage:
   go_router: ^13.2.0
   hive: ^2.2.3
   http: ^1.2.0
