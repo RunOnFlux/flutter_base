@@ -13,7 +13,7 @@ enum FirebaseSignInMethods {
   }
 
   bool get active {
-    if (this == phone || this == gitlab) {
+    if (this == phone || this == gitlab || this == github) {
       //return !FluxAuthSystem.config.disablePhoneAuth;
       return false;
     }
@@ -36,7 +36,7 @@ enum FirebaseSignInMethods {
 
   static const List<FirebaseSignInMethods> supportedProviders = [
     FirebaseSignInMethods.google,
-    FirebaseSignInMethods.github,
+    //FirebaseSignInMethods.github,
     FirebaseSignInMethods.apple,
     //FirebaseSignInMethods.gitlab
   ];
