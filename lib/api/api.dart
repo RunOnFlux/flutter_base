@@ -272,5 +272,8 @@ class ApiUtils {
 
   static DateTime intToDateTime(int int) => DateTime.fromMillisecondsSinceEpoch(int);
   static int dateTimeToInt(DateTime time) => time.millisecondsSinceEpoch;
+
+  static DateTime stringToDateTime(String string) => DateTime.parse(string);
+
   static PrivilegeLevel? stringToPrivilegeLevel(String p) => PrivilegeLevel.fromString(p);
 }
