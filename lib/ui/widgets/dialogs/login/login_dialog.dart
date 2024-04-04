@@ -8,7 +8,7 @@ import 'package:flutter_base/ui/widgets/dialogs/dialog_sizes.dart';
 import 'package:flutter_base/ui/widgets/dialogs/login/first_card.dart';
 import 'package:flutter_base/ui/widgets/dialogs/login/login_phrase_provider.dart';
 import 'package:flutter_base/ui/widgets/dialogs/login/second_card.dart';
-import 'package:flutter_base/ui/widgets/popup_message.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message.dart';
 import 'package:flutter_base/utils/zelcore.dart';
 import 'package:http_query_string/http_query_string.dart';
 import 'package:provider/provider.dart';

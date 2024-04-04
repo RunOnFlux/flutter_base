@@ -8,7 +8,7 @@ import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
 import 'package:flutter_base/ui/widgets/auth/auth_screen.dart';
 import 'package:flutter_base/ui/widgets/dialogs/confirm_dialog.dart';
-import 'package:flutter_base/ui/widgets/popup_message.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
 import 'package:flutter_base_example/ui/screens/home/home_screen.dart';
 import 'package:flutter_base_example/ui/screens/params/params_screen.dart';
 import 'package:flutter_base_example/ui/screens/tabs/tabbed_screen.dart';
@@ -114,7 +114,7 @@ class ExampleAppRouter extends AppRouter {
                 title: 'Nested Action',
                 action: (BuildContext context) {
                   debugPrint('nested do something!!');
-                  PopupMessage.success(message: 'Do Something!!').show();
+                  PopupMessageItem.success(message: 'Do Something!!').show(context);
                   context.go('/app/testapp');
                 },
                 icon: Icons.add,
@@ -155,7 +155,7 @@ class ExampleAppRouter extends AppRouter {
         title: 'Action',
         action: (BuildContext context) {
           debugPrint('do something!!');
-          const PopupMessage(message: 'Do Something!!').show();
+          PopupMessageItem.success(message: 'Do Something!!').show(context);
           context.go('/app/testapp');
         },
         icon: Icons.add,
@@ -216,10 +216,10 @@ class ExampleAppRouter extends AppRouter {
             content: const Text('Are you sure you want to sign out?'),
             onOK: () {
               context.read<AuthBloc>().add(const SignOutEvent());
-              PopupMessage.success(
+              PopupMessageItem.success(
                 message: 'You have successfully signed out of FluxCloud',
                 maxLines: 2,
-              ).show();
+              ).show(context);
             },
             cancelButton: const Text('Cancel'),
             cancelColor: Colors.red,

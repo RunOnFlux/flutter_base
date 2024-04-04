@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
-import 'package:flutter_base/ui/widgets/popup_message.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/screen_title_header.dart';
 import 'package:flutter_base/ui/widgets/simple_screen.dart';
@@ -43,12 +43,12 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
     setState(() {
       clicked = !clicked;
     });
-    const PopupMessage(message: 'FAB was clicked!!').show();
+    PopupMessageItem.warning(message: 'FAB was clicked!!').show(context);
   }
 
   @override
   void onRefresh() {
-    const PopupMessage(message: 'Refresh').show();
+    PopupMessageItem.success(message: 'Refresh').show(context);
   }
 
   @override

@@ -5,7 +5,8 @@ import 'package:flutter_base/auth/auth_routes.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/auth/auth_screen.dart';
 import 'package:flutter_base/ui/widgets/default_button.dart';
-import 'package:flutter_base/ui/widgets/popup_message.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
 import 'package:flutter_base/ui/widgets/simple_container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -171,10 +172,12 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                         text: _emailAlreadySentOneTime.value ? 'Resend' : 'Send',
                                         disabled: value == false,
                                         onDisabledPressed: () {
-                                          PopupMessage.success(
-                                            message:
-                                                'Please wait for the cooldown time to finish before sending another email.',
-                                          ).show();
+                                          PopupMessage.of(context).addMessage(
+                                            PopupMessageItem.warning(
+                                              message:
+                                                  'Please wait for the cooldown time to finish before sending another email.',
+                                            ),
+                                          );
                                         },
                                         onPressed: () {
                                           if (_formKey.currentState?.validate() == true) {

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_base/ui/theme/app_theme.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
+import 'package:flutter_base/ui/widgets/transparent_pointer.dart';
 
-class PopupMessage extends StatelessWidget {
+/*class PopupMessage extends StatelessWidget {
   const PopupMessage(
       {super.key,
       this.duration = const Duration(seconds: 5),
@@ -285,5 +284,185 @@ class PopupMessageWidgetState extends State<PopupMessageWidget> {
     Future.delayed(message.duration, () {
       _removeMessage(message);
     });
+  }
+}
+*/
+
+class PopupMessage extends InheritedWidget {
+  const PopupMessage(this._state, {super.key, required super.child});
+
+  final PopupMessageWidgetState _state;
+
+  static PopupMessageWidgetState of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<PopupMessage>()!._state;
+  }
+
+  static void show(BuildContext context, PopupMessageItem message) {
+    of(context).addMessage(message);
+  }
+
+  @override
+  bool updateShouldNotify(covariant PopupMessage oldWidget) {
+    return oldWidget._state != _state;
+  }
+}
+
+class PopupMessageWidget extends StatefulWidget {
+  const PopupMessageWidget(
+      {super.key,
+      required this.child,
+      this.overlayWrapper,
+      this.postponeHideWhenNewMessageAdded = false,
+      this.aligment = Alignment.topRight,
+      this.minInterval = const Duration(milliseconds: 500),
+      this.maxMessages = 5});
+
+  final Widget child;
+
+  /// Alignment of the message stack, default is top right
+  final Alignment aligment;
+
+  /// Maximum number of messages in the stack
+  final int maxMessages;
+
+  /// Minimum interval between messages
+  final Duration minInterval;
+  final Widget Function(BuildContext context, Widget child)? overlayWrapper;
+
+  /// If true the delete of the message will be postponed when a new message is added
+  /// this allow the user to more easily read the messages in the stack
+  final bool postponeHideWhenNewMessageAdded;
+
+  @override
+  State<PopupMessageWidget> createState() => PopupMessageWidgetState();
+}
+
+class PopupMessageWidgetState extends State<PopupMessageWidget> {
+  void notify() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  final List<PopupMessageItem> messages = [];
+
+  void addMessage(PopupMessageItem message) {
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final lastMessage = messages.lastOrNull;
+    if (lastMessage != null && lastMessage.isEquals(message)) {
+      if (now - _lastMessageTime! < widget.minInterval.inMilliseconds) {
+        return;
+      }
+    }
+    if (messages.length > widget.maxMessages) {
+      messages.removeAt(0);
+    }
+    Duration ps = Duration.zero;
+    if (widget.postponeHideWhenNewMessageAdded) {
+      for (final oldMessage in messages) {
+        const d = Duration(milliseconds: 500);
+        oldMessage.postponeRemove(d);
+        ps = d;
+      }
+    }
+    messages.add(message);
+    Future.delayed(ps, () {
+      _scheduleRemoveMessage(message);
+    });
+    (message);
+    notify();
+  }
+
+  int get messageCount => messages.length;
+
+  int? get _lastMessageTime => messages.lastOrNull?.time.millisecondsSinceEpoch;
+
+  void clearMessages() {
+    for (final message in messages) {
+      message.remove(context);
+    }
+    messages.clear();
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMessage(this,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            widget.child,
+            Overlay(
+              initialEntries: [
+                OverlayEntry(builder: (context) => _buildOverlay()),
+              ],
+            )
+          ],
+        ));
+  }
+
+  Widget _buildOverlay() {
+    if (messages.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final overlay = Align(alignment: widget.aligment, child: _Overlay(messages: messages));
+    if (widget.overlayWrapper != null) {
+      return widget.overlayWrapper!(context, overlay);
+    }
+    return overlay;
+  }
+
+  @override
+  void dispose() {
+    for (final message in messages) {
+      message.remove(context);
+    }
+    messages.clear();
+
+    super.dispose();
+  }
+
+  void _scheduleRemoveMessage(PopupMessageItem message) {
+    message.scheduleRemove();
+  }
+}
+
+class _Overlay extends StatelessWidget {
+  const _Overlay({super.key, required this.messages});
+  final List<PopupMessageItem> messages;
+
+  @override
+  Widget build(BuildContext context) {
+    if (messages.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    return TransparentPointer(
+      child: FractionallySizedBox(
+          widthFactor: 0.45,
+          heightFactor: 0.8,
+          child: ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(12),
+            scrollDirection: Axis.vertical,
+            itemCount: messages.length,
+            itemBuilder: (context, index) {
+              return messages[index];
+            },
+          )),
+    );
+  }
+}
+
+extension PopupMessageContext on BuildContext {
+  void show(PopupMessageItem message) {
+    PopupMessage.of(this).addMessage(message);
   }
 }
