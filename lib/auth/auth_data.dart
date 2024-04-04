@@ -127,7 +127,9 @@ enum FirebaseSignInMethods {
   AuthProvider? get authProvider {
     switch (this) {
       case FirebaseSignInMethods.google:
-        return GoogleAuthProvider();
+        final provider = GoogleAuthProvider();
+        provider.setCustomParameters({'prompt': 'select_account'});
+        return provider;
 
       case FirebaseSignInMethods.email:
         return null;
