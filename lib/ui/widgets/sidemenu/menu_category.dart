@@ -64,7 +64,7 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
             ),
           );
         },
-        anchorTapClosesMenu: false,
+        consumeOutsideTap: false,
         style: MenuStyle(
           backgroundColor: MaterialStatePropertyAll<Color>(
             Theme.of(context).primaryColor.withAlpha(224),

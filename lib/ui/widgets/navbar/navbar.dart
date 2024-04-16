@@ -43,17 +43,17 @@ class NavBar extends StatelessWidget {
                 ],
                 gradient: !isCollapsed ? AppThemeImpl.getOptions(context).backgroundGradient(context) : null,
               ),
-              child: Drawer(
+              child: const Drawer(
                 width: 300,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 28, vertical: 20),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      const SideBarHeader(),
+                      SideBarHeader(),
                       Expanded(child: SideBarMenuWidget()),
-                      const SizedBox(height: 24),
-                      const SideBarFooter(),
+                      SizedBox(height: 24),
+                      SideBarFooter(),
                     ],
                   ),
                 ),
