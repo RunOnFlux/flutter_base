@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:fetch_client/fetch_client.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:http/http.dart' as http;
@@ -209,6 +211,46 @@ abstract class Api {
   final Map<String, String> simpleHeaders = {
     'Content-type': 'text/plain',
   };
+
+  Future<void> stream(
+    String url, {
+    required RequestType requestType,
+    Map<String, String>? headers,
+    Object? body,
+    Function(String)? onData,
+    Function()? onDone,
+    Function(String)? onError,
+  }) async {
+    assert(requestType == RequestType.get || requestType == RequestType.post);
+    final client = FetchClient(
+      mode: RequestMode.cors,
+      streamRequests: true,
+    );
+    final uri = Uri.parse(url);
+    final request = http.Request('POST', uri);
+    if (headers != null) {
+      request.headers.addAll(headers);
+    }
+    if (body != null) {
+      request.body = jsonEncode(body);
+    }
+    final response = await client.send(request);
+    response.stream.listen(
+      (value) {
+        if (onData != null) {
+          final s = utf8.decode(value).trim();
+          onData(s);
+        }
+      },
+      onDone: () {
+        if (onDone != null) onDone();
+      },
+      onError: () {
+        if (onError != null) onError('An unknown error has occurred');
+      },
+      cancelOnError: true,
+    );
+  }
 }
 
 class ApiException {
