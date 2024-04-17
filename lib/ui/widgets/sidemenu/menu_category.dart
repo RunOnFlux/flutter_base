@@ -107,9 +107,10 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
             initiallyExpanded: Store().get(widget.route.title) ?? false,
+            visualDensity: VisualDensity.compact,
             dense: true,
             title: SizedBox(
-              height: isSmallHeight ? kMenuItemHeightSmall : kMenuItemHeight,
+              height: isSmallHeight ? 18 : 24,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: buildTitle(
@@ -138,7 +139,7 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
                 unselectedColor,
               ),
             ),
-            tilePadding: const EdgeInsets.only(left: 16, right: 16, bottom: 1),
+            tilePadding: const EdgeInsets.only(left: 16, right: 16, bottom: 0),
             childrenPadding: EdgeInsets.zero,
             children: widget.children,
             onExpansionChanged: (expanded) {
