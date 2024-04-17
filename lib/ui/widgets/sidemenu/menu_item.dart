@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/app/main_app_screen.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
+import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../routes/route.dart';
 import 'menu_styles.dart';
 
-const double kMenuItemHeight = 24.0;
-const List<double> kMenuItemHeights = [41, 41, 41];
+const double kMenuItemHeight = 41;
+const double kMenuItemHeightSmall = 36;
 
 class NavigationMenuItem extends StatefulWidget {
   final AbstractRoute route;
@@ -28,6 +29,7 @@ class NavigationMenuItem extends StatefulWidget {
 class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles {
   @override
   Widget build(BuildContext context) {
+    final isSmallHeight = context.isSmallHeight(600);
     final bool isSelected = isRouteSelected();
     var c = Theme.of(context).menuColors;
     if (Theme.of(context).brightness == Brightness.dark) {
@@ -74,7 +76,7 @@ class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles
       child: Material(
         color: Colors.transparent,
         child: SizedBox(
-          height: kMenuItemHeights[widget.level],
+          height: isSmallHeight ? kMenuItemHeightSmall : kMenuItemHeight,
           child: ListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

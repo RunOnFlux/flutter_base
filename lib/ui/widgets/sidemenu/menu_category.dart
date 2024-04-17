@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/app/main_app_screen.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
+import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../utils/store.dart';
@@ -29,6 +30,7 @@ class SideMenuCategory extends StatefulWidget {
 class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
   @override
   Widget build(BuildContext context) {
+    final isSmallHeight = context.isSmallHeight(600);
     var c = Theme.of(context).menuColors;
     if (Theme.of(context).brightness == Brightness.dark) {
       c = c.reversed.toList();
@@ -107,7 +109,7 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
             initiallyExpanded: Store().get(widget.route.title) ?? false,
             dense: true,
             title: SizedBox(
-              height: kMenuItemHeight,
+              height: isSmallHeight ? kMenuItemHeightSmall : kMenuItemHeight,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: buildTitle(
