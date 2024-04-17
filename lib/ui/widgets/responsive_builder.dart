@@ -37,6 +37,7 @@ class ResponsiveBuilder extends StatelessWidget {
             return child;
           } else {
             AppConfig config = AppConfigScope.of(context)!;
+            config.currentDeviceSize = _currentDeviceSize;
             if (config.smallScreenScroll) {
               return _SmallScreenWrapper(child: child);
             } else {
@@ -72,9 +73,12 @@ extension ResponsiveBreakpointsDataExtension on ResponsiveBreakpointsData {
 }
 
 extension BuildContextExtension on BuildContext {
-  bool isSmallHeight([num offset = 400]) => MediaQuery.of(this).size.height < offset;
+  Size? get _size => ResponsiveBuilder._currentDeviceSize;
 
-  bool isSmallWidth([num offset = ResponsiveBuilder.smallScreenWidth]) => MediaQuery.of(this).size.width < offset;
+  bool isSmallHeight([num offset = 400]) => (_size ?? MediaQuery.of(this).size).height < offset;
+
+  bool isSmallWidth([num offset = ResponsiveBuilder.smallScreenWidth]) =>
+      (_size ?? MediaQuery.of(this).size).width < offset;
 }
 
 class _SmallScreenWrapper extends StatefulWidget {
