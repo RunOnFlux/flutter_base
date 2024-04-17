@@ -12,8 +12,6 @@ class AppConfig {
 
   bool get smallScreenScroll => true;
 
-  Size? currentDeviceSize;
-
   bool checkSmallHeight(BuildContext context) {
     return context.isSmallHeight(600);
   }
