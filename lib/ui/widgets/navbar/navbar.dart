@@ -8,6 +8,7 @@ import 'package:flutter_base/ui/app/scope/app_router_scope.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/navbar/footer.dart';
+import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/ui/widgets/sidemenu/menu_category.dart';
 import 'package:flutter_base/ui/widgets/sidemenu/menu_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,16 +44,15 @@ class NavBar extends StatelessWidget {
                 ],
                 gradient: !isCollapsed ? AppThemeImpl.getOptions(context).backgroundGradient(context) : null,
               ),
-              child: const Drawer(
+              child: Drawer(
                 width: 300,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 28, vertical: 20),
-                  child: Column(
+                  padding: EdgeInsets.symmetric(horizontal: 28, vertical: context.isSmallHeight(800) ? 10 : 20),
+                  child: const Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       SideBarHeader(),
                       Expanded(child: SideBarMenuWidget()),
-                      SizedBox(height: 24),
                       SideBarFooter(),
                     ],
                   ),
@@ -193,7 +193,6 @@ class SideBarButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final appScope = AppDrawerScope.of(context);
     final isCollapsed = appScope?.isCollapsed ?? true;
-    debugPrint('isCollapsed: $isCollapsed');
     return InkWell(
       customBorder: const CircleBorder(),
       onTap: () {
