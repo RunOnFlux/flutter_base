@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
+import 'package:flutter_base/ui/widgets/app_screen.dart';
 import 'package:flutter_base/ui/widgets/popup_message.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/screen_title_header.dart';
@@ -57,7 +58,7 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
       children: [
         BootstrapContainer(
           fluid: true,
-          padding: mainPadding(),
+          padding: context.mainPadding(),
           children: [
             BootstrapRow(
               children: [
