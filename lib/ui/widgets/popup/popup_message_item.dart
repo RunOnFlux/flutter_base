@@ -222,8 +222,14 @@ class PopupMessageItem extends StatefulWidget {
     return other.message == message || other.richMessage == richMessage;
   }
 
-  void show(BuildContext context) {
-    PopupMessage.of(context).addMessage(this);
+  void show([BuildContext? context]) {
+    if (context != null) {
+      PopupMessage.of(context).addMessage(this);
+    } else {
+      if (rootPopupMessageKey.currentState != null) {
+        rootPopupMessageKey.currentState!.addMessage(this);
+      }
+    }
   }
 
   void remove(BuildContext context) {

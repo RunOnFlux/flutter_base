@@ -307,6 +307,8 @@ class PopupMessage extends InheritedWidget {
   }
 }
 
+final GlobalKey<PopupMessageWidgetState> rootPopupMessageKey = GlobalKey<PopupMessageWidgetState>();
+
 class PopupMessageWidget extends StatefulWidget {
   const PopupMessageWidget(
       {super.key,

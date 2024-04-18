@@ -155,7 +155,11 @@ class ExampleAppRouter extends AppRouter {
         title: 'Action',
         action: (BuildContext context) {
           debugPrint('do something!!');
-          PopupMessageItem.success(message: 'Do Something!!').show(context);
+          PopupMessageItem.success(message: 'Do Something!!').show();
+          Future.delayed(
+            const Duration(seconds: 1),
+            () => PopupMessageItem.success(message: 'Do a context Something!!').show(context),
+          );
           context.go('/app/testapp');
         },
         icon: Icons.add,
