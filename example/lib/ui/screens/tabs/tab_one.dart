@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
+import 'package:flutter_base/ui/widgets/app_screen.dart';
 import 'package:flutter_base/ui/widgets/floating_action_menu.dart';
 import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
@@ -50,7 +51,7 @@ class TabOneScreenState extends TabContentScreenState<TabOneScreen> {
   Widget buildChild(BuildContext context) {
     return BootstrapContainer(
       fluid: true,
-      padding: mainPadding(),
+      padding: context.mainPadding(),
       children: [
         BootstrapRow(
           children: [

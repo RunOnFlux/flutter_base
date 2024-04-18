@@ -33,23 +33,6 @@ abstract class AppScreenState<T extends AppContentScreen> extends State<T> {
 
   onRefresh() {}
 
-  EdgeInsets mainPadding() {
-    return EdgeInsets.symmetric(
-      horizontal: bootStrapValueBasedOnSize(
-        sizes: {
-          '': 5.0,
-          'sm': 12.0,
-          'md': 20.0,
-          'lg': 25.0,
-          'xl': 25.0,
-          'xxl': 25.0,
-        },
-        context: context,
-      ),
-      vertical: 10.0,
-    );
-  }
-
   Widget titleHeader(BuildContext context) => Container();
 
   Widget buildFooter(BuildContext context) {
@@ -88,6 +71,25 @@ abstract class AppScreenState<T extends AppContentScreen> extends State<T> {
           ),
         ],
       ),
+    );
+  }
+}
+
+extension Paddings on BuildContext {
+  EdgeInsets mainPadding() {
+    return EdgeInsets.symmetric(
+      horizontal: bootStrapValueBasedOnSize(
+        sizes: {
+          '': 5.0,
+          'sm': 12.0,
+          'md': 20.0,
+          'lg': 25.0,
+          'xl': 25.0,
+          'xxl': 25.0,
+        },
+        context: this,
+      ),
+      vertical: 10.0,
     );
   }
 }

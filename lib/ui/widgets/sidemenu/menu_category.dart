@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/app/main_app_screen.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
+import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../utils/store.dart';
@@ -29,6 +30,7 @@ class SideMenuCategory extends StatefulWidget {
 class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
   @override
   Widget build(BuildContext context) {
+    final isSmallHeight = context.isSmallHeight(600);
     var c = Theme.of(context).menuColors;
     if (Theme.of(context).brightness == Brightness.dark) {
       c = c.reversed.toList();
@@ -64,7 +66,7 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
             ),
           );
         },
-        anchorTapClosesMenu: false,
+        consumeOutsideTap: false,
         style: MenuStyle(
           backgroundColor: MaterialStatePropertyAll<Color>(
             Theme.of(context).primaryColor.withAlpha(224),
@@ -105,9 +107,10 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
             initiallyExpanded: Store().get(widget.route.title) ?? false,
+            visualDensity: VisualDensity.compact,
             dense: true,
             title: SizedBox(
-              height: kMenuItemHeight,
+              height: isSmallHeight ? 18 : 24,
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: buildTitle(
@@ -136,7 +139,7 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
                 unselectedColor,
               ),
             ),
-            tilePadding: const EdgeInsets.only(left: 16, right: 16, bottom: 1),
+            tilePadding: const EdgeInsets.only(left: 16, right: 16, bottom: 0),
             childrenPadding: EdgeInsets.zero,
             children: widget.children,
             onExpansionChanged: (expanded) {

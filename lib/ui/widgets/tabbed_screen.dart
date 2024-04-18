@@ -101,7 +101,7 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
               child: Column(
                 children: [
                   Padding(
-                    padding: mainPadding(),
+                    padding: context.mainPadding(),
                     child: titleHeader(context),
                   ),
                   TabBar(

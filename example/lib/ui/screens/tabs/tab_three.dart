@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
+import 'package:flutter_base/ui/widgets/app_screen.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/tabbed_screen.dart';
 import 'package:flutter_base/ui/widgets/titled_card.dart';
@@ -29,7 +30,7 @@ class TabThreeScreenState extends TabContentScreenState<TabThreeScreen> {
   Widget buildChild(BuildContext context) {
     return BootstrapContainer(
       fluid: true,
-      padding: mainPadding(),
+      padding: context.mainPadding(),
       children: [
         BootstrapRow(
           children: [

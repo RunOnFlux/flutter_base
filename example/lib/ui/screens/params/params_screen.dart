@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
 import 'package:flutter_base/ui/widgets/popup/popup_message.dart';
 import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
+import 'package:flutter_base/ui/widgets/app_screen.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/simple_screen.dart';
 import 'package:flutter_base/ui/widgets/titled_card.dart';
@@ -47,7 +48,7 @@ class ParamsScreenState extends SimpleScreenState<ParamsScreen> with GetItStateM
 
     return BootstrapContainer(
       fluid: true,
-      padding: mainPadding(),
+      padding: context.mainPadding(),
       children: [
         BootstrapRow(
           children: [

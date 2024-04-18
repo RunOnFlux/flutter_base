@@ -188,7 +188,7 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
             if (!_isSmallScreen)
               sideBar
                 ..swap(
-                  builder: (context, child) => CollapsedSidebar(),
+                  builder: (context, child) => const CollapsedSidebar(),
                 ),
             Expanded(
               child: _AppScreenChildWrapper(

@@ -386,7 +386,7 @@ class AppThemeImpl {
             shape: Border(
                 right: BorderSide(width: 1, color: _darkBorderColor),
                 bottom: BorderSide(width: 1, color: _darkBorderColor)),
-            backgroundColor: Colors.transparent,
+            backgroundColor: Color(0xff070F1E),
             elevation: 2,
             width: 300,
           ),

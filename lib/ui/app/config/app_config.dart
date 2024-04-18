@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/widgets/logo.dart';
 import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
+import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/utils/settings.dart';
 
 class AppConfig {
@@ -10,6 +11,10 @@ class AppConfig {
   bool get hasTitleBar => false;
 
   bool get smallScreenScroll => true;
+
+  bool checkSmallHeight(BuildContext context) {
+    return context.isSmallHeight(600);
+  }
 
   String getInitialRoute(Settings settings) {
     return settings.getString(Setting.initialRoute.name);
