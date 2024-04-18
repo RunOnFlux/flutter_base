@@ -16,7 +16,7 @@ class ScreenInfo with ChangeNotifier {
 
 class AppScreenStateInfo {
   final int? refreshInterval;
-  final IconData? fabIcon;
+  IconData? fabIcon;
   Function()? onRefresh;
   Function()? onFAB;
   List<FloatingMenuItem>? items;
