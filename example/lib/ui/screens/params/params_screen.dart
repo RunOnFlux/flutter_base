@@ -1,8 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
 import 'package:flutter_base/ui/widgets/app_screen.dart';
-import 'package:flutter_base/ui/widgets/popup_message.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/simple_screen.dart';
 import 'package:flutter_base/ui/widgets/titled_card.dart';
@@ -32,12 +33,12 @@ class ParamsScreenState extends SimpleScreenState<ParamsScreen> with GetItStateM
 
   @override
   void onFAB() {
-    context.show(const PopupMessage(message: 'Param FAB was clicked!!'));
+    context.show(PopupMessageItem.success(message: 'Param FAB was clicked!!'));
   }
 
   @override
   void onRefresh() {
-    context.show(const PopupMessage(message: 'Refresh'));
+    context.show(PopupMessageItem.success(message: 'Refresh'));
   }
 
   @override

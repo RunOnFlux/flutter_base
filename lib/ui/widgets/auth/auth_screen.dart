@@ -10,7 +10,8 @@ import 'package:flutter_base/ui/app/scope/auth_config_scope.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/copy_button.dart';
 import 'package:flutter_base/ui/widgets/loading_overlay.dart';
-import 'package:flutter_base/ui/widgets/popup_message.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
 import 'package:flutter_base/ui/widgets/specifal_focus_nodes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -137,8 +138,8 @@ class _AuthWrapperWidget extends StatelessWidget {
         listener: (BuildContext context, AuthState state) {
           log('hasError? ${state.hasError}', name: 'Auth Screen');
           if (state.hasError) {
-            PopupMessageScope.of(context).addMessage(
-              PopupMessage.error(message: state.authError!.type.errorMessage(false)),
+            PopupMessage.of(context).addMessage(
+              PopupMessageItem.error(message: state.authError!.type.errorMessage(false)),
             );
           }
         },

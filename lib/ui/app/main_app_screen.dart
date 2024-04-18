@@ -11,7 +11,7 @@ import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/theme/interface_brightness.dart';
 import 'package:flutter_base/ui/widgets/floating_action_menu.dart';
 import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
-import 'package:flutter_base/ui/widgets/popup_message.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/utils/platform_info.dart';

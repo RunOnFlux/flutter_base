@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
 import 'package:flutter_base/ui/widgets/app_screen.dart';
 import 'package:flutter_base/ui/widgets/floating_action_menu.dart';
-import 'package:flutter_base/ui/widgets/popup_message.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/tabbed_screen.dart';
 import 'package:flutter_base/ui/widgets/titled_card.dart';
@@ -31,7 +31,7 @@ class TabOneScreenState extends TabContentScreenState<TabOneScreen> {
         title: 'Menu Item 1',
         icon: Icons.ac_unit_outlined,
         onPress: () {
-          const PopupMessage(message: 'Menu Item 1 was clicked!!').show();
+          PopupMessageItem.success(message: 'Menu Item 1 was clicked!!').show(context);
         },
       ),
       FloatingMenuItem(

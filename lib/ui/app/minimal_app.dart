@@ -215,6 +215,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                   branches: allRoutes.map(
                     (e) {
                       return StatefulShellBranch(
+                        observers: e.observers,
                         routes: [
                           AppRoute(
                             path: e.route,

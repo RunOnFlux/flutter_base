@@ -9,7 +9,8 @@ import 'package:flutter_base/ui/widgets/auth/auth_screen.dart';
 import 'package:flutter_base/ui/widgets/default_button.dart';
 import 'package:flutter_base/ui/widgets/dialogs/login/login_dialog.dart';
 import 'package:flutter_base/ui/widgets/logo.dart';
-import 'package:flutter_base/ui/widgets/popup_message.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
 import 'package:flutter_base/utils/validators/password_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -135,7 +136,7 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
                       context.showBottomSheet((_) {
                         return LoginDialog(
                           showMessage: (message) {
-                            PopupMessage.success(message: message).show();
+                            PopupMessage.of(context).addMessage(PopupMessageItem.success(message: message));
                           },
                         );
                       });
@@ -473,9 +474,10 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
     }
     final accepted = _termsAccepterNotifier.value == true;
     if (accepted == false) {
-      PopupMessageScope.of(context).addMessage(
-        PopupMessage.error(
-            message: 'You need to agree to our terms of service and privacy policy in order to create an account.'),
+      PopupMessage.of(context).addMessage(
+        PopupMessageItem.error(
+          message: 'You need to agree to our terms of service and privacy policy in order to create an account.',
+        ),
       );
     }
     return accepted;

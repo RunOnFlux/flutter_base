@@ -8,7 +8,8 @@ import 'package:flutter_base/auth/service/auth_service.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
 import 'package:flutter_base/ui/widgets/dialogs/login/login_dialog.dart';
 import 'package:flutter_base/ui/widgets/dialogs/login/login_phrase_provider.dart';
-import 'package:flutter_base/ui/widgets/popup_message.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
 import 'package:flutter_base/utils/zelcore.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -263,7 +264,7 @@ class _SecondCardState extends State<SecondCard> with TickerProviderStateMixin, 
             Clipboard.setData(
               ClipboardData(text: messageTextController.text),
             ).then((value) {
-              context.show(PopupMessage.success(message: 'Copied to clipboard'));
+              context.show(PopupMessageItem.success(message: 'Copied to clipboard'));
             });
           },
           padding: EdgeInsets.zero,

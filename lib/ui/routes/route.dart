@@ -50,6 +50,7 @@ class NavigationRoute extends AbstractRoute {
   AppContentScreen? body;
   bool includeInMenu = false;
   int? navBarIndex;
+  List<NavigatorObserver>? observers;
 
   NavigationRoute({
     required this.route,
@@ -66,6 +67,7 @@ class NavigationRoute extends AbstractRoute {
     this.initialLocation,
     super.above,
     super.below,
+    this.observers,
   }) {
     body?.stateInfo.route = route;
   }
