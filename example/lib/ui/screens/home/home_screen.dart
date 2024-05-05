@@ -1,8 +1,10 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
-import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
 import 'package:flutter_base/ui/widgets/app_screen.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/screen_title_header.dart';
 import 'package:flutter_base/ui/widgets/simple_screen.dart';
@@ -35,6 +37,8 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
   @override
   void initState() {
     super.initState();
+    widget.stateInfo.onEnter = (p0) => log('entered home screen', name: 'Home Screen');
+    widget.stateInfo.onExit = (p0) => log('exited home screen', name: 'Home Screen');
     bootstrapGridParameters(gutterSize: 0);
   }
 

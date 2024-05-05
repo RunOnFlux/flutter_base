@@ -329,9 +329,15 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
         ),
       ],
       redirect: (context, state) {
+        var currentState = GetIt.I<ScreenInfo>().currentState;
+        if (currentState != null) {
+          currentState.onExit?.call(context);
+        }
         Future.microtask(() {
           final currentRoute = state.fullPath?.toString() ?? '/'; // use fullPath to support routes with parameters
-          GetIt.I<ScreenInfo>().currentState = GetIt.I<AppScreenRegistry>().get(currentRoute);
+          final newState = GetIt.I<AppScreenRegistry>().get(currentRoute);
+          GetIt.I<ScreenInfo>().currentState = newState;
+          newState?.onEnter?.call(context);
         });
 
         return null;

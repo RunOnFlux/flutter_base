@@ -21,6 +21,8 @@ class AppScreenStateInfo {
   Function()? onFAB;
   List<FloatingMenuItem>? items;
   late String route;
+  Function(BuildContext)? onExit;
+  Function(BuildContext)? onEnter;
 
   AppScreenStateInfo({
     this.refreshInterval,
