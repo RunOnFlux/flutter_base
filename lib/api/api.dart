@@ -166,6 +166,12 @@ abstract class Api {
             if (options != null) {
               dioOptions.contentType = options.contentType;
               dioOptions.responseType = options.responseType;
+              if (options.receiveTimeout != null) {
+                dioOptions.receiveTimeout = options.receiveTimeout;
+              }
+              if (options.sendTimeout != null) {
+                dioOptions.sendTimeout = options.sendTimeout;
+              }
             }
             result =
                 await _dio.post('$backendImpl$url', data: body, options: dioOptions, onSendProgress: onSendProgress);
