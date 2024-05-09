@@ -117,7 +117,20 @@ abstract class Api {
                 headers[key] = value;
               });
             }
-            Options dioOptions = Options(headers: headers, sendTimeout: const Duration(seconds: 1));
+            Options dioOptions = Options(
+              headers: headers,
+              sendTimeout: const Duration(seconds: 1),
+            );
+            if (options != null) {
+              dioOptions.contentType = options.contentType;
+              dioOptions.responseType = options.responseType;
+              if (options.receiveTimeout != null) {
+                dioOptions.receiveTimeout = options.receiveTimeout;
+              }
+              if (options.sendTimeout != null) {
+                dioOptions.sendTimeout = options.sendTimeout;
+              }
+            }
             if (kIsWeb) {
               if (backendImpl.startsWith('http://')) {
                 backendImpl = 'https://corsanywhere.app.runonflux.io/$backendImpl';
@@ -139,8 +152,21 @@ abstract class Api {
                 headers[key] = value;
               });
             }
-            Options dioOptions =
-                Options(headers: headers, sendTimeout: const Duration(seconds: 1), responseType: ResponseType.bytes);
+            Options dioOptions = Options(
+              headers: headers,
+              sendTimeout: const Duration(seconds: 1),
+              responseType: ResponseType.bytes,
+            );
+            if (options != null) {
+              dioOptions.contentType = options.contentType;
+              dioOptions.responseType = options.responseType;
+              if (options.receiveTimeout != null) {
+                dioOptions.receiveTimeout = options.receiveTimeout;
+              }
+              if (options.sendTimeout != null) {
+                dioOptions.sendTimeout = options.sendTimeout;
+              }
+            }
             result = await _dio.get(
               '$backendImpl$url',
               queryParameters: queryParameters,
