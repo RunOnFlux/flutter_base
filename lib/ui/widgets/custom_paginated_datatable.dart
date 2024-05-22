@@ -20,6 +20,7 @@ class CustomPaginatedTable extends StatelessWidget {
     this.dataRowHeight,
     this.headingRowHeight,
     this.controller,
+    this.minWidth,
   })  : _source = source,
         _dataColumns = dataColumns,
         _header = header,
@@ -48,6 +49,8 @@ class CustomPaginatedTable extends StatelessWidget {
 
   final double smRatio;
   final double lmRatio;
+
+  final double? minWidth;
 
   final OnRowChange onRowChanged;
 
@@ -95,6 +98,7 @@ class CustomPaginatedTable extends StatelessWidget {
       headingRowHeight: headingRowHeight ?? 56,
       wrapInCard: false,
       controller: controller,
+      minWidth: minWidth,
     );
   }
 }
