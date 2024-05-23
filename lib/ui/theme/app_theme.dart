@@ -21,6 +21,8 @@ class AppThemeImpl {
       backgroundColor: styleBackgroundColor,
       labelStyle: TextStyle(
         color: textColor, // Set the text color to grey
+        fontFamily: 'Montserrat',
+        package: 'flutter_base',
       ),
       shadowColor: shadowColor,
       elevation: 7.5,
@@ -43,6 +45,7 @@ class AppThemeImpl {
           titleTextStyle: TextStyle(
             fontSize: 20,
             fontFamily: 'Montserrat',
+            package: 'flutter_base',
             color: Color(0xFF303B52),
             fontWeight: FontWeight.w700,
           ),
@@ -87,11 +90,19 @@ class AppThemeImpl {
           padding: const EdgeInsets.all(8),
           side: BorderSide.none,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide.none),
-          secondaryLabelStyle: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
+          secondaryLabelStyle: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            fontFamily: 'Montserrat',
+            package: 'flutter_base',
+          ),
           brightness: Brightness.light,
           shadowColor: primaryColorLight.withOpacity(0.35),
           labelStyle: const TextStyle(
             color: Colors.grey, // Set the text color to grey
+            fontFamily: 'Montserrat',
+            package: 'flutter_base',
           ),
           elevation: 7.5,
         ),
@@ -124,6 +135,7 @@ class AppThemeImpl {
           titleTextStyle: TextStyle(
             fontSize: 18,
             fontFamily: 'Montserrat',
+            package: 'flutter_base',
             color: Color(0xFF303B52),
             fontWeight: FontWeight.w600,
           ),
@@ -194,6 +206,7 @@ class AppThemeImpl {
               fontSize: 14,
               color: lightText,
               fontFamily: 'Montserrat',
+              package: 'flutter_base',
             ),
           ),
         ),
@@ -223,6 +236,8 @@ class AppThemeImpl {
           labelStyle: TextStyle(
             fontSize: 13,
             color: darkText,
+            fontFamily: 'Montserrat',
+            package: 'flutter_base',
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(
@@ -251,43 +266,61 @@ class AppThemeImpl {
                 decorationColor: Colors.white,
                 fontSize: 24,
                 color: lightText,
+                fontFamily: 'Montserrat',
+                package: 'flutter_base',
               ),
               titleMedium: TextStyle(
                 decorationColor: Colors.white,
                 fontSize: 20,
                 color: lightText,
+                fontFamily: 'Montserrat',
+                package: 'flutter_base',
               ),
               titleSmall: TextStyle(
                 decorationColor: Colors.white,
                 fontSize: 16,
                 color: lightText,
+                fontFamily: 'Montserrat',
+                package: 'flutter_base',
               ),
               headlineLarge: TextStyle(
                 fontSize: 28,
                 color: lightText,
                 fontWeight: FontWeight.w600,
+                fontFamily: 'Montserrat',
+                package: 'flutter_base',
               ),
               headlineMedium: TextStyle(
                 fontSize: 18,
                 color: lightText,
                 fontWeight: FontWeight.w600,
+                fontFamily: 'Montserrat',
+                package: 'flutter_base',
               ),
               headlineSmall: TextStyle(
                 fontSize: 14,
                 color: lightText,
                 fontWeight: FontWeight.w600,
+                fontFamily: 'Montserrat',
+                package: 'flutter_base',
               ),
               bodyLarge: TextStyle(
                 fontSize: 18,
                 color: lightText,
+                fontFamily: 'Montserrat',
+                package: 'flutter_base',
               ),
               bodyMedium: TextStyle(
                 fontSize: 14,
                 color: lightText,
+                fontFamily: 'Montserrat',
+                package: 'flutter_base',
               ),
               bodySmall: TextStyle(
                 fontSize: 12,
                 color: lightText,
+                fontFamily: 'Montserrat',
+                package: 'flutter_base',
               ),
             ),
         tooltipTheme: TooltipThemeData(
@@ -302,6 +335,8 @@ class AppThemeImpl {
           textStyle: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w500,
+            fontFamily: 'Montserrat',
+            package: 'flutter_base',
           ),
         ),
         useMaterial3: true,
@@ -324,7 +359,13 @@ class AppThemeImpl {
             foregroundColor: Colors.white,
             elevation: 0,
             iconTheme: IconThemeData(color: Colors.white),
-            titleTextStyle: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              fontFamily: 'Montserrat',
+              package: 'flutter_base',
+            ),
           ),
           bottomNavigationBarTheme: ThemeData.dark().bottomNavigationBarTheme.copyWith(
                 selectedItemColor: primaryColorDark,
@@ -398,6 +439,7 @@ class AppThemeImpl {
                 fontSize: 14,
                 color: lightText,
                 fontFamily: 'Montserrat',
+                package: 'flutter_base',
               ),
             ),
           ),
@@ -427,6 +469,8 @@ class AppThemeImpl {
             labelStyle: TextStyle(
               fontSize: 13,
               color: darkText,
+              fontFamily: 'Montserrat',
+              package: 'flutter_base',
             ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
@@ -453,43 +497,61 @@ class AppThemeImpl {
                   decorationColor: Colors.white,
                   fontSize: 24,
                   color: darkText,
+                  fontFamily: 'Montserrat',
+                  package: 'flutter_base',
                 ),
                 titleMedium: TextStyle(
                   decorationColor: Colors.white,
                   fontSize: 20,
                   color: darkText,
+                  fontFamily: 'Montserrat',
+                  package: 'flutter_base',
                 ),
                 titleSmall: TextStyle(
                   decorationColor: Colors.white,
                   fontSize: 16,
                   color: darkText,
+                  fontFamily: 'Montserrat',
+                  package: 'flutter_base',
                 ),
                 headlineLarge: TextStyle(
                   fontSize: 28,
                   color: darkText,
                   fontWeight: FontWeight.w600,
+                  fontFamily: 'Montserrat',
+                  package: 'flutter_base',
                 ),
                 headlineMedium: TextStyle(
                   fontSize: 18,
                   color: darkText,
                   fontWeight: FontWeight.w600,
+                  fontFamily: 'Montserrat',
+                  package: 'flutter_base',
                 ),
                 headlineSmall: TextStyle(
                   fontSize: 14,
                   color: darkText,
                   fontWeight: FontWeight.w600,
+                  fontFamily: 'Montserrat',
+                  package: 'flutter_base',
                 ),
                 bodyLarge: TextStyle(
                   fontSize: 18,
                   color: darkText,
+                  fontFamily: 'Montserrat',
+                  package: 'flutter_base',
                 ),
                 bodyMedium: TextStyle(
                   fontSize: 14,
                   color: darkText,
+                  fontFamily: 'Montserrat',
+                  package: 'flutter_base',
                 ),
                 bodySmall: TextStyle(
                   fontSize: 12,
                   color: darkText,
+                  fontFamily: 'Montserrat',
+                  package: 'flutter_base',
                 ),
               ),
           useMaterial3: true,
