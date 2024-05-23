@@ -65,6 +65,8 @@ abstract class AppScreenState<T extends AppContentScreen> extends State<T> {
                     },
                     context: context,
                   ),
+                  fontFamily: 'Montserrat',
+                  package: 'flutter_base',
                 ),
               ),
             ),

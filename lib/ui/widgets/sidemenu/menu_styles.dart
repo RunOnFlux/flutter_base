@@ -129,6 +129,8 @@ mixin MenuStyles {
       title,
       style: TextStyle(
         fontSize: 10,
+        fontFamily: 'Montserrat',
+        package: 'flutter_base',
         color: selected
             ? Theme.of(context).textTheme.titleLarge?.decorationColor
             : Theme.of(context).textTheme.titleLarge?.color,

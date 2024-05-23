@@ -33,6 +33,8 @@ class _FluxOSAboutDialogState extends State<FluxOSAboutDialog> {
         fontWeight: FontWeight.bold,
         fontSize: 30,
         color: Theme.of(context).textTheme.displayLarge?.color ?? Colors.black,
+        fontFamily: 'Montserrat',
+        package: 'flutter_base',
       ),
       actionsOverflowButtonSpacing: 20,
       actions: [

@@ -56,6 +56,8 @@ class Logo extends StatelessWidget {
               color: Theme.of(context).colorScheme.onBackground,
               fontWeight: FontWeight.w700,
               height: 1,
+              fontFamily: 'Montserrat',
+              package: 'flutter_base',
             ),
           )
         ],
@@ -65,6 +67,8 @@ class Logo extends StatelessWidget {
             style: TextStyle(
                 color: Theme.of(context).colorScheme.onBackground,
                 fontWeight: FontWeight.w400,
+                fontFamily: 'Montserrat',
+                package: 'flutter_base',
                 height: 1,
                 letterSpacing: -0.918,
                 fontSize: fontSize),

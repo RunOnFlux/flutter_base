@@ -214,7 +214,12 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
                     Text(
                       state.authError!.type.errorMessage(false), //state.authError!.type.tr(context),
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                        fontFamily: 'Montserrat',
+                        package: 'flutter_base',
+                      ),
                     ),
                   ],
                 );
@@ -429,7 +434,11 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
                 : (context) {
                     return Text(
                       timeRemainingInSeconds.toString(),
-                      style: TextStyle(color: Theme.of(context).primaryColor),
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontFamily: 'Montserrat',
+                        package: 'flutter_base',
+                      ),
                     );
                   },
             onDisabledPressed: () {},

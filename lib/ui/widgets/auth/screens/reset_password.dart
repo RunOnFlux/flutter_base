@@ -59,6 +59,8 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> with PasswordV
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
+                                fontFamily: 'Montserrat',
+                                package: 'flutter_base',
                               ),
                             ),
                             const SizedBox(height: 16),

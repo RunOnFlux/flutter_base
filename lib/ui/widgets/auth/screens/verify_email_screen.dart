@@ -75,13 +75,23 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                       Text(
                         'Verify Email',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'Montserrat',
+                          package: 'flutter_base',
+                        ),
                       ),
                       SizedBox(height: 16),
                       Text(
                         'Please wait while we verify your email address...',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w300,
+                          fontFamily: 'Montserrat',
+                          package: 'flutter_base',
+                        ),
                       ),
                       SizedBox(height: 24),
                       _VerificationProgress(),
@@ -132,7 +142,12 @@ class _VerificationProgress extends StatelessWidget {
                 Text(
                   'Verifying email...',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
+                    fontFamily: 'Montserrat',
+                    package: 'flutter_base',
+                  ),
                 ),
                 SizedBox(height: 12),
               ],
@@ -151,7 +166,12 @@ class _VerificationProgress extends StatelessWidget {
                 Text(
                   state.authError!.type.errorMessage(false), //state.authError!.type.tr(context),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
+                    fontFamily: 'Montserrat',
+                    package: 'flutter_base',
+                  ),
                 ),
                 const SizedBox(height: 12),
               ],
@@ -170,7 +190,12 @@ class _VerificationProgress extends StatelessWidget {
                 const Text(
                   'Email verified',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
+                    fontFamily: 'Montserrat',
+                    package: 'flutter_base',
+                  ),
                 ),
                 const SizedBox(height: 12),
                 DefaultTextButton(

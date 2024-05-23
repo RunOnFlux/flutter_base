@@ -71,13 +71,23 @@ class _NeedEmailVerificationScreenState extends State<NeedEmailVerificationScree
                       const Text(
                         'Verify Email',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'Montserrat',
+                          package: 'flutter_base',
+                        ),
                       ),
                       const SizedBox(height: 16),
                       const Text(
                         'Please go to your email and click on the link to verify your email address.',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w300,
+                          fontFamily: 'Montserrat',
+                          package: 'flutter_base',
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 24),

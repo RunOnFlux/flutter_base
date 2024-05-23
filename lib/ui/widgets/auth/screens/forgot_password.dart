@@ -83,7 +83,12 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           const SizedBox(height: 24),
                           const Text(
                             'Forgot Password?',
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'Montserrat',
+                              package: 'flutter_base',
+                            ),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(
@@ -117,7 +122,12 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                     ),
                                     const Text(
                                       'Email sent',
-                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: 'Montserrat',
+                                        package: 'flutter_base',
+                                      ),
                                     ),
                                     const SizedBox(
                                       height: 8,

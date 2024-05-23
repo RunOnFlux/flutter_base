@@ -226,6 +226,7 @@ class DefaultTextButton extends StatelessWidget {
                   TextStyle(
                     fontWeight: fontWeight ?? FontWeight.w400,
                     fontFamily: 'Montserrat',
+                    package: 'flutter_base',
                     fontSize: fontSize ?? 14,
                   ),
             ),

@@ -322,17 +322,24 @@ class PopupMessageItemState extends State<PopupMessageItem> with SingleTickerPro
   Widget _buildDetails() {
     final theme = Theme.of(context);
     return Container(
-        width: double.infinity,
-        margin: const EdgeInsets.only(top: 8),
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-            color: widget.detailsBackgroundColor,
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(color: widget.borderColor ?? theme.dividerColor)),
-        child: Text(widget.details!,
-            style: widget.detailsTextStyle ??
-                TextStyle(
-                    fontSize: 12, fontFamily: 'Montserrat', fontWeight: FontWeight.w500, color: widget.textColor)));
+      width: double.infinity,
+      margin: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+          color: widget.detailsBackgroundColor,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(color: widget.borderColor ?? theme.dividerColor)),
+      child: Text(
+        widget.details!,
+        style: widget.detailsTextStyle ??
+            TextStyle(
+                fontSize: 12,
+                fontFamily: 'Montserrat',
+                package: 'flutter_base',
+                fontWeight: FontWeight.w500,
+                color: widget.textColor),
+      ),
+    );
   }
 
   @override
@@ -377,7 +384,12 @@ class PopupMessageItemState extends State<PopupMessageItem> with SingleTickerPro
                                 padding: const EdgeInsets.only(right: 8.0),
                                 child: Text(
                                   '${DateFormat('HH:mm:ss').format(widget.time)}: ',
-                                  style: TextStyle(fontSize: 11, color: widget.foregroundColor),
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: widget.foregroundColor,
+                                    fontFamily: 'Montserrat',
+                                    package: 'flutter_base',
+                                  ),
                                 ),
                               )
                           ],
@@ -390,6 +402,7 @@ class PopupMessageItemState extends State<PopupMessageItem> with SingleTickerPro
                               style: widget.textStyle ??
                                   TextStyle(
                                       fontFamily: 'Montserrat',
+                                      package: 'flutter_base',
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                       color: widget.textColor),

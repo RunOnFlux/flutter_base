@@ -321,6 +321,8 @@ class DefaultAuthPageTextField extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 letterSpacing: 0.9,
                 fontSize: 12,
+                fontFamily: 'Montserrat',
+                package: 'flutter_base',
               )),
           const SizedBox(
             height: 8,
@@ -338,6 +340,8 @@ class DefaultAuthPageTextField extends StatelessWidget {
               style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 14,
+                fontFamily: 'Montserrat',
+                package: 'flutter_base',
               ),
               onFieldSubmitted: onFieldSubmitted,
               controller: _controller,
@@ -394,7 +398,11 @@ class DefaultAuthPageTextField extends StatelessWidget {
                           ])),
                   isCollapsed: collapsed,
                   errorMaxLines: errorMaxLines,
-                  errorStyle: const TextStyle(fontSize: 12),
+                  errorStyle: const TextStyle(
+                    fontSize: 12,
+                    fontFamily: 'Montserrat',
+                    package: 'flutter_base',
+                  ),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                   enabledBorder: collapsed
                       ? InputBorder.none

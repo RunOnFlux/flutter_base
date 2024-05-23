@@ -33,7 +33,8 @@ class PopupLabelWidget extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: 'Monserrat',
+                fontFamily: 'Montserrat',
+                package: 'flutter_base',
                 fontWeight: FontWeight.w500,
                 height: 1,
                 fontSize: 14,
