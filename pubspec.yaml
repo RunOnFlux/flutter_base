@@ -58,6 +58,7 @@ dependencies:
   tinycolor2: ^3.0.1
   universal_html: ^2.0.8
   url_launcher: ^6.2.5
+  web: ^0.5.1
   web_socket_channel: ^2.4.3
   window_size:
     git:

@@ -1,10 +1,10 @@
 import 'dart:async';
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
 
 import 'package:flutter/foundation.dart';
+// ignore: avoid_web_libraries_in_flutter
+import 'package:web/web.dart' as web;
 
-html.WindowBase? _popup;
+web.Window? _popup;
 
 Completer<String>? _completer;
 
@@ -15,7 +15,7 @@ Future<String> signInWithGitlab() async {
   if (_completer != null && !_completer!.isCompleted) {
     _completer!.completeError('Canceled');
   }
-  _popup = html.window.open(
+  _popup = web.window.open(
     'https://pouwdev.runonflux.io:22443/oauth/gitlab/signin',
     'Gitlab Auth',
     'width=500,height=800',
@@ -26,7 +26,7 @@ Future<String> signInWithGitlab() async {
   debugPrint('open popup window to gitlab auth');
 
   /// listen to popup window message event
-  html.window.onMessage.listen((event) {
+  /*web.window.onMessage.listen((event) {
     if (event.origin == 'https://pouwdev.runonflux.io:22443') {
       debugPrint('Gitlab.SignInPopup event: ${event.origin} - ${event.data} ');
       try {
@@ -42,7 +42,7 @@ Future<String> signInWithGitlab() async {
         }
       }
     }
-  });
+  });*/
 
   _subscription = _popupClosed().listen((event) {
     if (event && !_completer!.isCompleted) {
