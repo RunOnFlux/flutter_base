@@ -321,9 +321,10 @@ class Logging extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    debugPrint(
-      'ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}',
-    );
+    debugPrint('ERROR => ${err.type.toString()}');
+    debugPrint('ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}');
+    debugPrint('ERROR => ${err.message.toString()}');
+    debugPrint('ERROR => ${err.response.toString()}');
     super.onError(err, handler);
   }
 }
