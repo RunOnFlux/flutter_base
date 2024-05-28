@@ -24,8 +24,8 @@ dependencies:
   email_validator: ^2.1.17
   equatable: ^2.0.5
   fetch_client: ^1.1.2
-  firebase_auth: ^4.17.5
-  firebase_core: ^2.26.0
+  firebase_auth: ^4.19.6
+  firebase_core: ^2.31.1
   flip_card: ^0.7.0
   floating_action_bubble: ^1.1.4
   flutter_acrylic: ^1.0.0+2
