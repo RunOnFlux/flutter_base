@@ -1,6 +1,6 @@
 name: flutter_base
 description: A base set of UI classes for a consistent look-and-feel across Flutter apps.
-version: 0.0.12
+version: 0.0.13
 publish_to: none
 
 environment:
