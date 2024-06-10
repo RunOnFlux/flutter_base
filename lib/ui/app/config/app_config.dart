@@ -4,6 +4,7 @@ import 'package:flutter_base/ui/widgets/logo.dart';
 import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/utils/settings.dart';
+import 'package:go_router/go_router.dart';
 
 class AppConfig {
   String? get banner => null;
@@ -71,4 +72,8 @@ class AppConfig {
   Iterable<Locale> get supportedLocales => const [
         Locale('en', "US"),
       ];
+
+  GoExceptionHandler? get routeExceptionHandler => (context, state, router) {
+        router.go('/');
+      };
 }

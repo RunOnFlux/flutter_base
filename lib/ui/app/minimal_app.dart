@@ -371,6 +371,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
       debugLogDiagnostics: true,
       initialLocation: initialRoute,
       routingConfig: appRoutingConfig,
+      onException: config.routeExceptionHandler,
     );
 
     if (initialNavRoute != null) {
