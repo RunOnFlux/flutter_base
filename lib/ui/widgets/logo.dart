@@ -9,6 +9,7 @@ class Logo extends StatelessWidget {
     super.key,
     this.height,
     this.clickRedirectHomePage = false,
+    this.clickTextRedirectHomePage = false,
     this.title,
     this.gradientTitle,
     this.fontSize = 23.0,
@@ -22,6 +23,7 @@ class Logo extends StatelessWidget {
   final Color? color;
   final Function()? onPressed;
   final double fontSize;
+  final bool clickTextRedirectHomePage;
 
   @override
   Widget build(BuildContext context) {
@@ -49,32 +51,46 @@ class Logo extends StatelessWidget {
           const SizedBox(
             width: 6,
           ),
-          Text(
-            title!,
-            style: TextStyle(
-              fontSize: fontSize,
-              color: Theme.of(context).colorScheme.onBackground,
-              fontWeight: FontWeight.w700,
-              height: 1,
-              fontFamily: 'Montserrat',
-              package: 'flutter_base',
-            ),
-          )
+          wrapForClick(
+              Text(
+                title!,
+                style: TextStyle(
+                  fontSize: fontSize,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontWeight: FontWeight.w700,
+                  height: 1,
+                  fontFamily: 'Montserrat',
+                  package: 'flutter_base',
+                ),
+              ),
+              context),
         ],
         if (gradientTitle != null)
-          GradientText(
-            gradientTitle!,
-            style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-                fontWeight: FontWeight.w400,
-                fontFamily: 'Montserrat',
-                package: 'flutter_base',
-                height: 1,
-                letterSpacing: -0.918,
-                fontSize: fontSize),
-          ),
+          wrapForClick(
+              GradientText(
+                gradientTitle!,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Montserrat',
+                    package: 'flutter_base',
+                    height: 1,
+                    letterSpacing: -0.918,
+                    fontSize: fontSize),
+              ),
+              context),
       ],
     );
+  }
+
+  Widget wrapForClick(Widget child, BuildContext context) {
+    if (clickTextRedirectHomePage) {
+      child = GestureDetector(
+        onTap: () => context.goInitialRoute(),
+        child: child,
+      );
+    }
+    return child;
   }
 }
 

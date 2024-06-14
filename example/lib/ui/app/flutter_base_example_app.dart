@@ -167,6 +167,7 @@ class FlutterBaseAppConfig extends AppConfig {
               title: 'Flux',
               gradientTitle: 'Cloud',
               clickRedirectHomePage: true,
+              clickTextRedirectHomePage: true,
             ),
             SideBarButton(),
           ],
