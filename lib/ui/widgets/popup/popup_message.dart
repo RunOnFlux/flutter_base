@@ -397,16 +397,19 @@ class PopupMessageWidgetState extends State<PopupMessageWidget> {
   @override
   Widget build(BuildContext context) {
     return PopupMessage(this,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            widget.child,
-            Overlay(
-              initialEntries: [
-                OverlayEntry(builder: (context) => _buildOverlay()),
-              ],
-            )
-          ],
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              widget.child,
+              Overlay(
+                initialEntries: [
+                  OverlayEntry(builder: (context) => _buildOverlay()),
+                ],
+              )
+            ],
+          ),
         ));
   }
 

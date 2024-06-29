@@ -20,6 +20,7 @@ import 'package:flutter_base/ui/screens/loading_screen.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/auth/auth_screen.dart';
 import 'package:flutter_base/ui/widgets/banner.dart';
+import 'package:flutter_base/ui/widgets/popup/popup_message.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/utils/platform_info.dart';
@@ -382,25 +383,28 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
       config: config,
       child: Builder(
         builder: (themeContext) {
-          return MaterialApp.router(
-            scaffoldMessengerKey: rootScaffoldMessengerKey,
-            localizationsDelegates: config.localizationDelegates,
-            supportedLocales: config.supportedLocales,
-            debugShowCheckedModeBanner: false,
-            title: windowTitle,
-            theme: ThemeProvider.themeOf(themeContext).data,
-            builder: (context, child) {
-              return ResponsiveBuilder(
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    if (child != null) child,
-                    AppBanner(text: config.banner),
-                  ],
-                ),
-              );
-            },
-            routerConfig: router,
+          return PopupMessageWidget(
+            key: rootPopupMessageKey,
+            child: MaterialApp.router(
+              scaffoldMessengerKey: rootScaffoldMessengerKey,
+              localizationsDelegates: config.localizationDelegates,
+              supportedLocales: config.supportedLocales,
+              debugShowCheckedModeBanner: false,
+              title: windowTitle,
+              theme: ThemeProvider.themeOf(themeContext).data,
+              builder: (context, child) {
+                return ResponsiveBuilder(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      if (child != null) child,
+                      AppBanner(text: config.banner),
+                    ],
+                  ),
+                );
+              },
+              routerConfig: router,
+            ),
           );
         },
       ),
