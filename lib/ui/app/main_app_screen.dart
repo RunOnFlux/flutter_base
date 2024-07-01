@@ -344,6 +344,9 @@ class _AppScreenChildWrapperState extends State<_AppScreenChildWrapper> with Get
       return child;
     }
     //return child.animate(target: isCollapsed ? 0 : 1).scaleX(begin: 1, end: 0.97).scaleY(begin: 1, end: 0.97);
-    return child;
+    return Transform.scale(
+      scale: isCollapsed ? 1 : 0.97,
+      child: child,
+    );
   }
 }
