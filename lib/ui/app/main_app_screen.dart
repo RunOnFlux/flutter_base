@@ -343,6 +343,7 @@ class _AppScreenChildWrapperState extends State<_AppScreenChildWrapper> with Get
     if (smallScreen) {
       return child;
     }
-    return child.animate(target: isCollapsed ? 0 : 1).scaleX(begin: 1, end: 0.97).scaleY(begin: 1, end: 0.97);
+    //return child.animate(target: isCollapsed ? 0 : 1).scaleX(begin: 1, end: 0.97).scaleY(begin: 1, end: 0.97);
+    return child;
   }
 }
