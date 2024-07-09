@@ -280,7 +280,7 @@ class _SecondCardState extends State<SecondCard> with TickerProviderStateMixin, 
     return TextFormField(
       controller: addressTextController,
       maxLines: 1,
-      decoration: textFieldDecoration('Address', 'Insert ZelID or Bitcoin address', null),
+      decoration: textFieldDecoration('Address', 'Insert FluxID or Bitcoin address', null),
       style: Theme.of(context).textTheme.headlineSmall,
     );
   }

@@ -45,14 +45,14 @@ class _FirstCardState extends State<FirstCard> with ZelCoreWebSockets {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 AutoSizeText(
-                  'Sign in with ZelID',
+                  'Sign in with FluxID',
                   style: Theme.of(context)
                       .textTheme
                       .headlineLarge!
                       .copyWith(color: Theme.of(context).primaryColor, fontSize: 36),
                 ),
                 AutoSizeText(
-                  'Enter your ZelID and Signature\n\nto sign in to your account',
+                  'Enter your FluxID and Signature\n\nto sign in to your account',
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -105,7 +105,7 @@ class _FirstCardState extends State<FirstCard> with ZelCoreWebSockets {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     AutoSizeText(
-                      'Don\'t have a ZelID?',
+                      'Don\'t have a FluxID?',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     Padding(
@@ -130,12 +130,12 @@ class _FirstCardState extends State<FirstCard> with ZelCoreWebSockets {
                   child: InkWell(
                     onTap: () {
                       launchUrlString(
-                        'https://cloud.runonflux.io/zelid.html',
+                        'https://cloud.runonflux.io/fluxid',
                         mode: LaunchMode.externalApplication,
                       );
                     },
                     child: AutoSizeText(
-                      'Learn about ZelID',
+                      'Learn about FluxID',
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).primaryColor),
                     ),
                   ),
