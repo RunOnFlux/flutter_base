@@ -10,6 +10,7 @@ import 'package:flutter_base/ui/widgets/dialogs/login/login_phrase_provider.dart
 import 'package:flutter_base/ui/widgets/dialogs/login/second_card.dart';
 import 'package:flutter_base/ui/widgets/popup/popup_message.dart';
 import 'package:flutter_base/utils/zelcore.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http_query_string/http_query_string.dart';
 import 'package:provider/provider.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -165,8 +166,8 @@ class LoginDialogState extends State<LoginDialog> with DialogSizes, TickerProvid
                                         imageSize = hover ? 105 : 100;
                                       });
                                     },
-                                    child: Image.asset(
-                                      'assets/images/png/zelID_100.png',
+                                    child: SvgPicture.asset(
+                                      'assets/images/svg/fluxid.svg',
                                       fit: BoxFit.fill,
                                       package: 'flutter_base',
                                     ),

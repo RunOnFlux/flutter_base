@@ -14,6 +14,7 @@ import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
 import 'package:flutter_base/utils/validators/password_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -559,8 +560,8 @@ class _ZelCoreSignInButton extends StatelessWidget {
         icon: SizedBox(
           width: 24,
           height: 24,
-          child: Image.asset(
-            'assets/images/png/zelcore_logo.png',
+          child: SvgPicture.asset(
+            'assets/images/svg/zelcore.svg',
             package: 'flutter_base',
             width: 24,
             height: 24,
