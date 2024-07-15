@@ -283,6 +283,7 @@ class DefaultAuthPageTextField extends StatelessWidget {
       this.keyboardType,
       this.textInputAction = TextInputAction.next,
       this.validator,
+      this.scrollPadding,
       this.onChanged})
       : assert(text != null || controller != null),
         _text = text,
@@ -306,6 +307,7 @@ class DefaultAuthPageTextField extends StatelessWidget {
   final bool showCopyButton;
   final void Function(String? value)? onChanged;
   final void Function(String? value)? onFieldSubmitted;
+  final EdgeInsets? scrollPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -421,6 +423,7 @@ class DefaultAuthPageTextField extends StatelessWidget {
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   hintText: hintText),
               obscureText: obscureText,
+              scrollPadding: scrollPadding ?? const EdgeInsets.all(20.0),
               validator: validator);
         }),
       ],
