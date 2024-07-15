@@ -29,7 +29,12 @@ class SignInScreen extends StatelessWidget {
     if (width < 560) width = 560;
     return Center(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 56),
+        padding: EdgeInsets.only(
+          top: 50,
+          left: width < 560 ? 20 : 56,
+          right: width < 560 ? 20 : 56,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
         child: SizedBox(
           width: width,
           child: _SignInScreenDelegate(type: type),
@@ -134,14 +139,16 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
                   onPressed: () {
                     if (config.isPopup) {
                       context.pop();
-                      context.showBottomSheet((_) {
-                        return LoginDialog(
-                          showMessage: (message) {
-                            PopupMessage.of(context).addMessage(PopupMessageItem.success(message: message));
-                          },
-                        );
-                      });
+                    } else {
+                      context.go('/');
                     }
+                    context.showBottomSheet((_) {
+                      return LoginDialog(
+                        showMessage: (message) {
+                          PopupMessage.of(context).addMessage(PopupMessageItem.success(message: message));
+                        },
+                      );
+                    });
                   },
                 ),
             ],
@@ -329,7 +336,7 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
     return Column(
       children: [
         DefaultAuthPageTextField(
-          autoFocus: true,
+          autoFocus: false,
           controller: _emailController ??= TextEditingController(),
           hintText: 'Email',
           keyboardType: TextInputType.emailAddress,
@@ -342,6 +349,7 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
             }
             return null;
           },
+          scrollPadding: const EdgeInsets.only(bottom: 40),
         ),
         const SizedBox(
           height: 18,
@@ -367,6 +375,7 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
             }
             return null;
           },
+          scrollPadding: const EdgeInsets.only(bottom: 40),
         ),
         if (widget.type == SignInScreenType.register) ...[
           const SizedBox(
@@ -390,6 +399,7 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
               }
               return null;
             },
+            scrollPadding: const EdgeInsets.only(bottom: 40),
           ),
         ]
       ],
