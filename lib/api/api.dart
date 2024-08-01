@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -259,7 +260,7 @@ abstract class Api {
       streamRequests: true,
     );
     final uri = Uri.parse(url);
-    final request = http.Request('POST', uri);
+    final request = http.Request(requestType == RequestType.post ? 'POST' : 'GET', uri);
     if (headers != null) {
       request.headers.addAll(headers);
     }
@@ -267,21 +268,18 @@ abstract class Api {
       request.body = jsonEncode(body);
     }
     final response = await client.send(request);
-    response.stream.listen(
-      (value) {
+    try {
+      await for (var chunk in response.stream.transform(utf8.decoder)) {
+        // Process each chunk as it is received
         if (onData != null) {
-          final s = utf8.decode(value).trim();
-          onData(s);
+          onData(chunk);
         }
-      },
-      onDone: () {
-        if (onDone != null) onDone();
-      },
-      onError: () {
-        if (onError != null) onError('An unknown error has occurred');
-      },
-      cancelOnError: true,
-    );
+      }
+    } catch (error, s) {
+      if (onError != null) onError('An unknown error has occurred: ${error.toString()}');
+      log(s.toString());
+    }
+    if (onDone != null) onDone();
   }
 }
 
@@ -323,6 +321,7 @@ class Logging extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     debugPrint('ERROR => ${err.type.toString()}');
     debugPrint('ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}');
+    debugPrint('ERROR => ${err.error.toString()}');
     debugPrint('ERROR => ${err.message.toString()}');
     debugPrint('ERROR => ${err.response.toString()}');
     super.onError(err, handler);
