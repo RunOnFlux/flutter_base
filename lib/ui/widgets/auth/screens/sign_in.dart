@@ -24,22 +24,26 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    if (width >= 1280) width = width / 2;
-    if (width < 560) width = 560;
-    return Center(
-      child: SingleChildScrollView(
-        padding: EdgeInsets.only(
-          top: 50,
-          left: width < 560 ? 20 : 56,
-          right: width < 560 ? 20 : 56,
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        child: SizedBox(
-          width: width,
-          child: _SignInScreenDelegate(type: type),
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        var width = constraints.maxWidth;
+        if (width >= 1280) width = width / 2;
+        if (width < 560) width = 560;
+        return Center(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(
+              top: 50,
+              left: width < 560 ? 20 : 56,
+              right: width < 560 ? 20 : 56,
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: SizedBox(
+              width: width,
+              child: _SignInScreenDelegate(type: type),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -336,7 +340,7 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
     return Column(
       children: [
         DefaultAuthPageTextField(
-          autoFocus: false,
+          autoFocus: true,
           controller: _emailController ??= TextEditingController(),
           hintText: 'Email',
           keyboardType: TextInputType.emailAddress,
