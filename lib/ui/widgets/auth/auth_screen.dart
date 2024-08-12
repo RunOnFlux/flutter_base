@@ -49,7 +49,10 @@ class AuthScreen extends StatelessWidget {
             zelCore: zelCore,
           ),
           child: _AuthWrapperWidget(
-            child: wrapper(child),
+            child: Container(
+              color: Theme.of(context).primaryColorDark,
+              child: wrapper(child),
+            ),
           ),
         );
       },
@@ -231,7 +234,7 @@ class _AuthScreenCloseButton extends StatelessWidget {
       left: 16,
       child: Consumer<AuthScreenConfig>(
         builder: (BuildContext context, AuthScreenConfig config, Widget? child) => CloseButton(
-          color: invertColor ? Theme.of(context).colorScheme.onBackground : Colors.white,
+          color: invertColor ? Theme.of(context).colorScheme.onSurface : Colors.white,
           onPressed: () {
             debugPrint(context.canPop().toString());
             debugPrint(GoRouter.of(context).routerDelegate.currentConfiguration.toString());
