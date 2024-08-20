@@ -149,7 +149,7 @@ class _SignInScreenDelegateState extends State<_SignInScreenDelegate>
                     context.showBottomSheet((_) {
                       return LoginDialog(
                         showMessage: (message) {
-                          PopupMessage.of(context).addMessage(PopupMessageItem.success(message: message));
+                          PopupMessageItem.success(message: message).show();
                         },
                       );
                     });
