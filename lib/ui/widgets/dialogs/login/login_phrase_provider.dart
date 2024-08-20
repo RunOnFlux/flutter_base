@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_base/auth/service/auth_service.dart';
 
@@ -9,7 +11,7 @@ class LoginPhraseProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchData() async {
+  Future<String?> fetchData() async {
     clearData();
 
     //nodeIP = await AuthService().getFluxNodeIP();
@@ -23,7 +25,7 @@ class LoginPhraseProvider with ChangeNotifier {
       //debugPrint(loginPhrase);
       notifyListeners();
     } catch (err) {
-      debugPrint(err.toString());
+      log(err.toString());
       if (err.toString().contains('CONNERROR')) {
         var value = await AuthService().getEmergencyLoginPhrase();
         if (value == null) {
@@ -35,6 +37,7 @@ class LoginPhraseProvider with ChangeNotifier {
         notifyListeners();
       }
     }
+    return loginPhrase;
     //}
   }
 

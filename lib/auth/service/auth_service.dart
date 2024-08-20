@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as frb;
 import 'package:flutter/foundation.dart';
@@ -101,13 +103,13 @@ class AuthService {
       '/id/loginphrase',
       backendOverride: nodeIP ?? 'https://api.runonflux.io',
     );
-    debugPrint(response.toString());
+    log(response.toString());
     if (response is Map) {
       if (response['status'].toString().toLowerCase() == 'success') {
         return LoginPhrase.fromJson(response as Map<String, dynamic>);
       }
     }
-    throw ApiException(message: 'Bad Data: ${response.toString()}');
+    throw ApiException(message: response.toString());
   }
 
   Future<FluxLogin> verifyLogin({

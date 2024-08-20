@@ -1,4 +1,5 @@
-import 'dart:math';
+import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_base/api/model/id/id_model.dart';
@@ -57,9 +58,8 @@ class LoginDialogState extends State<LoginDialog> with DialogSizes, TickerProvid
     final authBloc = context.read<AuthBloc>();
     loginPhraseProvider.fetchData().then((_) {
       //debugPrint(loginPhraseProvider.nodeIP);
-      debugPrint(loginPhraseProvider.loginPhrase);
+      log('fetched login phrase ${loginPhraseProvider.loginPhrase}');
       initiateLoginWS(
-        //loginPhraseProvider.nodeIP!,
         loginPhraseProvider.loginPhrase!,
         () {
           if (mounted && Navigator.of(context).canPop()) {
@@ -67,11 +67,13 @@ class LoginDialogState extends State<LoginDialog> with DialogSizes, TickerProvid
             widget.showMessage('You have successfully logged in to FluxCloud');
           }
         },
-        () {
+        /*() {
+          log('refreshLoginPhrase close');
           if (mounted) {
             refreshLoginPhrase();
           }
-        },
+        },*/
+        () => null,
         (error) => null,
         authBloc,
       );
@@ -93,6 +95,8 @@ class LoginDialogState extends State<LoginDialog> with DialogSizes, TickerProvid
       },
       context: context,
     );
+    final authBloc = context.read<AuthBloc>();
+
     return PopupMessageWidget(
       key: GlobalKey(),
       child: ChangeNotifierProvider.value(
@@ -146,20 +150,24 @@ class LoginDialogState extends State<LoginDialog> with DialogSizes, TickerProvid
                                 child: Consumer<LoginPhraseProvider>(
                                   builder: (_, loginProvider, __) => InkWell(
                                     onTap: () async {
-                                      if (loginProvider.loginPhrase != null) {
-                                        openZelCore(
-                                          //loginProvider.nodeIP!,
-                                          loginProvider.loginPhrase!,
-                                          () {
-                                            if (context.mounted) {
-                                              Navigator.of(context).pop();
-                                            }
-                                          },
-                                          context.read<AuthBloc>(),
-                                        );
-                                      } else {
-                                        // something has gone wrong, or the data is not available yet
-                                      }
+                                      loginPhraseProvider.fetchData().then(
+                                        (value) {
+                                          if (value != null) {
+                                            openZelCore(
+                                              //loginProvider.nodeIP!,
+                                              value,
+                                              () {
+                                                if (context.mounted) {
+                                                  Navigator.of(context).pop();
+                                                }
+                                              },
+                                              authBloc,
+                                            );
+                                          } else {
+                                            // something has gone wrong, or the data is not available yet
+                                          }
+                                        },
+                                      );
                                     },
                                     onHover: (hover) {
                                       setState(() {
@@ -197,7 +205,7 @@ class LoginDialogState extends State<LoginDialog> with DialogSizes, TickerProvid
                                     double value = isNext ? _animationRotate.value : -(_animationRotate.value);
                                     Matrix4 transform = _pmat(1.0).scaled(1.0, 1.0 - value * 0.01, 1.0)
                                       ..rotateX(0.0)
-                                      ..rotateY(12 * pi / 180 * value)
+                                      ..rotateY(12 * math.pi / 180 * value)
                                       ..rotateZ(0);
                                     return Stack(
                                       children: [
