@@ -157,8 +157,9 @@ class LoginDialogState extends State<LoginDialog> with DialogSizes, TickerProvid
                                               //loginProvider.nodeIP!,
                                               value,
                                               () {
-                                                if (context.mounted) {
+                                                if (mounted && Navigator.of(context).canPop()) {
                                                   Navigator.of(context).pop();
+                                                  widget.showMessage('You have successfully logged in to FluxCloud');
                                                 }
                                               },
                                               authBloc,
@@ -307,7 +308,6 @@ mixin ZelCoreWebSockets {
   WebSocketChannel? channel;
 
   initiateLoginWS(
-    //String nodeIP,
     String loginPhrase,
     Function() success,
     Function()? onClose,
@@ -359,14 +359,12 @@ mixin ZelCoreWebSockets {
   }
 
   void openZelCore(
-    //String nodeIP,
     String loginPhrase,
     Function() success,
     AuthBloc authBloc,
   ) {
     ZelCore.openZelCoreSign(loginPhrase, callbackValue()).then((value) {
       initiateLoginWS(
-        //nodeIP,
         loginPhrase,
         success,
         null,
