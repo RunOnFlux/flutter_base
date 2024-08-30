@@ -338,9 +338,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthService.bloc = this;
     try {
       await Future.wait([FluxAuthLocalStorage.init()]);
-      debugPrint(firebaseOptions.toString());
       firebaseApp = await Firebase.initializeApp(name: 'auth', options: firebaseOptions);
-      debugPrint(firebaseApp.toString());
       if (kIsWeb) {
         await _firebaseInstance.setPersistence(frb.Persistence.LOCAL);
       }
