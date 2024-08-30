@@ -160,7 +160,9 @@ abstract class Api {
             );
             if (options != null) {
               dioOptions.contentType = options.contentType;
-              dioOptions.responseType = options.responseType;
+              if (options.responseType != null) {
+                dioOptions.responseType = options.responseType;
+              }
               if (options.receiveTimeout != null) {
                 dioOptions.receiveTimeout = options.receiveTimeout;
               }
