@@ -46,7 +46,7 @@ class ConfirmDialog {
             ],
           );
           if (buttonListener != null) {
-            dialog = ValueListenableBuilder(
+            return ValueListenableBuilder(
               valueListenable: buttonListener,
               builder: (context, value, child) {
                 if (value != dialogValue) {
