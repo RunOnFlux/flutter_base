@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/extensions/modal_sheet_extensions.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/routes/routes.dart';
+import 'package:flutter_base/ui/widgets/auth/auth_screen.dart';
 import 'package:flutter_base/ui/widgets/popup_message.dart';
 import 'package:flutter_base_example/ui/screens/home/home_screen.dart';
 import 'package:flutter_base_example/ui/screens/params/params_screen.dart';
@@ -156,10 +158,9 @@ class ExampleAppRouter extends AppRouter {
         title: 'Auth Screen',
         action: (BuildContext context) {
           context.showBottomSheet((_) {
-            return AuthScreen();
+            return const AuthScreen();
           });
         },
-        route: '/',
         icon: Icons.add,
       ),
     ];
