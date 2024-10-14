@@ -23,6 +23,7 @@ class BorderedText extends StatelessWidget {
     this.strokeJoin = StrokeJoin.round,
     this.strokeWidth = 6.0,
     this.strokeColor = const Color.fromRGBO(53, 0, 71, 1),
+    this.alignment = Alignment.center,
   });
 
   /// the stroke cap style
@@ -39,6 +40,8 @@ class BorderedText extends StatelessWidget {
 
   /// the [Text] widget to apply stroke on
   final Text child;
+
+  final Alignment alignment;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +67,7 @@ class BorderedText extends StatelessWidget {
       );
     }
     return Stack(
-      alignment: Alignment.center,
+      alignment: alignment,
       textDirection: child.textDirection,
       children: <Widget>[
         Text(
