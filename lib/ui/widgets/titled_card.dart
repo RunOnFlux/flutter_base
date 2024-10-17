@@ -179,6 +179,7 @@ class UntitledCard extends StatelessWidget {
   final bool? boxShadow;
   final bool? gradient;
   final bool? transparent;
+  final double? outlineWidth;
 
   const UntitledCard({
     super.key,
@@ -189,6 +190,7 @@ class UntitledCard extends StatelessWidget {
     this.boxShadow = true,
     this.gradient,
     this.transparent = false,
+    this.outlineWidth,
   });
 
   @override
@@ -215,6 +217,7 @@ class UntitledCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             side: BorderSide(
               color: outlineColor ?? (AppThemeImpl.getOptions(context).cardOutlineColor(context) ?? Colors.transparent),
+              width: outlineWidth ?? 1.0,
             ),
             borderRadius: BorderRadius.circular(borderRadius),
           ),
