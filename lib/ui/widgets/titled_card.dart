@@ -180,6 +180,7 @@ class UntitledCard extends StatelessWidget {
   final bool? gradient;
   final bool? transparent;
   final double? outlineWidth;
+  final double? cornerRadius;
 
   const UntitledCard({
     super.key,
@@ -191,11 +192,12 @@ class UntitledCard extends StatelessWidget {
     this.gradient,
     this.transparent = false,
     this.outlineWidth,
+    this.cornerRadius,
   });
 
   @override
   Widget build(BuildContext context) {
-    var borderRadius = AppThemeImpl.getOptions(context).cardBorderRadius;
+    var borderRadius = cornerRadius ?? AppThemeImpl.getOptions(context).cardBorderRadius;
     return Padding(
       padding: padding ?? const EdgeInsets.all(10.0),
       child: Container(
