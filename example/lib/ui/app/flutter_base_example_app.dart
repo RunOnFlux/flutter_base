@@ -217,44 +217,6 @@ class FlutterBaseAppConfig extends AppConfig {
   @override
   Widget? buildMenuFooter(BuildContext context) {
     return const SideBarFooter();
-    /*return Align(
-      alignment: FractionalOffset.bottomCenter,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              ActionMenuItem(
-                action: () {
-                  showMaterialModalBottomSheet(
-                      context: context,
-                      backgroundColor: Theme.of(context).scaffoldBackgroundColor.lighten().withOpacity(0.9),
-                      enableDrag: true,
-                      isDismissible: true,
-                      builder: (context) {
-                        //return const SettingsDialog();
-                        return Container();
-                      });
-                },
-                title: 'Settings',
-                icon: Icons.settings,
-              ),
-              ActionMenuItem(
-                action: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        //return const FluxOSAboutDialog();
-                        return Container();
-                      });
-                },
-                title: 'About',
-                icon: Icons.account_box_outlined,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );*/
   }
 }
 

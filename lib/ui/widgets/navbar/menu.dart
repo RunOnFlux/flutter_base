@@ -36,8 +36,8 @@ class _SideBarMenuWidgetState extends State<SideBarMenuWidget> {
         return NoScrollGlowWidget(
           child: ScrollbarTheme(
             data: Theme.of(context).scrollbarTheme.copyWith(
-                  thickness: const MaterialStatePropertyAll(4),
-                  trackColor: const MaterialStatePropertyAll(Colors.transparent),
+                  thickness: const WidgetStatePropertyAll(4),
+                  trackColor: const WidgetStatePropertyAll(Colors.transparent),
                   minThumbLength: 2,
                 ),
             child: Builder(
