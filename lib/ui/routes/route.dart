@@ -15,6 +15,9 @@ abstract class AbstractRoute {
 
   final List<PrivilegeLevel>? privilege;
 
+  GlobalKey? showcaseKey;
+  String? showcaseDescription;
+
   AbstractRoute({
     this.icon,
     this.image,
@@ -24,6 +27,8 @@ abstract class AbstractRoute {
     this.below,
     this.privilege,
     this.badge,
+    this.showcaseKey,
+    this.showcaseDescription,
     required this.title,
   });
 }
@@ -41,6 +46,8 @@ class ActionRoute extends AbstractRoute {
     super.active,
     super.above,
     super.below,
+    super.showcaseKey,
+    super.showcaseDescription,
   });
 }
 
@@ -68,6 +75,8 @@ class NavigationRoute extends AbstractRoute {
     super.above,
     super.below,
     this.observers,
+    super.showcaseKey,
+    super.showcaseDescription,
   }) {
     body?.stateInfo.route = route;
   }
@@ -91,5 +100,7 @@ class RouteSet extends AbstractRoute {
     super.asset,
     super.above,
     super.below,
+    super.showcaseKey,
+    super.showcaseDescription,
   });
 }

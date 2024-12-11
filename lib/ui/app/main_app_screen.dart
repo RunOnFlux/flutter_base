@@ -7,6 +7,7 @@ import 'package:flutter_acrylic/window_effect.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_base/ui/app/config/app_config.dart';
 import 'package:flutter_base/ui/app/scope/app_config_scope.dart';
+import 'package:flutter_base/ui/app/showcase.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/theme/interface_brightness.dart';
 import 'package:flutter_base/ui/widgets/floating_action_menu.dart';
@@ -153,59 +154,62 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
     final child = context.watch<StatefulNavigationShell>();
     return AppDrawerScope(
       state: this,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        drawerScrimColor: _isSmallScreen ? Colors.black54 : null,
-        key: _scaffoldKey,
-        appBar: _isSmallScreen
-            ? AppBar(
-                elevation: 0,
-                centerTitle: false,
-                // ignore: prefer_const_constructors
-                leading: SideBarButton(),
-                title: AppConfigScope.of(context)?.buildAppBarTitle(context),
-                actions: [
-                  ...AppConfigScope.of(context)?.buildTitleActionButtons(context) ?? [],
-                ],
-              )
-            : AppConfigScope.of(context)?.hasTitleBar ?? false
-                ? AppBar(
-                    centerTitle: false,
-                    elevation: 0,
-                    title: AppConfigScope.of(context)?.buildAppBarTitle(context),
-                    actions: [
-                      ...AppConfigScope.of(context)?.buildTitleActionButtons(context) ?? [],
-                    ],
-                  )
-                : null,
-        body: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (!_isSmallScreen)
-              sideBar
-                ..swap(
-                  builder: (context, child) => const CollapsedSidebar(),
+      child: ShowCase(
+        blur: AppConfigScope.of(context)?.showcaseBlur ?? 0,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          drawerScrimColor: _isSmallScreen ? Colors.black54 : null,
+          key: _scaffoldKey,
+          appBar: _isSmallScreen
+              ? AppBar(
+                  elevation: 0,
+                  centerTitle: false,
+                  // ignore: prefer_const_constructors
+                  leading: SideBarButton(),
+                  title: AppConfigScope.of(context)?.buildAppBarTitle(context),
+                  actions: [
+                    ...AppConfigScope.of(context)?.buildTitleActionButtons(context) ?? [],
+                  ],
+                )
+              : AppConfigScope.of(context)?.hasTitleBar ?? false
+                  ? AppBar(
+                      centerTitle: false,
+                      elevation: 0,
+                      title: AppConfigScope.of(context)?.buildAppBarTitle(context),
+                      actions: [
+                        ...AppConfigScope.of(context)?.buildTitleActionButtons(context) ?? [],
+                      ],
+                    )
+                  : null,
+          body: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (!_isSmallScreen)
+                sideBar
+                  ..swap(
+                    builder: (context, child) => const CollapsedSidebar(),
+                  ),
+              Expanded(
+                child: _AppScreenChildWrapper(
+                  state: currentState,
+                  child: child,
                 ),
-            Expanded(
-              child: _AppScreenChildWrapper(
-                state: currentState,
-                child: child,
               ),
-            ),
-          ],
+            ],
+          ),
+          drawer: _isSmallScreen ? sideBar : null,
+          floatingActionButton: (currentState?.fabIcon != null)
+              ? FloatingActionMenu(
+                  icon: currentState?.fabIcon ?? Icons.refresh,
+                  onPressed: () {
+                    if (currentState != null && currentState.onFAB != null) {
+                      currentState.onFAB!();
+                    }
+                  },
+                  items: currentState?.items,
+                )
+              : null,
         ),
-        drawer: _isSmallScreen ? sideBar : null,
-        floatingActionButton: (currentState?.fabIcon != null)
-            ? FloatingActionMenu(
-                icon: currentState?.fabIcon ?? Icons.refresh,
-                onPressed: () {
-                  if (currentState != null && currentState.onFAB != null) {
-                    currentState.onFAB!();
-                  }
-                },
-                items: currentState?.items,
-              )
-            : null,
       ),
     );
   }

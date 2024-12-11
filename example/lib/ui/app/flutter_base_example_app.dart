@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
@@ -13,6 +15,7 @@ import 'package:flutter_base/ui/widgets/logo.dart';
 import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
 import 'package:flutter_base_example/config/constants.dart';
 import 'package:flutter_base_example/config/firebase_configs/firebase_options.dart';
+import 'package:flutter_base_example/ui/app/showcase.dart';
 import 'package:flutter_base_example/ui/routes/routes.dart';
 import 'package:flutter_base_example/ui/theme/app_theme.dart';
 import 'package:flutter_base_example/ui/widgets/footer.dart';
@@ -20,6 +23,7 @@ import 'package:flutter_base_example/utils/settings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import 'loading.dart';
 
@@ -66,6 +70,15 @@ class _FlutterBaseExampleAppState extends MinimalAppState<FlutterBaseExampleApp>
   Widget buildMainApp(BuildContext context) {
     //GetIt.I<NodeCollaterals>().collaterals = loadingNotifier.collaterals;
     appRoutingConfig.value = buildRoutingConfig(context);
+
+    Future.microtask(
+      () async {
+        if (context.mounted) {
+          widget.router.buildRoutes(context);
+          appRoutingConfig.value = buildRoutingConfig(context);
+        }
+      },
+    );
 
     Widget mainApp = super.buildMainApp(context);
 
@@ -146,6 +159,9 @@ class FlutterBaseAppConfig extends AppConfig {
   bool get smallScreenScroll => false;
 
   @override
+  double get showcaseBlur => 8.0;
+
+  @override
   String getWindowTitle(AppBodyState body, WindowTitle title) {
     return 'Example App - ${title.title}';
   }
@@ -157,24 +173,30 @@ class FlutterBaseAppConfig extends AppConfig {
 
   @override
   Widget? buildMenuHeader(BuildContext context) {
-    return const Column(
+    log('build menu header');
+    MyAppShowCaseKeys.hideMenu = GlobalKey();
+    return Column(
       children: [
-        SizedBox(height: 7),
+        const SizedBox(height: 7),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Logo(
+            const Logo(
               title: 'Flux',
               gradientTitle: 'Cloud',
               clickRedirectHomePage: true,
               clickTextRedirectHomePage: true,
             ),
-            SideBarButton(),
+            Showcase(
+              key: MyAppShowCaseKeys.hideMenu,
+              description: 'Close the side menu',
+              child: const SideBarButton(),
+            ),
           ],
         ),
-        SizedBox(height: 17),
-        Divider(height: 1),
-        SizedBox(height: 16),
+        const SizedBox(height: 17),
+        const Divider(height: 1),
+        const SizedBox(height: 16),
       ],
     );
   }

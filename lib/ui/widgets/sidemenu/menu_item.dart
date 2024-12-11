@@ -3,6 +3,7 @@ import 'package:flutter_base/ui/app/main_app_screen.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:go_router/go_router.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../../routes/route.dart';
 import 'menu_styles.dart';
@@ -71,7 +72,7 @@ class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles
       size: iconSizeForLevel(widget.level) * 1.2,
     );
 
-    return Padding(
+    Widget menuItem = Padding(
       padding: EdgeInsets.only(left: widget.level * 10),
       child: Material(
         color: Colors.transparent,
@@ -123,6 +124,16 @@ class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles
         ),
       ),
     );
+
+    if (widget.route.showcaseKey != null) {
+      menuItem = Showcase(
+        key: widget.route.showcaseKey!,
+        description: widget.route.showcaseDescription!,
+        child: menuItem,
+      );
+    }
+
+    return menuItem;
   }
 
   bool isRouteSelected() {

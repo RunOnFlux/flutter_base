@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/logo.dart';
 import 'package:flutter_base/utils/settings.dart';
+import 'package:flutter_base_example/ui/app/showcase.dart';
 import 'package:flutter_base_example/utils/settings.dart';
 import 'package:flutter_base_example/utils/social_media.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:theme_provider/theme_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -14,16 +16,26 @@ class SideBarFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MyAppShowCaseKeys.lightMode = GlobalKey();
+    MyAppShowCaseKeys.community = GlobalKey();
     return Align(
       alignment: FractionalOffset.bottomCenter,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildShareButton(context),
+          Showcase(
+            key: MyAppShowCaseKeys.community,
+            description: 'Engage with our community',
+            child: _buildShareButton(context),
+          ),
           const SizedBox(
             height: 20,
           ),
-          _buildThemeController(context),
+          Showcase(
+            key: MyAppShowCaseKeys.lightMode,
+            description: 'Set App Theme',
+            child: _buildThemeController(context),
+          ),
           const SizedBox(
             height: 12,
           ),

@@ -1,6 +1,6 @@
 name: flutter_base
 description: A base set of UI classes for a consistent look-and-feel across Flutter apps.
-version: 0.0.15
+version: 0.0.16
 publish_to: none
 
 environment:
@@ -54,6 +54,7 @@ dependencies:
   qr_flutter: ^4.0.0
   responsive_framework: ^1.1.0
   shared_preferences: ^2.2.2
+  showcaseview: ^3.0.0
   theme_provider: ^0.6.0
   tinycolor2: ^3.0.1
   universal_html: ^2.0.8

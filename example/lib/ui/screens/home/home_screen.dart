@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/ui/app/showcase.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
 import 'package:flutter_base/ui/widgets/app_screen.dart';
 import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
@@ -9,7 +10,9 @@ import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/screen_title_header.dart';
 import 'package:flutter_base/ui/widgets/simple_screen.dart';
 import 'package:flutter_base/ui/widgets/titled_card.dart';
+import 'package:flutter_base_example/ui/app/showcase.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class HomeScreen extends SimpleScreen with GetItStatefulWidgetMixin {
   HomeScreen({Key? key})
@@ -40,6 +43,20 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
     widget.stateInfo.onEnter = (p0) => log('entered home screen', name: 'Home Screen');
     widget.stateInfo.onExit = (p0) => log('exited home screen', name: 'Home Screen');
     bootstrapGridParameters(gutterSize: 0);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        ShowCaseScope.of(context)?.startShowcase(
+          context,
+          [
+            MyAppShowCaseKeys.hideMenu,
+            MyAppShowCaseKeys.menuItem,
+            MyAppShowCaseKeys.community,
+            MyAppShowCaseKeys.lightMode,
+            MyAppShowCaseKeys.homeFAB,
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -58,6 +75,7 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
 
   @override
   Widget buildChild(BuildContext context) {
+    MyAppShowCaseKeys.homeFAB = GlobalKey();
     return Column(
       children: [
         BootstrapContainer(
@@ -131,13 +149,17 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                                     maxLines: 1,
                                   ),
                                 ),
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'Click Here',
-                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                          color: Colors.white,
-                                        ),
+                                Showcase(
+                                  key: MyAppShowCaseKeys.homeFAB,
+                                  description: 'Click Here',
+                                  child: ElevatedButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      'Click Here',
+                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                            color: Colors.white,
+                                          ),
+                                    ),
                                   ),
                                 ),
                               ],

@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
@@ -9,6 +12,7 @@ import 'package:flutter_base/ui/routes/routes.dart';
 import 'package:flutter_base/ui/widgets/auth/auth_screen.dart';
 import 'package:flutter_base/ui/widgets/dialogs/confirm_dialog.dart';
 import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
+import 'package:flutter_base_example/ui/app/showcase.dart';
 import 'package:flutter_base_example/ui/screens/home/home_screen.dart';
 import 'package:flutter_base_example/ui/screens/params/params_screen.dart';
 import 'package:flutter_base_example/ui/screens/tabs/tabbed_screen.dart';
@@ -22,6 +26,8 @@ class ExampleAppRouter extends AppRouter {
 
   @override
   List<AbstractRoute> buildRoutes(BuildContext context) {
+    log(Theme.of(context).primaryColorDark.toString());
+    MyAppShowCaseKeys().resetMenuKeys();
     final routes = <AbstractRoute>[
       NavigationRoute(
         route: '/',
@@ -163,6 +169,8 @@ class ExampleAppRouter extends AppRouter {
           context.go('/app/testapp');
         },
         icon: Icons.add,
+        showcaseKey: MyAppShowCaseKeys.menuItem,
+        showcaseDescription: 'A menu item',
       ),
       ActionRoute(
         title: 'Auth Screen',
@@ -174,6 +182,13 @@ class ExampleAppRouter extends AppRouter {
       ActionRoute(
         title: 'Auth Popup',
         action: (BuildContext context) {
+          if (kIsWeb &&
+              (defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android)) {
+            log('mobile device, switching to login route');
+            context.go(AuthFluxBranchRoute.login.fullPath);
+            return;
+          }
+          log('non-mobile device, sticking with login popup');
           context.read<AuthBloc>().setCurrentRoute(AuthFluxBranchRoute.login);
           context.showBottomSheet(
             (context) => BlocListener<AuthBloc, AuthState>(
@@ -188,18 +203,22 @@ class ExampleAppRouter extends AppRouter {
                   }
                 });
               },
-              child: AuthScreen(
-                isPopup: true,
-                zelCore: true,
-                child: BlocBuilder<AuthBloc, AuthState>(
-                  buildWhen: (previous, current) => previous.currentRoute != current.currentRoute,
-                  builder: (BuildContext context, state) {
-                    final AuthConfig authConfig = AuthConfigScope.of(context)!;
-                    debugPrint('state.currentRoute: ${state.currentRoute.toString()}');
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: AuthScreen(
+                  isPopup: true,
+                  zelCore: true,
+                  child: BlocBuilder<AuthBloc, AuthState>(
+                    buildWhen: (previous, current) => previous.currentRoute != current.currentRoute,
+                    builder: (BuildContext context, state) {
+                      final AuthConfig authConfig = AuthConfigScope.of(context)!;
+                      debugPrint('state.currentRoute: ${state.currentRoute.toString()}');
 
-                    final builder = authConfig.authPageBuilder(state.currentRoute!);
-                    return builder(null);
-                  },
+                      final builder = authConfig.authPageBuilder(state.currentRoute!);
+                      return builder(null);
+                    },
+                  ),
                 ),
               ),
             ),
