@@ -53,6 +53,7 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
             MyAppShowCaseKeys.community,
             MyAppShowCaseKeys.lightMode,
             MyAppShowCaseKeys.homeFAB,
+            MyAppShowCaseKeys.homeToggle,
           ],
         );
       },
@@ -208,51 +209,58 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                   child: SizedBox(
                     height: 450,
                     child: TitledCard(
-                      title: 'A TitledCard with a back widget',
-                      icon: Icons.backup_table,
-                      padding: EdgeInsets.all(
-                        bootStrapValueBasedOnSize(sizes: {
-                          '': 5.0,
-                          'sm': 5.0,
-                          'md': 10.0,
-                          'lg': 10.0,
-                          'xl': 10.0,
-                          'xxl': 10.0,
-                        }, context: context),
-                      ),
-                      backChild: const DefaultTabController(
-                        length: 3,
-                        child: Column(
+                        title: 'A TitledCard with a back widget',
+                        icon: Icons.backup_table,
+                        padding: EdgeInsets.all(
+                          bootStrapValueBasedOnSize(sizes: {
+                            '': 5.0,
+                            'sm': 5.0,
+                            'md': 10.0,
+                            'lg': 10.0,
+                            'xl': 10.0,
+                            'xxl': 10.0,
+                          }, context: context),
+                        ),
+                        backChild: const DefaultTabController(
+                          length: 3,
+                          child: Column(
+                            children: [
+                              IgnorePointer(
+                                child: TabBar(
+                                  tabs: [
+                                    Tab(icon: Icon(Icons.directions_car)),
+                                    Tab(icon: Icon(Icons.directions_transit)),
+                                    Tab(icon: Icon(Icons.directions_bike)),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: TabBarView(
+                                  children: [
+                                    Icon(Icons.directions_car),
+                                    Icon(Icons.directions_transit),
+                                    Icon(Icons.directions_bike),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        backToolTip: 'See you on the flip side',
+                        backTitle: 'The flip side is here',
+                        child: const Column(
                           children: [
-                            IgnorePointer(
-                              child: TabBar(
-                                tabs: [
-                                  Tab(icon: Icon(Icons.directions_car)),
-                                  Tab(icon: Icon(Icons.directions_transit)),
-                                  Tab(icon: Icon(Icons.directions_bike)),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: TabBarView(
-                                children: [
-                                  Icon(Icons.directions_car),
-                                  Icon(Icons.directions_transit),
-                                  Icon(Icons.directions_bike),
-                                ],
-                              ),
-                            )
+                            Text('Some text'),
                           ],
                         ),
-                      ),
-                      backToolTip: 'See you on the flip side',
-                      backTitle: 'The flip side is here',
-                      child: const Column(
-                        children: [
-                          Text('Some text'),
-                        ],
-                      ),
-                    ),
+                        wrapBackToggle: (Widget backToggle) {
+                          MyAppShowCaseKeys.homeToggle = GlobalKey();
+                          return Showcase(
+                            key: MyAppShowCaseKeys.homeToggle,
+                            description: 'Toggle the things',
+                            child: backToggle,
+                          );
+                        }),
                   ),
                 ),
               ],

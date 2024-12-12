@@ -21,6 +21,7 @@ class TitledCard extends StatefulWidget {
   final Color? outlineColor;
   final Color? cardColor;
   final EdgeInsetsGeometry padding;
+  final Widget Function(Widget)? wrapBackToggle;
 
   const TitledCard({
     super.key,
@@ -39,6 +40,7 @@ class TitledCard extends StatefulWidget {
     this.outlineColor,
     this.cardColor,
     this.padding = const EdgeInsets.all(10.0),
+    this.wrapBackToggle,
   });
 
   @override
@@ -163,10 +165,11 @@ class TitledCardState extends State<TitledCard> {
   }
 
   Widget wrapToolTip(Widget child) {
-    if (widget.backToolTip == null) return child;
+    final wrapToggle = widget.wrapBackToggle ?? (child) => child;
+    if (widget.backToolTip == null) return wrapToggle(child);
     return Tooltip(
       message: widget.backToolTip!,
-      child: child,
+      child: wrapToggle(child),
     );
   }
 }
