@@ -49,7 +49,7 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
           context,
           [
             MyAppShowCaseKeys.hideMenu,
-            MyAppShowCaseKeys.menuItem,
+            MyAppShowCaseKeys.sideMenu,
             MyAppShowCaseKeys.community,
             MyAppShowCaseKeys.lightMode,
             MyAppShowCaseKeys.homeFAB,

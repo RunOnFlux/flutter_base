@@ -78,4 +78,8 @@ class AppConfig {
   GoExceptionHandler? get routeExceptionHandler => (context, state, router) {
         router.go('/');
       };
+
+  Widget wrapSideMenu(Widget child) {
+    return child;
+  }
 }

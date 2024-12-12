@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
+import 'package:flutter_base/ui/app/config/app_config.dart';
+import 'package:flutter_base/ui/app/scope/app_config_scope.dart';
 import 'package:flutter_base/ui/app/scope/app_router_scope.dart';
 import 'package:flutter_base/ui/routes/route.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
@@ -27,8 +29,10 @@ class _SideBarMenuWidgetState extends State<SideBarMenuWidget> {
 
   @override
   Widget build(BuildContext context) {
+    AppConfig config = AppConfigScope.of(context)!;
+
     /// To rebuild on page change
-    return BlocBuilder<AuthBloc, AuthState>(
+    Widget sideMenu = BlocBuilder<AuthBloc, AuthState>(
       buildWhen: (previous, current) => previous.fluxLogin != current.fluxLogin,
       builder: (BuildContext context, state) {
         PrivilegeLevel? privilege = state.fluxLogin?.privilegeLevel;
@@ -60,6 +64,8 @@ class _SideBarMenuWidgetState extends State<SideBarMenuWidget> {
         );
       },
     );
+
+    return config.wrapSideMenu(sideMenu);
   }
 
   /*List<Widget> _default(BuildContext context) {

@@ -202,6 +202,12 @@ class FlutterBaseAppConfig extends AppConfig {
   }
 
   @override
+  Widget wrapSideMenu(Widget child) {
+    MyAppShowCaseKeys.sideMenu = GlobalKey();
+    return Showcase(key: MyAppShowCaseKeys.sideMenu, description: 'It\'s a menu', child: child);
+  }
+
+  @override
   Widget? buildAppBarTitle(BuildContext context) {
     return Column(
       children: [

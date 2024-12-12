@@ -6,6 +6,7 @@ class MyAppShowCaseKeys {
   static GlobalKey lightMode = GlobalKey();
   static GlobalKey homeFAB = GlobalKey();
   static GlobalKey menuItem = GlobalKey();
+  static GlobalKey sideMenu = GlobalKey();
 
   void resetMenuKeys() {
     menuItem = GlobalKey();
