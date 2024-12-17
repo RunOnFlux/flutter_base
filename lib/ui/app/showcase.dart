@@ -18,6 +18,9 @@ class ShowCase extends StatelessWidget {
       showcase: this,
       child: ShowCaseWidget(
         blurValue: blur,
+        enableAutoScroll: true,
+        autoPlay: true,
+        autoPlayDelay: const Duration(milliseconds: 3000),
         builder: (BuildContext context) {
           return child;
         },
