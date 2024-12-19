@@ -15,6 +15,8 @@ class AppConfig {
 
   double get showcaseBlur => 0;
 
+  int? get autoPlayDelay => null;
+
   bool checkSmallHeight(BuildContext context) {
     return context.isSmallHeight(600);
   }

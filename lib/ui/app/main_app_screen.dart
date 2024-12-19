@@ -156,6 +156,7 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
       state: this,
       child: ShowCase(
         blur: AppConfigScope.of(context)?.showcaseBlur ?? 0,
+        autoPlayDelay: AppConfigScope.of(context)?.autoPlayDelay,
         child: Scaffold(
           backgroundColor: Colors.transparent,
           drawerScrimColor: _isSmallScreen ? Colors.black54 : null,

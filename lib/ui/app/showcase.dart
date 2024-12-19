@@ -6,10 +6,12 @@ import 'package:showcaseview/showcaseview.dart';
 class ShowCase extends StatelessWidget {
   final Widget child;
   final double blur;
+  final int? autoPlayDelay;
   const ShowCase({
     super.key,
     required this.child,
     this.blur = 2.0,
+    this.autoPlayDelay,
   });
 
   @override
@@ -19,8 +21,8 @@ class ShowCase extends StatelessWidget {
       child: ShowCaseWidget(
         blurValue: blur,
         enableAutoScroll: true,
-        autoPlay: true,
-        autoPlayDelay: const Duration(milliseconds: 3000),
+        autoPlay: autoPlayDelay != null,
+        autoPlayDelay: Duration(milliseconds: autoPlayDelay ?? 4000),
         builder: (BuildContext context) {
           return child;
         },
