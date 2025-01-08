@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
+import 'package:flutter_base/ui/app/main_app_screen.dart';
 import 'package:flutter_base/ui/widgets/app_screen.dart';
+import 'package:go_router/go_router.dart';
 
 abstract class AbstractRoute {
   final String title;
@@ -79,6 +81,11 @@ class NavigationRoute extends AbstractRoute {
     super.showcaseDescription,
   }) {
     body?.stateInfo.route = route;
+  }
+
+  void navigate(BuildContext context) {
+    AppDrawerScope.of(context)?.closeDrawer(false);
+    context.go(route);
   }
 
 /*void go(GoRouter router) {

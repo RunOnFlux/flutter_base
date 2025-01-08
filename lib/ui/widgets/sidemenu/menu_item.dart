@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/ui/app/main_app_screen.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:go_router/go_router.dart';
@@ -143,8 +142,7 @@ class _NavigationMenuItemState extends State<NavigationMenuItem> with MenuStyles
 
   performAction() {
     if (widget.route is NavigationRoute) {
-      AppDrawerScope.of(context)?.closeDrawer(false);
-      context.go((widget.route as NavigationRoute).route);
+      (widget.route as NavigationRoute).navigate(context);
     }
   }
 }
