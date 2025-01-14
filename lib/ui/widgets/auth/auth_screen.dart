@@ -239,6 +239,7 @@ class _AuthScreenCloseButton extends StatelessWidget {
             debugPrint(context.canPop().toString());
             debugPrint(GoRouter.of(context).routerDelegate.currentConfiguration.toString());
             context.read<AuthBloc>().add(const ClearChallengeEvent());
+            context.read<AuthBloc>().config.signInCancelled();
             if (config.isPopup) {
               context.pop();
             } else {

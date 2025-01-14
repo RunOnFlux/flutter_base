@@ -60,4 +60,6 @@ abstract class AuthConfig {
   String get privacyPolicyUrl => 'https://runonflux.io/privacyPolicy';
 
   String get authRedirect => 'https://beta.cloud.runonflux.io';
+
+  void signInCancelled() {}
 }
