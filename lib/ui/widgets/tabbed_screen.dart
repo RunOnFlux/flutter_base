@@ -173,3 +173,21 @@ abstract class TabContentScreenState<T extends TabContentScreen> extends SimpleS
     widget.parent.assignAppState(widget.stateInfo.route);
   }
 }
+
+abstract class DeferredTabContentScreen extends SimpleScreen {
+  final Function(String) assignAppState;
+  const DeferredTabContentScreen({
+    super.key,
+    required super.stateInfo,
+    required this.assignAppState,
+  });
+}
+
+abstract class DeferredTabContentScreenState<T extends DeferredTabContentScreen> extends SimpleScreenState<T>
+    with TickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+    widget.assignAppState(widget.stateInfo.route);
+  }
+}
