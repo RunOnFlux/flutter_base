@@ -13,7 +13,7 @@ class TabSpec {
   IconData? icon;
   String title;
   String route;
-  TabContentScreen child;
+  SimpleScreen child;
 
   TabSpec({
     this.icon,
