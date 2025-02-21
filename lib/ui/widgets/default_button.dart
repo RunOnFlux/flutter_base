@@ -42,7 +42,7 @@ class DefaultElevatedButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
             splashFactory: InkRipple.splashFactory,
             elevation: elevated ? 20 : 0,
-            shadowColor: color.withOpacity(0.3),
+            shadowColor: color.withValues(alpha: 0.3),
             fixedSize: Size(width ?? double.infinity, height ?? double.infinity),
             maximumSize: Size(maxWidth ?? double.infinity, maxHeight ?? double.infinity),
             minimumSize: Size(minWidth ?? 150, minHeight ?? 52),
@@ -194,13 +194,13 @@ class DefaultTextButton extends StatelessWidget {
     if (customActionBuilder != null) {
       padding = padding.copyWith(right: 0);
     }
-    final backgroundColor = MaterialStateProperty.resolveWith((states) {
+    final backgroundColor = WidgetStateProperty.resolveWith((states) {
       if (this.backgroundColor == Colors.transparent) {
         return Colors.transparent;
       }
-      if (states.contains(MaterialState.disabled)) {
+      if (states.contains(WidgetState.disabled)) {
         final color = (disabledColor ?? (this.backgroundColor ?? Theme.of(context).primaryColor));
-        return color.withOpacity(color.opacity * 0.25);
+        return color.withValues(alpha: color.a * 0.25);
       }
       return this.backgroundColor ?? Theme.of(context).primaryColor;
     });
@@ -215,13 +215,13 @@ class DefaultTextButton extends StatelessWidget {
         focusNode: focusNode,
         autofocus: autoFocus,
         style: ButtonStyle(
-            fixedSize: MaterialStateProperty.all(
+            fixedSize: WidgetStateProperty.all(
               Size(width ?? double.infinity, height ?? double.infinity),
             ),
-            maximumSize: MaterialStatePropertyAll(Size(maxWidth ?? double.infinity, maxHeight ?? double.infinity)),
-            minimumSize: MaterialStatePropertyAll(Size(minWidth ?? 20, minHeight ?? 45)),
+            maximumSize: WidgetStatePropertyAll(Size(maxWidth ?? double.infinity, maxHeight ?? double.infinity)),
+            minimumSize: WidgetStatePropertyAll(Size(minWidth ?? 20, minHeight ?? 45)),
             visualDensity: VisualDensity.adaptivePlatformDensity,
-            textStyle: MaterialStateProperty.all(
+            textStyle: WidgetStateProperty.all(
               textStyle?.copyWith(fontFamily: 'Montserrat') ??
                   TextStyle(
                     fontWeight: fontWeight ?? FontWeight.w400,
@@ -230,26 +230,26 @@ class DefaultTextButton extends StatelessWidget {
                     fontSize: fontSize ?? 14,
                   ),
             ),
-            foregroundColor: MaterialStateProperty.resolveWith((states) {
+            foregroundColor: WidgetStateProperty.resolveWith((states) {
               final foregroundColor = this.foregroundColor ??
                   (backgroundColor.resolve(states).computeLuminance() > 0.6 ? Colors.black : Colors.white);
-              if (states.contains(MaterialState.disabled)) {
-                return disabledColor ?? foregroundColor.withOpacity(foregroundColor.opacity * 0.25);
+              if (states.contains(WidgetState.disabled)) {
+                return disabledColor ?? foregroundColor.withValues(alpha: foregroundColor.a * 0.25);
               }
               return foregroundColor;
             }),
-            shape: MaterialStateProperty.all(
+            shape: WidgetStateProperty.all(
               RoundedRectangleBorder(
                 side: borderSide?.copyWith(
-                      color: borderSide!.color.withOpacity(
-                        borderSide!.color.opacity * (disabled ? 0.25 : 1),
+                      color: borderSide!.color.withValues(
+                        alpha: borderSide!.color.a * (disabled ? 0.25 : 1),
                       ),
                     ) ??
                     BorderSide.none,
                 borderRadius: BorderRadius.circular(borderRadius ?? 8),
               ),
             ),
-            padding: MaterialStateProperty.all(padding),
+            padding: WidgetStateProperty.all(padding),
             backgroundColor: backgroundColor),
         onPressed: disabled ? null : () => onPressed?.call(),
         child: customActionBuilder == null

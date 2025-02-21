@@ -13,7 +13,7 @@ class BackgroundThemeBuilder extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         gradient: themeOptions.backgroundGradient(context),
-        color: theme.colorScheme.background,
+        color: theme.colorScheme.surface,
       ),
       child: theme.isLight
           ? child

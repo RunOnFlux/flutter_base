@@ -63,9 +63,9 @@ class AppThemeImpl {
               color: cardColorLight,
             ),
         checkboxTheme: CheckboxThemeData(
-          side: MaterialStateBorderSide.resolveWith(
+          side: WidgetStateBorderSide.resolveWith(
             (states) {
-              if (states.contains(MaterialState.selected)) {
+              if (states.contains(WidgetState.selected)) {
                 return const BorderSide(
                   color: Color(0xFF0255FE),
                   width: 1,
@@ -79,8 +79,8 @@ class AppThemeImpl {
             },
           ),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-          fillColor: MaterialStateProperty.all(Colors.transparent),
-          checkColor: MaterialStateProperty.all(const Color(0xFF0255FE)),
+          fillColor: WidgetStateProperty.all(Colors.transparent),
+          checkColor: WidgetStateProperty.all(const Color(0xFF0255FE)),
         ),
         chipTheme: ChipThemeData(
           backgroundColor: const Color.fromARGB(255, 230, 233, 238),
@@ -98,7 +98,7 @@ class AppThemeImpl {
             package: 'flutter_base',
           ),
           brightness: Brightness.light,
-          shadowColor: primaryColorLight.withOpacity(0.35),
+          shadowColor: primaryColorLight.withValues(alpha: 0.35),
           labelStyle: const TextStyle(
             color: Colors.grey, // Set the text color to grey
             fontFamily: 'Montserrat',
@@ -116,15 +116,15 @@ class AppThemeImpl {
         ),
         dataTableTheme: DataTableThemeData(
           checkboxHorizontalMargin: 15,
-          dataRowColor: MaterialStateProperty.resolveWith(
+          dataRowColor: WidgetStateProperty.resolveWith(
             (states) {
-              if (states.contains(MaterialState.selected)) {
+              if (states.contains(WidgetState.selected)) {
                 return const Color(0xffFFFBF5);
               }
-              if (states.contains(MaterialState.hovered)) {
+              if (states.contains(WidgetState.hovered)) {
                 return const Color.fromARGB(255, 248, 249, 250);
               }
-              if (states.contains(MaterialState.pressed)) {
+              if (states.contains(WidgetState.pressed)) {
                 return const Color.fromARGB(255, 242, 243, 245);
               }
               return null;
@@ -168,15 +168,15 @@ class AppThemeImpl {
         ),
         dropdownMenuTheme: DropdownMenuThemeData(
           menuStyle: const MenuStyle(
-            elevation: MaterialStatePropertyAll(2),
-            shape: MaterialStatePropertyAll(
+            elevation: WidgetStatePropertyAll(2),
+            shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(12),
                 ),
               ),
             ),
-            backgroundColor: MaterialStatePropertyAll(
+            backgroundColor: WidgetStatePropertyAll(
               Color(0xFFEBEEFF),
             ),
           ),
@@ -224,8 +224,8 @@ class AppThemeImpl {
         iconTheme: ThemeData.light().iconTheme.copyWith(color: lightText),
         iconButtonTheme: IconButtonThemeData(
           style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) {
+            foregroundColor: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) {
                 return lightText; //<-- SEE HERE
               },
             ),
@@ -252,12 +252,12 @@ class AppThemeImpl {
         primaryColorLight: const Color(0xFFEBEEFF),
         scaffoldBackgroundColor: scaffoldBackgroundLight,
         scrollbarTheme: ScrollbarThemeData(
-          thumbColor: MaterialStateProperty.all(const Color(0xFFB8C3E1)),
-          trackColor: MaterialStateProperty.all(const Color(0xFFEBEEFF)),
+          thumbColor: WidgetStateProperty.all(const Color(0xFFB8C3E1)),
+          trackColor: WidgetStateProperty.all(const Color(0xFFEBEEFF)),
           crossAxisMargin: 4,
           mainAxisMargin: 4,
           radius: const Radius.circular(18),
-          thickness: MaterialStateProperty.all(4),
+          thickness: WidgetStateProperty.all(4),
         ),
         shadowColor: Colors.black,
         splashFactory: InkRipple.splashFactory,
@@ -382,15 +382,15 @@ class AppThemeImpl {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
             ),
-            fillColor: MaterialStateProperty.all(
+            fillColor: WidgetStateProperty.all(
               const Color.fromARGB(255, 13, 126, 255),
             ),
-            checkColor: MaterialStateProperty.all(Colors.white),
+            checkColor: WidgetStateProperty.all(Colors.white),
           ),
           chipTheme: chipThemeData(
             styleBackgroundColor: Colors.transparent,
             textColor: darkText,
-            shadowColor: Colors.black.withOpacity(0.35),
+            shadowColor: Colors.black.withValues(alpha: 0.35),
             selectedColor: primaryColorDark,
           ),
           colorScheme: const ColorScheme.dark(
@@ -398,7 +398,7 @@ class AppThemeImpl {
             primary: Colors.white,
             onPrimary: Colors.white,
             onSecondary: Colors.white,
-            background: Color(0xff070F1E),
+            surface: Color(0xff070F1E),
             secondary: Color.fromARGB(255, 13, 126, 255),
           ),
           dialogTheme: const DialogTheme(
@@ -457,8 +457,8 @@ class AppThemeImpl {
           iconTheme: ThemeData.dark().iconTheme.copyWith(color: darkText),
           iconButtonTheme: IconButtonThemeData(
             style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
+              foregroundColor: WidgetStateProperty.resolveWith<Color?>(
+                (Set<WidgetState> states) {
                   return darkText;
                 },
               ),
@@ -487,8 +487,8 @@ class AppThemeImpl {
           shadowColor: Colors.black,
           splashFactory: InkRipple.splashFactory,
           switchTheme: SwitchThemeData(
-            thumbColor: MaterialStateProperty.all(Colors.white),
-            trackColor: MaterialStateProperty.all(
+            thumbColor: WidgetStateProperty.all(Colors.white),
+            trackColor: WidgetStateProperty.all(
               const Color.fromARGB(255, 13, 126, 255),
             ),
           ),
@@ -683,11 +683,11 @@ const Color kBestScoreColor = Colors.purpleAccent;
 const Color _systemInfoDark = Color.fromARGB(255, 58, 121, 255);
 const Color _systemInfoLight = Colors.black;
 
-const Color _averageLight = Color.fromRGBO(0, 152, 3, 1);
-const Color _yourLight = Color(0xff2B61D1);
+//const Color _averageLight = Color.fromRGBO(0, 152, 3, 1);
+//const Color _yourLight = Color(0xff2B61D1);
 
-const Color _averageDark = Color.fromRGBO(0, 152, 3, 1);
-const Color _yourDark = Color.fromARGB(255, 16, 48, 231);
+//const Color _averageDark = Color.fromRGBO(0, 152, 3, 1);
+//const Color _yourDark = Color.fromARGB(255, 16, 48, 231);
 
 const Color _headingRowDark = Color.fromARGB(255, 36, 46, 71);
 const Color _headingRownLight = Color(0xFFEBEEFF);
@@ -697,7 +697,7 @@ const Color _headingRownLight = Color(0xFFEBEEFF);
 //   Color.fromARGB(129, 255, 20, 161)
 // ];
 
-const _lightGradient2 = <Color>[
+/*const _lightGradient2 = <Color>[
   Color.fromARGB(230, 43, 98, 209),
   Color.fromARGB(230, 21, 147, 201),
   Color.fromARGB(230, 81, 241, 252)
@@ -706,17 +706,17 @@ const _darkGradient2 = <Color>[
   Color.fromARGB(230, 43, 98, 209),
   Color.fromARGB(230, 21, 147, 201),
   Color.fromARGB(230, 81, 241, 252)
-];
+];*/
 const Color _darkPercentColor = Colors.white;
 const Color _lightPercentColor = Color(0xff747EB6);
 
-const Color _warningColor = Color(0xFFFFCB2D);
+//const Color _warningColor = Color(0xFFFFCB2D);
 
 const Color _lPositiveColor = Color(0xFF12B76A);
 const Color _dPositiveColor = Color.fromARGB(153, 16, 204, 101);
 
-const Color _dLightPositiveColor = Color.fromARGB(255, 19, 252, 143);
-const Color _lLightPositiveColor = Color(0xFFECFDF3);
+//const Color _dLightPositiveColor = Color.fromARGB(255, 19, 252, 143);
+//const Color _lLightPositiveColor = Color(0xFFECFDF3);
 
 const Color _lightBorderColor = Color(0xFFDBE1F0);
 

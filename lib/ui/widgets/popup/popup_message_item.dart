@@ -277,7 +277,9 @@ class PopupMessageItemState extends State<PopupMessageItem> with SingleTickerPro
       final timeRemaining = widget.duration - now.difference(_removeTs!);
       _removeTimer!.cancel();
       scheduleRemove(timeRemaining + duration);
-    } catch (e) {}
+    } catch (e) {
+      //
+    }
   }
 
   Future<void> remove() async {
@@ -435,7 +437,7 @@ class PopupMessageItemState extends State<PopupMessageItem> with SingleTickerPro
       child = InkWell(
           borderRadius: radius,
           mouseCursor: SystemMouseCursors.copy,
-          hoverColor: widget.borderColor!.withOpacity(0.2),
+          hoverColor: widget.borderColor!.withValues(alpha: 0.2),
           onTap: () {
             Clipboard.setData(ClipboardData(text: widget.details ?? message!));
           },
@@ -447,9 +449,7 @@ class PopupMessageItemState extends State<PopupMessageItem> with SingleTickerPro
                 borderRadius: radius, side: BorderSide(color: widget.borderColor ?? theme.dividerColor)),
             margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             color: widget.color ??
-                (theme.brightness == Brightness.light
-                    ? theme.colorScheme.background
-                    : theme.dialogTheme.backgroundColor),
+                (theme.brightness == Brightness.light ? theme.colorScheme.surface : theme.dialogTheme.backgroundColor),
             child: child)
         .animate(autoPlay: false, controller: _controller)
         .fade()
@@ -479,7 +479,7 @@ class PopupMessageItemState extends State<PopupMessageItem> with SingleTickerPro
   Widget _buildCloseButton() {
     return IconButton(
       padding: const EdgeInsets.all(0),
-      hoverColor: widget.borderColor!.withOpacity(0.2),
+      hoverColor: widget.borderColor!.withValues(alpha: 0.2),
       onPressed: hide,
       iconSize: 16,
       icon: Icon(

@@ -276,7 +276,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                       pageBuilder: (context, state) {
                         final queryParams = Map<String, String>.from(state.uri.queryParameters);
                         log(queryParams.toString(), name: 'Auth Router');
-                        String? redirect = queryParams['redirect'];
+                        //String? redirect = queryParams['redirect'];
 
                         final authBloc = context.read<AuthBloc>();
                         final builder = authConfig!.authPageBuilder(route);

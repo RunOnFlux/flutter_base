@@ -43,8 +43,8 @@ class _FluxOSAboutDialogState extends State<FluxOSAboutDialog> {
               Navigator.of(context).pop();
             },
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) {
+              backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                (Set<WidgetState> states) {
                   return Theme.of(context).primaryColor;
                 },
               ),

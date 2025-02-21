@@ -214,7 +214,7 @@ class SideBarMenuItem {
 
     if (title == null) {
       return IconButton(
-          style: const ButtonStyle(shape: MaterialStatePropertyAll(CircleBorder())),
+          style: const ButtonStyle(shape: WidgetStatePropertyAll(CircleBorder())),
           onPressed: () {
             if (enabled) {
               onTap(index, context);

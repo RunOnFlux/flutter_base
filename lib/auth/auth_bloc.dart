@@ -286,10 +286,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
 
       try {
-        String redirectUrl = Uri.base.origin;
-        if (event.redirectUrl != null) {
-          redirectUrl += event.redirectUrl!;
-        }
+        //String redirectUrl = Uri.base.origin;
+        //if (event.redirectUrl != null) {
+        //  redirectUrl += event.redirectUrl!;
+        //}
         final settings = ActionCodeSettings(url: '${config.authRedirect}/auth?mode=verifyEmail');
 
         await currentUser!.sendEmailVerification(settings);
@@ -334,11 +334,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> init([Duration? timeout = const Duration(seconds: 10)]) async {
     debugPrint('Initializing Firebase');
-    FirebaseApp? firebaseApp;
     AuthService.bloc = this;
     try {
       await Future.wait([FluxAuthLocalStorage.init()]);
-      firebaseApp = await Firebase.initializeApp(name: 'auth', options: firebaseOptions);
+      await Firebase.initializeApp(name: 'auth', options: firebaseOptions);
       if (kIsWeb) {
         await _firebaseInstance.setPersistence(frb.Persistence.LOCAL);
       }

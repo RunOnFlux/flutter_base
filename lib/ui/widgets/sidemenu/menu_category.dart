@@ -68,7 +68,7 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
         },
         consumeOutsideTap: false,
         style: MenuStyle(
-          backgroundColor: MaterialStatePropertyAll<Color>(
+          backgroundColor: WidgetStatePropertyAll<Color>(
             Theme.of(context).primaryColor.withAlpha(224),
           ),
         ),
@@ -175,7 +175,7 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
       var menuItem = child;
       return SubmenuButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll<Color>(
+          backgroundColor: WidgetStatePropertyAll<Color>(
             Theme.of(context).primaryColor.withAlpha(224),
           ),
         ),
@@ -213,7 +213,7 @@ class _SideMenuCategoryState extends State<SideMenuCategory> with MenuStyles {
   }) {
     return MenuItemButton(
       style: ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll<Color>(
+        backgroundColor: WidgetStatePropertyAll<Color>(
           Theme.of(context).primaryColor.withAlpha(224),
         ),
       ),

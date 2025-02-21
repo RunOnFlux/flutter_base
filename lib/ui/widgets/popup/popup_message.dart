@@ -441,7 +441,7 @@ class PopupMessageWidgetState extends State<PopupMessageWidget> {
 }
 
 class _Overlay extends StatelessWidget {
-  const _Overlay({super.key, required this.messages});
+  const _Overlay({required this.messages});
   final List<PopupMessageItem> messages;
 
   @override

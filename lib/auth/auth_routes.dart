@@ -24,7 +24,6 @@ enum AuthFluxChallengeRoute<T> with AuthFluxRoute<T> {
       case AuthFluxChallengeRoute.needReauthentication:
       case AuthFluxChallengeRoute.needTwoFactorAuth:
       case AuthFluxChallengeRoute.needAccountEmailVerification:
-      default:
         return null as T;
     }
   }

@@ -189,15 +189,15 @@ class LoginDialogState extends State<LoginDialog> with DialogSizes, TickerProvid
                             child: AnimatedBuilder(
                               animation: _animation,
                               builder: (BuildContext context, Widget? child) {
-                                double _width = width * 2;
-                                double _leftFront = 0;
-                                double _leftBack = 0;
+                                double width2 = width * 2;
+                                double leftFront = 0;
+                                double leftBack = 0;
                                 if (isNext) {
-                                  _leftFront = -(_animation.value) * _width;
-                                  _leftBack = (1.0 - _animation.value) * _width;
+                                  leftFront = -(_animation.value) * width2;
+                                  leftBack = (1.0 - _animation.value) * width2;
                                 } else {
-                                  _leftFront = (_animation.value) * _width;
-                                  _leftBack = -(1.0 - _animation.value) * _width;
+                                  leftFront = (_animation.value) * width2;
+                                  leftBack = -(1.0 - _animation.value) * width2;
                                 }
 
                                 return AnimatedBuilder(
@@ -211,14 +211,14 @@ class LoginDialogState extends State<LoginDialog> with DialogSizes, TickerProvid
                                     return Stack(
                                       children: [
                                         FirstCard(
-                                          left: _leftFront,
+                                          left: leftFront,
                                           width: width,
                                           transform: transform,
                                           next: next,
                                           showMessage: widget.showMessage,
                                         ),
                                         SecondCard(
-                                          left: _leftBack,
+                                          left: leftBack,
                                           width: width,
                                           transform: transform,
                                           prev: prev,

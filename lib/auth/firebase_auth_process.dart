@@ -9,7 +9,7 @@ extension _AuthBlocExtension on AuthBloc {
   ///
   /// Will create issue if the user is logged in with a provider that is not
   /// supported by Firebase namely Gitlab
-  Future<void> verifyFirebaseAccountExists(frb.UserCredential userCredential) async {
+  /*Future<void> verifyFirebaseAccountExists(frb.UserCredential userCredential) async {
     final user = userCredential.user;
     if (user == null) {
       throw AuthErrorType.userNotFound;
@@ -23,7 +23,7 @@ extension _AuthBlocExtension on AuthBloc {
     } catch (e) {
       rethrow;
     }
-  }
+  }*/
 
   /// method used to sign in with a provider, either Gitlab or Firebase supported
   /// ones

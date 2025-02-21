@@ -16,7 +16,7 @@ extension ModalSheet on BuildContext {
           (Theme.of(this).isLight
                   ? Theme.of(this).primaryColorLight.lighten()
                   : Theme.of(this).primaryColorDark.darken())
-              .withOpacity(0.9),
+              .withValues(alpha: 0.9),
       enableDrag: enableDrag,
       isDismissible: isDismissible,
       useRootNavigator: useRootNavigator,

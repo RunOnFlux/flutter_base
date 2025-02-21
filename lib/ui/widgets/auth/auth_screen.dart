@@ -176,9 +176,9 @@ class _AuthWrapperLeftSide extends StatelessWidget {
         ColoredBox(color: Theme.of(context).primaryColorDark),
         ShaderMask(
           shaderCallback: (bounds) => LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [
-            const Color(0xFF0E3672).withOpacity(0.51),
-            const Color(0xFF242E61).withOpacity(0.62),
-            const Color(0xFF040913).withOpacity(0.80)
+            const Color(0xFF0E3672).withValues(alpha: 0.51),
+            const Color(0xFF242E61).withValues(alpha: 0.62),
+            const Color(0xFF040913).withValues(alpha: 0.80)
           ], stops: const [
             0,
             0.401,

@@ -110,10 +110,10 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
                     tabs: _buildTabs(),
                     isScrollable: MediaQuery.of(context).size.width < (widget.tabsWidth ?? 700),
                     labelColor: Theme.of(context).textTheme.titleLarge!.color,
-                    overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                      (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.hovered)) {
-                          return Theme.of(context).primaryColor.withOpacity(0.5); //<-- SEE HERE
+                    overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                      (Set<WidgetState> states) {
+                        if (states.contains(WidgetState.hovered)) {
+                          return Theme.of(context).primaryColor.withValues(alpha: 0.5); //<-- SEE HERE
                         }
                         return null;
                       },
