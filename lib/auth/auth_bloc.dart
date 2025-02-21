@@ -20,7 +20,7 @@ import 'package:flutter_base/ui/app/config/auth_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 
 export 'package:firebase_auth/firebase_auth.dart'
     hide User
@@ -55,9 +55,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final FirebaseOptions firebaseOptions;
   final AuthConfig config;
 
-  AuthBloc({required this.config})
-      : firebaseOptions = config.firebaseOptions!,
-        super(AuthState.initial()) {
+  AuthBloc({required this.config}) : firebaseOptions = config.firebaseOptions!, super(AuthState.initial()) {
     FutureOr<void> onError(_AuthErrorEvent event, emit) async {
       if (event.error.type == AuthErrorType.unknown) {
         return;
@@ -83,12 +81,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         firebaseUser = null;
         challenge = null;
       }
-      emit(AuthState(
-        error: error,
-        fluxUser: fluxUser,
-        firebaseUser: firebaseUser,
-        challenge: challenge,
-      ));
+      emit(AuthState(error: error, fluxUser: fluxUser, firebaseUser: firebaseUser, challenge: challenge));
     }
 
     on<InitializeAuthEvent>((event, emit) async {
@@ -109,45 +102,37 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await restSignInOrUp(emit, signInEvent);
       } else if (event is _InternalFirebaseSignOut) {
         debugPrint('[AuthBloc] Signed out');
-        emit(
-          AuthState(
-            currentRoute: state.currentRoute,
-          ),
-        );
+        emit(AuthState(currentRoute: state.currentRoute));
       } else if (event is _AuthErrorEvent) {
         await onError(event, emit);
       }
     }, transformer: droppable());
     on<ResetPasswordEvent>((event, emit) async {
-      emit(
-        AuthState(
-          status: AuthConnectionStatus.waiting,
-          event: event,
-          currentRoute: state.currentRoute,
-        ),
-      );
+      emit(AuthState(status: AuthConnectionStatus.waiting, event: event, currentRoute: state.currentRoute));
 
       try {
         await _firebaseInstance.sendPasswordResetEmail(
           email: event.email,
-          actionCodeSettings: ActionCodeSettings(
-            url: '${config.authRedirect}/auth?mode=resetPassword',
+          actionCodeSettings: ActionCodeSettings(url: '${config.authRedirect}/auth?mode=resetPassword'),
+        );
+        emit(
+          AuthState(
+            result: AuthResult.emailSent,
+            event: event,
+            status: AuthConnectionStatus.done,
+            currentRoute: state.currentRoute,
           ),
         );
-        emit(AuthState(
-          result: AuthResult.emailSent,
-          event: event,
-          status: AuthConnectionStatus.done,
-          currentRoute: state.currentRoute,
-        ));
       } on frb.FirebaseAuthException catch (e) {
         log(e.toString(), name: 'Auth Bloc');
-        emit(AuthState(
-          status: AuthConnectionStatus.done,
-          error: AuthError.from(e),
-          event: event,
-          currentRoute: state.currentRoute,
-        ));
+        emit(
+          AuthState(
+            status: AuthConnectionStatus.done,
+            error: AuthError.from(e),
+            event: event,
+            currentRoute: state.currentRoute,
+          ),
+        );
       }
     }, transformer: droppable());
 
@@ -203,22 +188,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       _resumeFirebaseAuthSub();
     }, transformer: droppable());
     on<CompletePasswordResetEvent>((event, emit) async {
-      emit(
-        AuthState(
-          status: AuthConnectionStatus.waiting,
-          event: event,
-          currentRoute: state.currentRoute,
-        ),
-      );
+      emit(AuthState(status: AuthConnectionStatus.waiting, event: event, currentRoute: state.currentRoute));
 
       AuthError? error;
 
       try {
         await _firebaseInstance
-            .confirmPasswordReset(
-              code: event.oobCode,
-              newPassword: event.password,
-            )
+            .confirmPasswordReset(code: event.oobCode, newPassword: event.password)
             .timeout(const Duration(seconds: 30));
       } catch (e) {
         error = AuthError.from(e);
@@ -299,12 +275,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
 
       if (!silent) {
-        emit(
-          state.copyWith(
-            error: () => error,
-            result: () => error == null ? AuthResult.emailSent : null,
-          ),
-        );
+        emit(state.copyWith(error: () => error, result: () => error == null ? AuthResult.emailSent : null));
       }
     }, transformer: droppable());
     on<AuthRouteEvent>((event, emit) {
@@ -463,10 +434,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> setLastEmailVerificationRequest(DateTime dateTime) {
-    return FluxAuthLocalStorage.instance.put(
-      'lastEmailVerificationRequest',
-      dateTime.millisecondsSinceEpoch,
-    );
+    return FluxAuthLocalStorage.instance.put('lastEmailVerificationRequest', dateTime.millisecondsSinceEpoch);
   }
 
   void setCurrentRoute(AuthFluxRoute route) {
@@ -590,13 +558,9 @@ abstract class FluxAuthLocalStorage {
     final loginPhrase = instance.get('loginPhrase');
     final signature = instance.get('signature');
     if (zelid != null && loginPhrase != null && signature != null) {
-      return FluxLogin(data: {
-        'zelid': zelid,
-        'loginPhrase': loginPhrase,
-        'signature': signature,
-        'message': '',
-        'privilage': '',
-      });
+      return FluxLogin(
+        data: {'zelid': zelid, 'loginPhrase': loginPhrase, 'signature': signature, 'message': '', 'privilage': ''},
+      );
     }
     return null;
   }
