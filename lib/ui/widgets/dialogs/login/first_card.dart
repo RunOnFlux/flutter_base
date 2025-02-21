@@ -1,8 +1,7 @@
-import 'dart:ui';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
+import 'package:flutter_base/ui/widgets/blurry_container.dart';
 import 'package:flutter_base/ui/widgets/dialogs/login/login_dialog.dart';
 import 'package:flutter_base/ui/widgets/dialogs/login/login_phrase_provider.dart';
 import 'package:provider/provider.dart';
@@ -58,46 +57,48 @@ class _FirstCardState extends State<FirstCard> with ZelCoreWebSockets {
                 ),
                 SizedBox(
                   height: 50,
-                  child: ImageFiltered(
-                    imageFilter: ImageFilter.blur(
-                      sigmaX: loginProvider.loginPhrase == null ? 8 : 0,
-                      sigmaY: loginProvider.loginPhrase == null ? 8 : 0,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            openZelCore(
-                              loginProvider.loginPhrase!,
-                              () {},
-                              context.read<AuthBloc>(),
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'Login',
-                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white),
+                  child: Stack(
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              openZelCore(
+                                loginProvider.loginPhrase!,
+                                () {},
+                                context.read<AuthBloc>(),
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Login',
+                                style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white),
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: AutoSizeText(
-                            'or',
-                            style: Theme.of(context).textTheme.bodyMedium,
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: AutoSizeText(
+                              'or',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            widget.next();
-                          },
-                          icon: const Icon(Icons.qr_code_scanner_outlined),
-                        ),
-                      ],
-                    ),
+                          IconButton(
+                            onPressed: () {
+                              widget.next();
+                            },
+                            icon: const Icon(Icons.qr_code_scanner_outlined),
+                          ),
+                        ],
+                      ),
+                      BlurryContainer.expand(
+                        blur: loginProvider.loginPhrase == null ? 8 : 0,
+                        child: Container(),
+                      ),
+                    ],
                   ),
                 ),
                 Row(
