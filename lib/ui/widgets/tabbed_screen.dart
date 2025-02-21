@@ -7,7 +7,7 @@ import 'package:flutter_base/ui/widgets/simple_screen.dart';
 import 'package:flutter_base/utils/platform_info.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_html/html.dart' as html;
+import 'package:web/web.dart' as web;
 
 class TabSpec {
   IconData? icon;
@@ -78,7 +78,7 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
   }
 
   updateBrowserURL(int index) {
-    html.window.history.replaceState(null, tabs[index].title, tabs[index].route);
+    web.window.history.replaceState(null, tabs[index].title, tabs[index].route);
     // Update the browser tab title
     context.read<WindowTitle>().setTitle(tabs[index].title);
   }
