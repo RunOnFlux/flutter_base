@@ -56,47 +56,59 @@ class _FirstCardState extends State<FirstCard> with ZelCoreWebSockets {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 70,
+                  width: 330,
                   child: Stack(
                     children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              openZelCore(
-                                loginProvider.loginPhrase!,
-                                () {},
-                                context.read<AuthBloc>(),
-                              );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Login',
-                                style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white),
+                      SizedBox(
+                        height: 70,
+                        width: 300,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: loginProvider.loginPhrase == null
+                                  ? null
+                                  : () {
+                                      openZelCore(
+                                        loginProvider.loginPhrase!,
+                                        () {},
+                                        context.read<AuthBloc>(),
+                                      );
+                                    },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Login',
+                                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white),
+                                ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: AutoSizeText(
-                              'or',
-                              style: Theme.of(context).textTheme.bodyMedium,
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: AutoSizeText(
+                                'or',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              widget.next();
-                            },
-                            icon: const Icon(Icons.qr_code_scanner_outlined),
-                          ),
-                        ],
+                            IconButton(
+                              onPressed: loginProvider.loginPhrase == null
+                                  ? null
+                                  : () {
+                                      widget.next();
+                                    },
+                              icon: const Icon(Icons.qr_code_scanner_outlined),
+                            ),
+                          ],
+                        ),
                       ),
-                      BlurryContainer.expand(
-                        blur: loginProvider.loginPhrase == null ? 8 : 0,
-                        child: Container(),
+                      IgnorePointer(
+                        child: BlurryContainer.expand(
+                          blur: loginProvider.loginPhrase == null ? 8 : 0,
+                          child: Container(),
+                        ),
                       ),
                     ],
                   ),
