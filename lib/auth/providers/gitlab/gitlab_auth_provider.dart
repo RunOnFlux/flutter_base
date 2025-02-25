@@ -2,7 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
 
-import 'src/web.dart' if (dart.library.io) 'src/native.dart';
+import 'src/native.dart' if (dart.library.js_util) 'src/web.dart';
 
 class GitlabAuthProvider extends AuthProvider {
   GitlabAuthProvider() : super(FirebaseSignInMethods.gitlab.providerId);

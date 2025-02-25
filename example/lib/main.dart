@@ -8,7 +8,7 @@ import 'package:flutter_base_example/config/example_api.dart';
 import 'package:flutter_base_example/ui/app/flutter_base_example_app.dart';
 import 'package:flutter_base_example/utils/settings.dart';
 
-import 'config/configure_nonweb.dart' if (dart.library.html) 'config/configure_web.dart';
+import 'config/configure_nonweb.dart' if (dart.library.js_util) 'config/configure_web.dart';
 
 Future<void> main() async {
   configureApp();
@@ -37,9 +37,7 @@ Future<void> main() async {
   //FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   //SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: []);
-  findLocale().then(
-    (value) => runApp(FlutterBaseExampleApp()),
-  );
+  findLocale().then((value) => runApp(FlutterBaseExampleApp()));
 
   // Desktop Windows
   /*if (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS()) {

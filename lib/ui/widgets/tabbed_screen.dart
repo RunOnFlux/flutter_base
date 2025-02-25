@@ -7,7 +7,8 @@ import 'package:flutter_base/ui/widgets/simple_screen.dart';
 import 'package:flutter_base/utils/platform_info.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:web/web.dart' as web;
+
+import 'navigation/native.dart' if (dart.library.js_util) 'navigation/web.dart' as nav;
 
 class TabSpec {
   IconData? icon;
@@ -15,32 +16,20 @@ class TabSpec {
   String route;
   SimpleScreen child;
 
-  TabSpec({
-    this.icon,
-    required this.route,
-    required this.title,
-    required this.child,
-  }) {
+  TabSpec({this.icon, required this.route, required this.title, required this.child}) {
     child.stateInfo.route = route;
   }
 }
 
 class TabScreenPage {
   final int page;
-  const TabScreenPage({
-    required this.page,
-  });
+  const TabScreenPage({required this.page});
 }
 
 abstract class TabbedScreen extends AppContentScreen {
   final TabScreenPage? initialPage;
   final double? tabsWidth;
-  const TabbedScreen({
-    super.key,
-    this.initialPage,
-    this.tabsWidth,
-    required super.stateInfo,
-  });
+  const TabbedScreen({super.key, this.initialPage, this.tabsWidth, required super.stateInfo});
 }
 
 class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with TickerProviderStateMixin {
@@ -66,8 +55,9 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
   }
 
   void assignAppState(String route) {
-    var initialAppScreenInfo =
-        GetIt.I<AppScreenRegistry>().get(tabs[widget.initialPage != null ? widget.initialPage!.page : 0].route);
+    var initialAppScreenInfo = GetIt.I<AppScreenRegistry>().get(
+      tabs[widget.initialPage != null ? widget.initialPage!.page : 0].route,
+    );
     if (initialAppScreenInfo != null) {
       GetIt.I<AppScreenRegistry>().set(widget.stateInfo.route, initialAppScreenInfo);
 
@@ -78,7 +68,7 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
   }
 
   updateBrowserURL(int index) {
-    web.window.history.replaceState(null, tabs[index].title, tabs[index].route);
+    nav.setHistory(tabs[index].title, tabs[index].route);
     // Update the browser tab title
     context.read<WindowTitle>().setTitle(tabs[index].title);
   }
@@ -100,24 +90,19 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
             sliver: SliverToBoxAdapter(
               child: Column(
                 children: [
-                  Padding(
-                    padding: context.mainPadding(),
-                    child: titleHeader(context),
-                  ),
+                  Padding(padding: context.mainPadding(), child: titleHeader(context)),
                   TabBar(
                     // These are the widgets to put in each tab in the tab bar.
                     controller: tabController,
                     tabs: _buildTabs(),
                     isScrollable: MediaQuery.of(context).size.width < (widget.tabsWidth ?? 700),
                     labelColor: Theme.of(context).textTheme.titleLarge!.color,
-                    overlayColor: WidgetStateProperty.resolveWith<Color?>(
-                      (Set<WidgetState> states) {
-                        if (states.contains(WidgetState.hovered)) {
-                          return Theme.of(context).primaryColor.withValues(alpha: 0.5); //<-- SEE HERE
-                        }
-                        return null;
-                      },
-                    ),
+                    overlayColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+                      if (states.contains(WidgetState.hovered)) {
+                        return Theme.of(context).primaryColor.withValues(alpha: 0.5); //<-- SEE HERE
+                      }
+                      return null;
+                    }),
                     onTap: (value) {
                       if (PlatformInfo().isWeb()) {
                         updateBrowserURL(value);
@@ -130,10 +115,7 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
           ),
         ];
       },
-      body: TabBarView(
-        controller: tabController,
-        children: _buildChildren(),
-      ),
+      body: TabBarView(controller: tabController, children: _buildChildren()),
     );
   }
 
@@ -141,12 +123,7 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
     return tabs.map((e) {
       return Tab(
         icon: e.icon != null ? Icon(e.icon) : null,
-        child: AutoSizeText(
-          e.title,
-          maxLines: 1,
-          minFontSize: 6,
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
+        child: AutoSizeText(e.title, maxLines: 1, minFontSize: 6, style: Theme.of(context).textTheme.headlineSmall),
       );
     }).toList();
   }
@@ -158,11 +135,7 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
 
 abstract class TabContentScreen extends SimpleScreen {
   final TabbedScreenState parent;
-  const TabContentScreen({
-    super.key,
-    required super.stateInfo,
-    required this.parent,
-  });
+  const TabContentScreen({super.key, required super.stateInfo, required this.parent});
 }
 
 abstract class TabContentScreenState<T extends TabContentScreen> extends SimpleScreenState<T>
@@ -176,11 +149,7 @@ abstract class TabContentScreenState<T extends TabContentScreen> extends SimpleS
 
 abstract class DeferredTabContentScreen extends SimpleScreen {
   final Function(String) assignAppState;
-  const DeferredTabContentScreen({
-    super.key,
-    required super.stateInfo,
-    required this.assignAppState,
-  });
+  const DeferredTabContentScreen({super.key, required super.stateInfo, required this.assignAppState});
 }
 
 abstract class DeferredTabContentScreenState<T extends DeferredTabContentScreen> extends SimpleScreenState<T>
