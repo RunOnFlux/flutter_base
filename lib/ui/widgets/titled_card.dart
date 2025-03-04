@@ -1,8 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flip_card/flip_card.dart';
-import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
+import 'package:flutter_base/ui/widgets/flip_card/flip_card.dart';
+import 'package:flutter_base/ui/widgets/flip_card/flip_card_controller.dart';
 import 'package:tinycolor2/tinycolor2.dart';
 
 class TitledCard extends StatefulWidget {
@@ -22,7 +22,7 @@ class TitledCard extends StatefulWidget {
   final Color? cardColor;
   final EdgeInsetsGeometry padding;
   final Widget Function(Widget)? wrapBackToggle;
-  final void Function(bool)? onToggle;
+  final void Function(CardSide)? onToggle;
   final bool initialViewFront;
 
   const TitledCard({
@@ -123,7 +123,7 @@ class TitledCardState extends State<TitledCard> {
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: AutoSizeText(
-                                  (controller.state?.isFront ?? true)
+                                  ((controller.state?.getSide() ?? CardSide.front) == CardSide.front)
                                       ? widget.title!
                                       : widget.backTitle ?? widget.title!,
                                   maxLines: 2,
@@ -139,8 +139,8 @@ class TitledCardState extends State<TitledCard> {
                               : wrapToolTip(
                                 IconButton(
                                   onPressed: () {
-                                    controller.toggleCard();
-                                    if (widget.onToggle != null) widget.onToggle!(!(controller.state?.isFront ?? true));
+                                    controller.flip();
+                                    if (widget.onToggle != null) widget.onToggle!(controller.state!.getSide());
                                   },
                                   icon: const Icon(Icons.flip_sharp),
                                 ),
@@ -153,14 +153,15 @@ class TitledCardState extends State<TitledCard> {
                       ? widget.child
                       : Expanded(
                         child: FlipCard(
-                          side: widget.initialViewFront ? CardSide.FRONT : CardSide.BACK,
+                          initialSide: widget.initialViewFront ? CardSide.front : CardSide.back,
                           controller: controller,
-                          fill: Fill.fillBack,
-                          direction: FlipDirection.HORIZONTAL,
+                          fill: Fill.back,
+                          direction: Axis.horizontal,
                           front: widget.child,
                           back: widget.backChild!,
                           flipOnTouch: false,
                           onFlipDone: (isFront) => setState(() {}),
+                          filterQuality: FilterQuality.high,
                         ),
                       ),
                 ],
