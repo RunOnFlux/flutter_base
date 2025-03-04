@@ -22,6 +22,8 @@ class TitledCard extends StatefulWidget {
   final Color? cardColor;
   final EdgeInsetsGeometry padding;
   final Widget Function(Widget)? wrapBackToggle;
+  final void Function(bool)? onToggle;
+  final bool initialViewFront;
 
   const TitledCard({
     super.key,
@@ -41,6 +43,8 @@ class TitledCard extends StatefulWidget {
     this.cardColor,
     this.padding = const EdgeInsets.all(10.0),
     this.wrapBackToggle,
+    this.onToggle,
+    this.initialViewFront = true,
   });
 
   @override
@@ -72,7 +76,8 @@ class TitledCardState extends State<TitledCard> {
           margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             side: BorderSide(
-              color: widget.outlineColor ??
+              color:
+                  widget.outlineColor ??
                   (AppThemeImpl.getOptions(context).cardOutlineColor(context) ?? Colors.transparent),
             ),
             borderRadius: BorderRadius.circular(borderRadius),
@@ -80,11 +85,10 @@ class TitledCardState extends State<TitledCard> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(borderRadius),
             child: Container(
-              decoration: widget.gradient ?? false || (AppThemeImpl.getOptions(context).cardGradient ?? false)
-                  ? BoxDecoration(
-                      gradient: buildLinearGradient(context),
-                    )
-                  : null,
+              decoration:
+                  widget.gradient ?? false || (AppThemeImpl.getOptions(context).cardGradient ?? false)
+                      ? BoxDecoration(gradient: buildLinearGradient(context))
+                      : null,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -132,12 +136,15 @@ class TitledCardState extends State<TitledCard> {
                           //Expanded(child: Container()),
                           widget.backChild == null
                               ? Container()
-                              : wrapToolTip(IconButton(
+                              : wrapToolTip(
+                                IconButton(
                                   onPressed: () {
                                     controller.toggleCard();
+                                    if (widget.onToggle != null) widget.onToggle!(!(controller.state?.isFront ?? true));
                                   },
                                   icon: const Icon(Icons.flip_sharp),
-                                )),
+                                ),
+                              ),
                         ],
                       ),
                     ),
@@ -145,16 +152,17 @@ class TitledCardState extends State<TitledCard> {
                   widget.backChild == null
                       ? widget.child
                       : Expanded(
-                          child: FlipCard(
-                            controller: controller,
-                            fill: Fill.fillBack,
-                            direction: FlipDirection.HORIZONTAL,
-                            front: widget.child,
-                            back: widget.backChild!,
-                            flipOnTouch: false,
-                            onFlipDone: (isFront) => setState(() {}),
-                          ),
+                        child: FlipCard(
+                          side: widget.initialViewFront ? CardSide.FRONT : CardSide.BACK,
+                          controller: controller,
+                          fill: Fill.fillBack,
+                          direction: FlipDirection.HORIZONTAL,
+                          front: widget.child,
+                          back: widget.backChild!,
+                          flipOnTouch: false,
+                          onFlipDone: (isFront) => setState(() {}),
                         ),
+                      ),
                 ],
               ),
             ),
@@ -167,10 +175,7 @@ class TitledCardState extends State<TitledCard> {
   Widget wrapToolTip(Widget child) {
     final wrapToggle = widget.wrapBackToggle ?? (child) => child;
     if (widget.backToolTip == null) return wrapToggle(child);
-    return Tooltip(
-      message: widget.backToolTip!,
-      child: wrapToggle(child),
-    );
+    return Tooltip(message: widget.backToolTip!, child: wrapToggle(child));
   }
 }
 
@@ -230,9 +235,10 @@ class UntitledCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(borderRadius),
             child: Container(
               decoration: BoxDecoration(
-                gradient: gradient ?? false || (AppThemeImpl.getOptions(context).cardGradient ?? false)
-                    ? buildLinearGradient(context)
-                    : null,
+                gradient:
+                    gradient ?? false || (AppThemeImpl.getOptions(context).cardGradient ?? false)
+                        ? buildLinearGradient(context)
+                        : null,
               ),
               child: child,
             ),
@@ -245,10 +251,7 @@ class UntitledCard extends StatelessWidget {
 
 LinearGradient buildLinearGradient(BuildContext context) {
   return LinearGradient(
-    colors: [
-      Theme.of(context).cardColor.lighten(5),
-      Theme.of(context).cardColor,
-    ],
+    colors: [Theme.of(context).cardColor.lighten(5), Theme.of(context).cardColor],
     begin: const FractionalOffset(1.0, 0.0),
     end: const FractionalOffset(0.0, 1.0),
     stops: const [0, 0.5],
