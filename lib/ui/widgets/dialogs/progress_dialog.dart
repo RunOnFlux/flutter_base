@@ -5,15 +5,26 @@ import '../../utils/bootstrap.dart';
 
 class ProgressDialog extends StatefulWidget {
   final void Function()? onComplete;
-  final Future<String> Function() start;
   final String title;
+  final String appName;
+  final String? nodeIP;
   final String Function(String data)? formatData;
+  final Future<void> Function(
+    String, {
+    String? nodeIP,
+    Function(String)? onData,
+    Function()? onDone,
+    Function(String)? onError,
+  })
+  function;
 
   const ProgressDialog({
     super.key,
     required this.title,
     this.onComplete,
-    required this.start,
+    required this.function,
+    required this.appName,
+    this.nodeIP,
     this.formatData,
   });
 
@@ -23,159 +34,103 @@ class ProgressDialog extends StatefulWidget {
 
 class _ProgressDialogState extends State<ProgressDialog> {
   bool loading = true;
+  bool complete = false;
   String? result;
 
   @override
   void initState() {
     super.initState();
     Future.microtask(() async {
-      var res = await widget.start();
-      if (widget.formatData != null) {
-        res = widget.formatData!(res);
-      }
-      setState(() {
-        loading = false;
-        result = res;
-      });
+      widget.function(
+        widget.appName,
+        nodeIP: widget.nodeIP,
+        onData: (p0) {
+          setState(() {
+            loading = false;
+            result = (widget.formatData != null) ? widget.formatData!(p0) : p0;
+          });
+        },
+        onError: (p0) {
+          loading = false;
+          result = p0;
+        },
+        onDone: () {
+          if (widget.onComplete != null) {
+            widget.onComplete!();
+            setState(() {
+              complete = true;
+            });
+          }
+        },
+      );
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return StatefulBuilder(builder: (context, StateSetter setState) {
-      return Center(
-        child: SizedBox(
-          width: bootStrapValueBasedOnSize(
-            sizes: {
-              'xxl': 600.0,
-              'xl': 600.0,
-              'lg': 500.0,
-              'md': 450.0,
-              'sm': 400.0,
-              '': 400.0,
-            },
-            context: context,
-          ),
-          height: MediaQuery.of(context).size.height - 100,
-          child: PopScope(
-            onPopInvoked: (didPop) {
-              if (widget.onComplete != null) {
-                widget.onComplete!();
-              }
-            },
-            child: Scaffold(
-              appBar: AppBar(
-                title: AutoSizeText(
-                  widget.title,
-                  maxLines: 1,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return StatefulBuilder(
+          builder: (context, StateSetter setState) {
+            return Center(
+              child: SizedBox(
+                width: bootStrapValueBasedOnSize(
+                  sizes: {'xxl': 900.0, 'xl': 800.0, 'lg': 700.0, 'md': 600.0, 'sm': 500.0, '': 400.0},
+                  context: context,
                 ),
-              ),
-              body: loading
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SingleChildScrollView(
-                        child: AutoSizeText(result!),
+                height: constraints.maxHeight - 100,
+                child: PopScope(
+                  onPopInvokedWithResult: (didPop, result) {},
+                  child: Material(
+                    elevation: 50,
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(32.0),
+                    shadowColor: Colors.lightBlueAccent.withValues(alpha: 0.2),
+                    child: Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                        side: BorderSide(color: Theme.of(context).splashColor, width: 1.0),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(32.0),
+                        child: Container(
+                          decoration: BoxDecoration(color: Theme.of(context).cardColor),
+                          child: Scaffold(
+                            appBar: AppBar(
+                              title: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Expanded(child: AutoSizeText(widget.title, maxLines: 1)),
+                                    if (!complete)
+                                      const Padding(
+                                        padding: EdgeInsets.only(left: 8.0),
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                              automaticallyImplyLeading: complete,
+                            ),
+                            body:
+                                loading
+                                    ? const Center(child: CircularProgressIndicator())
+                                    : Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: SingleChildScrollView(child: AutoSizeText(result!)),
+                                    ),
+                          ),
+                        ),
                       ),
                     ),
-            ),
-          ),
-        ),
-      );
-    });
-  }
-}
-
-class ProgressDialogWithUpdates extends StatefulWidget {
-  final void Function()? onComplete;
-  final Future<bool> Function(void Function(String)) start;
-  final String title;
-  final String Function(String data)? formatData;
-
-  const ProgressDialogWithUpdates({
-    super.key,
-    required this.title,
-    this.onComplete,
-    required this.start,
-    this.formatData,
-  });
-
-  @override
-  State<ProgressDialogWithUpdates> createState() => _ProgressDialogWithUpdatesState();
-}
-
-class _ProgressDialogWithUpdatesState extends State<ProgressDialogWithUpdates> {
-  String result = '';
-
-  @override
-  void initState() {
-    super.initState();
-    Future.microtask(() async {
-      var success = await widget.start(updateProgress);
-      if (success) {
-        updateProgress('Operation completed');
-      } else {
-        updateProgress('Operation failed');
-      }
-    });
-  }
-
-  void updateProgress(String update) {
-    if (!context.mounted) return;
-    if (widget.formatData == null) {
-      setState(() {
-        result += '$update\n';
-      });
-    } else {
-      var formatted = widget.formatData!(update);
-      setState(() {
-        result += '$formatted\n';
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return StatefulBuilder(builder: (context, StateSetter setState) {
-      return Center(
-        child: SizedBox(
-          width: bootStrapValueBasedOnSize(
-            sizes: {
-              'xxl': 600.0,
-              'xl': 600.0,
-              'lg': 500.0,
-              'md': 450.0,
-              'sm': 400.0,
-              '': 400.0,
-            },
-            context: context,
-          ),
-          height: MediaQuery.of(context).size.height - 100,
-          child: PopScope(
-            onPopInvoked: (didPop) {
-              if (widget.onComplete != null) {
-                widget.onComplete!();
-              }
-            },
-            child: Scaffold(
-              appBar: AppBar(
-                title: AutoSizeText(
-                  widget.title,
-                  maxLines: 1,
+                  ),
                 ),
               ),
-              body: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SingleChildScrollView(
-                  child: AutoSizeText(result),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    });
+            );
+          },
+        );
+      },
+    );
   }
 }
