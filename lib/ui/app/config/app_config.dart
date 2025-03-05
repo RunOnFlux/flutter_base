@@ -48,16 +48,11 @@ class AppConfig {
           height: 50,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Logo(clickRedirectHomePage: true),
-              SideBarButton(),
-            ],
+            children: [Logo(clickRedirectHomePage: true), SideBarButton()],
           ),
         ),
         Divider(),
-        SizedBox(
-          height: 8,
-        ),
+        SizedBox(height: 8),
       ],
     );
   }
@@ -73,15 +68,15 @@ class AppConfig {
         GlobalCupertinoLocalizations.delegate,
       ];*/
 
-  Iterable<Locale> get supportedLocales => const [
-        Locale('en', "US"),
-      ];
+  Iterable<Locale> get supportedLocales => const [Locale('en', "US")];
 
   GoExceptionHandler? get routeExceptionHandler => (context, state, router) {
-        router.go('/');
-      };
+    router.go('/');
+  };
 
   Widget wrapSideMenu(Widget child) {
     return child;
   }
+
+  Duration? get minPopupMessageInterval => null;
 }

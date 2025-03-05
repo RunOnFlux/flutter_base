@@ -56,11 +56,7 @@ abstract class MinimalApp extends StatefulWidget {
   final AppRouter router;
   final Settings settings;
 
-  MinimalApp({
-    required this.router,
-    required this.settings,
-    super.key,
-  }) {
+  MinimalApp({required this.router, required this.settings, super.key}) {
     GetIt.I.registerSingleton<ScreenInfo>(ScreenInfo());
     GetIt.I.registerSingleton<AppScreenRegistry>(AppScreenRegistry());
     registerTheme();
@@ -85,23 +81,19 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
   Widget build(BuildContext context) {
     Widget child = MultiBlocProvider(
       providers: [
-        BlocProvider<LoadingBloc>(
-          create: createLoadingBloc,
-        ),
+        BlocProvider<LoadingBloc>(create: createLoadingBloc),
         ...createRootBlocs(context),
         if (authConfig != null && authConfig!.firebaseOptions != null)
           BlocProvider<AuthBloc>(
-              lazy: false,
-              create: (context) {
-                debugPrint('BlocProvider: AuthBloc');
-                final bloc = AuthBloc(config: authConfig!);
-                bloc.add(const InitializeAuthEvent());
-                return bloc;
-              }),
+            lazy: false,
+            create: (context) {
+              final bloc = AuthBloc(config: authConfig!);
+              bloc.add(const InitializeAuthEvent());
+              return bloc;
+            },
+          ),
       ],
-      child: BlocBuilder<LoadingBloc, LoadingState>(
-        builder: handleLoadingState,
-      ),
+      child: BlocBuilder<LoadingBloc, LoadingState>(builder: handleLoadingState),
     );
     var repos = createRootRepositories(context);
     // Can't use an empty list with MultiRepositoryProvider
@@ -110,10 +102,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
     }
     return ThemeProvider(
       defaultThemeId: widget.settings.getBool(Setting.darkMode.name, defaultValue: true) ? dark.id : light.id,
-      themes: <AppTheme>[
-        light,
-        dark,
-      ],
+      themes: <AppTheme>[light, dark],
       child: ThemeConsumer(child: authWrapper(child)),
     );
   }
@@ -146,29 +135,31 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
     if (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS()) {
       setWindowTitle(initialWindowTitle);
     }
-    return Builder(builder: (themeContext) {
-      return MaterialApp(
-        title: initialWindowTitle,
-        theme: ThemeProvider.themeOf(themeContext).data,
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        onGenerateRoute: (RouteSettings settings) {
-          if (settings.name != null) {
-            initialRoute = settings.name!;
-            if (PlatformInfo().getCurrentPlatformType() == PlatformType.android) {
-              var route = config.getInitialRoute(widget.settings);
-              debugPrint('Android - check initial route: $route');
-              if (route != '/') {
-                initialRoute = route;
-                config.setInitialRoute('/', widget.settings);
+    return Builder(
+      builder: (themeContext) {
+        return MaterialApp(
+          title: initialWindowTitle,
+          theme: ThemeProvider.themeOf(themeContext).data,
+          debugShowCheckedModeBanner: false,
+          initialRoute: '/',
+          onGenerateRoute: (RouteSettings settings) {
+            if (settings.name != null) {
+              initialRoute = settings.name!;
+              if (PlatformInfo().getCurrentPlatformType() == PlatformType.android) {
+                var route = config.getInitialRoute(widget.settings);
+                debugPrint('Android - check initial route: $route');
+                if (route != '/') {
+                  initialRoute = route;
+                  config.setInitialRoute('/', widget.settings);
+                }
               }
+              return MaterialPageRoute(builder: createLoadingScreen);
             }
-            return MaterialPageRoute(builder: createLoadingScreen);
-          }
-          return null;
-        },
-      );
-    });
+            return null;
+          },
+        );
+      },
+    );
   }
 
   Widget createLoadingScreen(BuildContext context) {
@@ -180,11 +171,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
 
   late GoRouter router;
 
-  ValueNotifier<RoutingConfig> appRoutingConfig = ValueNotifier<RoutingConfig>(
-    const RoutingConfig(
-      routes: [],
-    ),
-  );
+  ValueNotifier<RoutingConfig> appRoutingConfig = ValueNotifier<RoutingConfig>(const RoutingConfig(routes: []));
 
   RoutingConfig buildRoutingConfig(BuildContext context) {
     var allRoutes = widget.router.getNavigationRoutes(context);
@@ -205,28 +192,17 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                   builder: (context, state, navigationShell) {
                     return AppRouterScope(
                       router: widget.router,
-                      child: AuthChallengeWrapper(
-                        child: MainAppScreen(
-                          config: config,
-                          child: navigationShell,
-                        ),
-                      ),
+                      child: AuthChallengeWrapper(child: MainAppScreen(config: config, child: navigationShell)),
                     );
                   },
-                  branches: allRoutes.map(
-                    (e) {
-                      return StatefulShellBranch(
-                        observers: e.observers,
-                        routes: [
-                          AppRoute(
-                            path: e.route,
-                            builder: (GoRouterState state) => AppBody(route: e),
-                          )
-                        ],
-                        initialLocation: e.initialLocation,
-                      );
-                    },
-                  ).toList(),
+                  branches:
+                      allRoutes.map((e) {
+                        return StatefulShellBranch(
+                          observers: e.observers,
+                          routes: [AppRoute(path: e.route, builder: (GoRouterState state) => AppBody(route: e))],
+                          initialLocation: e.initialLocation,
+                        );
+                      }).toList(),
                 ),
               ],
             ),
@@ -264,9 +240,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                         final builder = authConfig!.authPageBuilder(route);
                         final arg = route.getArg(authBloc.state, state);
 
-                        return NoTransitionPage(
-                          child: AuthScreen(child: builder(arg)),
-                        );
+                        return NoTransitionPage(child: AuthScreen(child: builder(arg)));
                       },
                     ),
                   for (final route in AuthFluxBranchRoute.actionRoutes)
@@ -282,9 +256,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                         final builder = authConfig!.authPageBuilder(route);
                         final arg = route.getArg(authBloc.state, state);
 
-                        return NoTransitionPage(
-                          child: AuthScreen(child: builder(arg)),
-                        );
+                        return NoTransitionPage(child: AuthScreen(child: builder(arg)));
                       },
                     ),
                 ],
@@ -294,9 +266,10 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
 
                   return NoTransitionPage(
                     child: BlocListener<AuthBloc, AuthState>(
-                      listenWhen: (previous, current) =>
-                          (previous.signInByPhoneProcessStarted != current.signInByPhoneProcessStarted) ||
-                          (previous.hasFirebaseUser != current.hasFirebaseUser),
+                      listenWhen:
+                          (previous, current) =>
+                              (previous.signInByPhoneProcessStarted != current.signInByPhoneProcessStarted) ||
+                              (previous.hasFirebaseUser != current.hasFirebaseUser),
                       listener: (BuildContext context, AuthState authState) {
                         Router.neglect(context, () {
                           log('Firebase user changed', name: 'Auth Router');
@@ -364,9 +337,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
       setWindowTitle(windowTitle);
     }
     var allRoutes = widget.router.getNavigationRoutes(context);
-    NavigationRoute? initialNavRoute = allRoutes.firstWhereOrNull(
-      (element) => element.route == initialRoute,
-    );
+    NavigationRoute? initialNavRoute = allRoutes.firstWhereOrNull((element) => element.route == initialRoute);
 
     router = GoRouter.routingConfig(
       debugLogDiagnostics: true,
@@ -385,6 +356,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
         builder: (themeContext) {
           return PopupMessageWidget(
             key: rootPopupMessageKey,
+            minInterval: config.minPopupMessageInterval ?? const Duration(milliseconds: 500),
             child: MaterialApp.router(
               scaffoldMessengerKey: rootScaffoldMessengerKey,
               localizationsDelegates: config.localizationDelegates,
@@ -396,10 +368,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
                 return ResponsiveBuilder(
                   child: Stack(
                     fit: StackFit.expand,
-                    children: [
-                      if (child != null) child,
-                      AppBanner(text: config.banner),
-                    ],
+                    children: [if (child != null) child, AppBanner(text: config.banner)],
                   ),
                 );
               },
@@ -413,10 +382,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
 }
 
 class AppBody extends StatefulWidget {
-  const AppBody({
-    super.key,
-    required this.route,
-  });
+  const AppBody({super.key, required this.route});
 
   final NavigationRoute route;
 
@@ -439,25 +405,25 @@ class AppBodyState extends State<AppBody> {
   @override
   Widget build(BuildContext context) {
     return (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS())
-        ? TitlebarSafeArea(
-            child: widget.route.body!,
-          )
+        ? TitlebarSafeArea(child: widget.route.body!)
         : ChangeNotifierProvider<WindowTitle>(
-            create: (_) => WindowTitle(title: widget.route.title),
-            child: buildTitle(context),
-          );
+          create: (_) => WindowTitle(title: widget.route.title),
+          child: buildTitle(context),
+        );
   }
 
   Widget buildTitle(BuildContext context) {
-    return Consumer<WindowTitle>(builder: (_, title, __) {
-      return SafeArea(
-        child: Title(
-          color: Theme.of(context).primaryColor,
-          title: AppConfigScope.of(context)?.getWindowTitle(this, title) ?? '',
-          child: widget.route.body!,
-        ),
-      );
-    });
+    return Consumer<WindowTitle>(
+      builder: (_, title, __) {
+        return SafeArea(
+          child: Title(
+            color: Theme.of(context).primaryColor,
+            title: AppConfigScope.of(context)?.getWindowTitle(this, title) ?? '',
+            child: widget.route.body!,
+          ),
+        );
+      },
+    );
   }
 }
 
