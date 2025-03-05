@@ -6,10 +6,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 abstract class AppContentScreen extends StatefulWidget {
   final AppScreenStateInfo stateInfo;
-  const AppContentScreen({
-    super.key,
-    required this.stateInfo,
-  });
+  const AppContentScreen({super.key, required this.stateInfo});
 }
 
 abstract class AppScreenState<T extends AppContentScreen> extends State<T> {
@@ -54,15 +51,8 @@ abstract class AppScreenState<T extends AppContentScreen> extends State<T> {
                 'Footer Text',
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
-                  fontSize: bootStrapValueBasedOnSize(
-                    sizes: {
-                      '': 10.0,
-                      'sm': 10.0,
-                      'md': 14.0,
-                      'lg': 14.0,
-                      'xl': 14.0,
-                      'xxl': 14.0,
-                    },
+                  fontSize: bootStrapDoubleBasedOnSize(
+                    sizes: {'': 10.0, 'sm': 10.0, 'md': 14.0, 'lg': 14.0, 'xl': 14.0, 'xxl': 14.0},
                     context: context,
                   ),
                   fontFamily: 'Montserrat',
@@ -80,15 +70,8 @@ abstract class AppScreenState<T extends AppContentScreen> extends State<T> {
 extension Paddings on BuildContext {
   EdgeInsets mainPadding() {
     return EdgeInsets.symmetric(
-      horizontal: bootStrapValueBasedOnSize(
-        sizes: {
-          '': 5.0,
-          'sm': 12.0,
-          'md': 20.0,
-          'lg': 25.0,
-          'xl': 25.0,
-          'xxl': 25.0,
-        },
+      horizontal: bootStrapDoubleBasedOnSize(
+        sizes: {'': 5.0, 'sm': 12.0, 'md': 20.0, 'lg': 25.0, 'xl': 25.0, 'xxl': 25.0},
         context: this,
       ),
       vertical: 10.0,

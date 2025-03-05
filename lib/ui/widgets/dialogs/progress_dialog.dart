@@ -74,7 +74,7 @@ class _ProgressDialogState extends State<ProgressDialog> {
           builder: (context, StateSetter setState) {
             return Center(
               child: SizedBox(
-                width: bootStrapValueBasedOnSize(
+                width: bootStrapDoubleBasedOnSize(
                   sizes: {'xxl': 900.0, 'xl': 800.0, 'lg': 700.0, 'md': 600.0, 'sm': 500.0, '': 400.0},
                   context: context,
                 ),

@@ -12,10 +12,7 @@ int _numberOfColumns = 12;
 ///
 /// Customization of the grid
 ///
-void bootstrapGridParameters({
-  int numberOfColumns = 12,
-  double gutterSize = 24,
-}) {
+void bootstrapGridParameters({int numberOfColumns = 12, double gutterSize = 24}) {
   assert(() {
     if (numberOfColumns < 10 || numberOfColumns > 24) {
       throw FlutterError.fromParts(<DiagnosticsNode>[
@@ -98,13 +95,7 @@ double bootstrapMaxWidthNonFluid(double width) {
 /// Implementation of the Bootstrap .container and .container-fluid
 ///
 class BootstrapContainer extends StatelessWidget {
-  const BootstrapContainer({
-    super.key,
-    required this.children,
-    this.fluid = false,
-    this.decoration,
-    this.padding,
-  });
+  const BootstrapContainer({super.key, required this.children, this.fluid = false, this.decoration, this.padding});
 
   ///
   /// Is the container fluid => if yes, takes the whole width
@@ -156,24 +147,14 @@ class BootstrapContainer extends StatelessWidget {
         Widget widget = Container(
           width: width,
           decoration: decoration,
-          child: Wrap(
-            alignment: WrapAlignment.start,
-            direction: Axis.horizontal,
-            children: children,
-          ),
+          child: Wrap(alignment: WrapAlignment.start, direction: Axis.horizontal, children: children),
         );
 
         if (padding != null) {
-          widget = Padding(
-            padding: padding!,
-            child: widget,
-          );
+          widget = Padding(padding: padding!, child: widget);
         }
 
-        return Align(
-          alignment: Alignment.topCenter,
-          child: widget,
-        );
+        return Align(alignment: Alignment.topCenter, child: widget);
       },
     );
   }
@@ -185,13 +166,7 @@ class BootstrapContainer extends StatelessWidget {
 /// A [BootstrapRow] may only contain [BootstrapCol] children.
 ///
 class BootstrapRow extends StatelessWidget {
-  const BootstrapRow({
-    super.key,
-    required this.children,
-    this.decoration,
-    this.height,
-    this.absoluteSizes = false,
-  });
+  const BootstrapRow({super.key, required this.children, this.decoration, this.height, this.absoluteSizes = false});
 
   ///
   /// Min container height
@@ -217,8 +192,9 @@ class BootstrapRow extends StatelessWidget {
         //
         // Get the prefix for the definition, based on the available width
         //
-        String pfx =
-            bootstrapPrefixBasedOnWidth(absoluteSizes ? MediaQuery.of(context).size.width : constraints.maxWidth);
+        String pfx = bootstrapPrefixBasedOnWidth(
+          absoluteSizes ? MediaQuery.of(context).size.width : constraints.maxWidth,
+        );
 
         //
         // We need to iterate through all the children and consider any potential order
@@ -235,11 +211,7 @@ class BootstrapRow extends StatelessWidget {
           ),
           decoration: decoration,
           height: height,
-          child: Wrap(
-            alignment: WrapAlignment.start,
-            direction: Axis.horizontal,
-            children: _children,
-          ),
+          child: Wrap(alignment: WrapAlignment.start, direction: Axis.horizontal, children: _children),
         );
       },
     );
@@ -259,9 +231,9 @@ class BootstrapCol extends StatelessWidget {
     String offsets = "",
     String orders = "",
     this.invisibleForSizes,
-  })  : sizes = sizes.trim(),
-        offsets = offsets.trim(),
-        orders = orders.trim() {
+  }) : sizes = sizes.trim(),
+       offsets = offsets.trim(),
+       orders = orders.trim() {
     _initialize();
   }
 
@@ -332,50 +304,22 @@ class BootstrapCol extends StatelessWidget {
   //
   // Flex ratios per size, based on the column's definition
   //
-  final Map<String, int> _ratiosPerSize = {
-    'xxl': 100,
-    'xl': 100,
-    'lg': 100,
-    'md': 100,
-    'sm': 100,
-    '': 100,
-  };
+  final Map<String, int> _ratiosPerSize = {'xxl': 100, 'xl': 100, 'lg': 100, 'md': 100, 'sm': 100, '': 100};
 
   //
   // Offsets per size, based on the column's definition
   //
-  final Map<String, int> _offsetsPerSize = {
-    'xxl': -100,
-    'xl': -100,
-    'lg': -100,
-    'md': -100,
-    'sm': -100,
-    '': -100,
-  };
+  final Map<String, int> _offsetsPerSize = {'xxl': -100, 'xl': -100, 'lg': -100, 'md': -100, 'sm': -100, '': -100};
 
   //
   // Sequence order per size, based on the column's definition
   //
-  final Map<String, int> orderPerSize = {
-    'xxl': 0,
-    'xl': 0,
-    'lg': 0,
-    'md': 0,
-    'sm': 0,
-    '': 0,
-  };
+  final Map<String, int> orderPerSize = {'xxl': 0, 'xl': 0, 'lg': 0, 'md': 0, 'sm': 0, '': 0};
 
   //
   // Sequence order per size, based on the column's definition
   //
-  final Map<String, bool> hiddenPerSize = {
-    'xxl': false,
-    'xl': false,
-    'lg': false,
-    'md': false,
-    'sm': false,
-    '': false,
-  };
+  final Map<String, bool> hiddenPerSize = {'xxl': false, 'xl': false, 'lg': false, 'md': false, 'sm': false, '': false};
 
   //
   // Defines the Flex ratios, based on the column's
@@ -396,9 +340,10 @@ class BootstrapCol extends StatelessWidget {
       //
       // Identification of the defined "dimensions"
       //
-      List<String> parts = referenceArgument.isEmpty
-          ? []
-          : referenceArgument.toLowerCase().split(' ').where((t) => t.trim().isNotEmpty).toList();
+      List<String> parts =
+          referenceArgument.isEmpty
+              ? []
+              : referenceArgument.toLowerCase().split(' ').where((t) => t.trim().isNotEmpty).toList();
       for (var part in parts) {
         for (var pfx in _prefixes) {
           final String prefix = '$argPrefix-$pfx${pfx == "" ? "" : "-"}';
@@ -496,9 +441,10 @@ class BootstrapCol extends StatelessWidget {
     //
     // Finally, invisibility
     //
-    List<String> parts = (invisibleForSizes ?? "").trim().isEmpty
-        ? []
-        : invisibleForSizes!.toLowerCase().split(' ').where((t) => t.trim().isNotEmpty).toList();
+    List<String> parts =
+        (invisibleForSizes ?? "").trim().isEmpty
+            ? []
+            : invisibleForSizes!.toLowerCase().split(' ').where((t) => t.trim().isNotEmpty).toList();
     for (var pfx in parts) {
       if (['xxl', 'xl', 'lg', 'md', 'sm', 'xs'].contains(pfx)) {
         hiddenPerSize[pfx == 'xs' ? '' : pfx] = true;
@@ -529,8 +475,9 @@ class BootstrapCol extends StatelessWidget {
         //
         // Get the prefix for the definition, based on the available width
         //
-        String pfx =
-            bootstrapPrefixBasedOnWidth(absoluteSizes ? MediaQuery.of(context).size.width : constraints.maxWidth);
+        String pfx = bootstrapPrefixBasedOnWidth(
+          absoluteSizes ? MediaQuery.of(context).size.width : constraints.maxWidth,
+        );
 
         //
         // Check if invisible
@@ -562,10 +509,7 @@ class BootstrapCol extends StatelessWidget {
 
         if (leftMarginRatio > 0) {
           final double leftMargin = constraints.maxWidth * leftMarginRatio * _oneColumnRatio;
-          widget = Padding(
-            padding: EdgeInsets.only(left: leftMargin),
-            child: widget,
-          );
+          widget = Padding(padding: EdgeInsets.only(left: leftMargin), child: widget);
         }
 
         return widget;
@@ -580,11 +524,7 @@ class BootstrapCol extends StatelessWidget {
 /// defined in [sizes]
 ///
 class BootstrapVisibility extends StatelessWidget {
-  BootstrapVisibility({
-    super.key,
-    required this.child,
-    String sizes = "",
-  }) : sizes = sizes.trim() {
+  BootstrapVisibility({super.key, required this.child, String sizes = ""}) : sizes = sizes.trim() {
     _initialize();
   }
 
@@ -676,10 +616,23 @@ class BootstrapVisibility extends StatelessWidget {
 /// If the sizes does not contain the corresponding browser prefix,
 /// returns the nearest (upper first)
 ///
-dynamic bootStrapValueBasedOnSize({
-  required Map<String, dynamic> sizes,
-  required BuildContext context,
-}) {
+String bootStrapStringBasedOnSize({required Map<String, String> sizes, required BuildContext context}) {
+  return _bootStrapValueBasedOnSize(sizes: sizes, context: context);
+}
+
+int bootStrapIntBasedOnSize({required Map<String, int> sizes, required BuildContext context}) {
+  return _bootStrapValueBasedOnSize(sizes: sizes, context: context);
+}
+
+double bootStrapDoubleBasedOnSize({required Map<String, double> sizes, required BuildContext context}) {
+  return _bootStrapValueBasedOnSize(sizes: sizes, context: context);
+}
+
+bool bootStrapBoolBasedOnSize({required Map<String, bool> sizes, required BuildContext context}) {
+  return _bootStrapValueBasedOnSize(sizes: sizes, context: context);
+}
+
+dynamic _bootStrapValueBasedOnSize({required Map<String, dynamic> sizes, required BuildContext context}) {
   //
   // Get the prefix for the definition, based on the available width
   //

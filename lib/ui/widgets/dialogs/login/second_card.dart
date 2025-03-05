@@ -50,40 +50,24 @@ class _SecondCardState extends State<SecondCard> with TickerProviderStateMixin, 
   @override
   void initState() {
     super.initState();
-    fluxLogo = const AssetImage(
-      'assets/images/png/flux_symbol_blue_white.png',
-      package: 'flutter_base',
-    );
+    fluxLogo = const AssetImage('assets/images/png/flux_symbol_blue_white.png', package: 'flutter_base');
   }
 
   @override
   Widget build(BuildContext context) {
-    const edgeInsets = EdgeInsets.only(
-      left: 8.0,
-      right: 8.0,
-      bottom: 10,
-    );
-    final isSmallScreen = bootStrapValueBasedOnSize(
-      sizes: {
-        'xxl': false,
-        'xl': false,
-        'lg': false,
-        'md': false,
-        'sm': true,
-        '': true,
-      },
+    const edgeInsets = EdgeInsets.only(left: 8.0, right: 8.0, bottom: 10);
+    final isSmallScreen = bootStrapBoolBasedOnSize(
+      sizes: {'xxl': false, 'xl': false, 'lg': false, 'md': false, 'sm': true, '': true},
       context: context,
     );
-    final buttonStyle = isSmallScreen
-        ? Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white)
-        : Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white);
+    final buttonStyle =
+        isSmallScreen
+            ? Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white)
+            : Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white);
     return Consumer<LoginPhraseProvider>(
       builder: (_, loginProvider, __) {
         if (loginProvider.loginPhrase != null) {
-          zelCoreAction = ZelCore.openZelCoreSignAction(
-            loginProvider.loginPhrase!,
-            callbackValue(),
-          );
+          zelCoreAction = ZelCore.openZelCoreSignAction(loginProvider.loginPhrase!, callbackValue());
         }
         return Positioned(
           left: widget.left,
@@ -131,18 +115,9 @@ class _SecondCardState extends State<SecondCard> with TickerProviderStateMixin, 
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Padding(
-                              padding: edgeInsets,
-                              child: _buildMessageField(context),
-                            ),
-                            Padding(
-                              padding: edgeInsets,
-                              child: _buildAddressField(context),
-                            ),
-                            Padding(
-                              padding: edgeInsets,
-                              child: _buildSignatureField(context),
-                            ),
+                            Padding(padding: edgeInsets, child: _buildMessageField(context)),
+                            Padding(padding: edgeInsets, child: _buildAddressField(context)),
+                            Padding(padding: edgeInsets, child: _buildSignatureField(context)),
                             ElevatedButton(
                               onPressed: () {
                                 doManualLogin(
@@ -154,12 +129,9 @@ class _SecondCardState extends State<SecondCard> with TickerProviderStateMixin, 
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Sign In',
-                                  style: buttonStyle,
-                                ),
+                                child: Text('Sign In', style: buttonStyle),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -172,47 +144,37 @@ class _SecondCardState extends State<SecondCard> with TickerProviderStateMixin, 
                         onPressed: () {
                           widget.prev();
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Back',
-                            style: buttonStyle,
-                          ),
-                        ),
+                        child: Padding(padding: const EdgeInsets.all(8.0), child: Text('Back', style: buttonStyle)),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: ElevatedButton(
-                          onPressed: showQRCard
-                              ? null
-                              : () {
-                                  widget.setState(() {
-                                    showQRCard = true;
-                                  });
-                                },
+                          onPressed:
+                              showQRCard
+                                  ? null
+                                  : () {
+                                    widget.setState(() {
+                                      showQRCard = true;
+                                    });
+                                  },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'QR Code',
-                              style: buttonStyle,
-                            ),
+                            child: Text('QR Code', style: buttonStyle),
                           ),
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: showQRCard
-                            ? () {
-                                widget.setState(() {
-                                  showQRCard = false;
-                                });
-                              }
-                            : null,
+                        onPressed:
+                            showQRCard
+                                ? () {
+                                  widget.setState(() {
+                                    showQRCard = false;
+                                  });
+                                }
+                                : null,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Manual Signing',
-                            style: buttonStyle,
-                          ),
+                          child: Text('Manual Signing', style: buttonStyle),
                         ),
                       ),
                     ],
@@ -226,26 +188,18 @@ class _SecondCardState extends State<SecondCard> with TickerProviderStateMixin, 
     );
   }
 
-  void doManualLogin(
-    String zelid,
-    String loginPhrase,
-    String signature,
-    Function() success,
-  ) {
+  void doManualLogin(String zelid, String loginPhrase, String signature, Function() success) {
     AuthService()
-        .verifyLogin(
-      zelid: zelid,
-      loginPhrase: loginPhrase,
-      signature: signature,
-    )
+        .verifyLogin(zelid: zelid, loginPhrase: loginPhrase, signature: signature)
         .then((value) {
-      closeWebSocket();
-      storeLoginDetails(context.read<AuthBloc>(), value);
-      widget.showMessage('You have successfully logged in to Flux');
-      success();
-    }).catchError((error, stackTrace) {
-      //PopupMessage.error(message: error.toString()).show(context);
-    });
+          closeWebSocket();
+          storeLoginDetails(context.read<AuthBloc>(), value);
+          widget.showMessage('You have successfully logged in to Flux');
+          success();
+        })
+        .catchError((error, stackTrace) {
+          //PopupMessage.error(message: error.toString()).show(context);
+        });
   }
 
   Widget _buildMessageField(BuildContext context) {
@@ -261,9 +215,7 @@ class _SecondCardState extends State<SecondCard> with TickerProviderStateMixin, 
         IconButton(
           icon: const Icon(Icons.content_copy),
           onPressed: () {
-            Clipboard.setData(
-              ClipboardData(text: messageTextController.text),
-            ).then((value) {
+            Clipboard.setData(ClipboardData(text: messageTextController.text)).then((value) {
               context.show(PopupMessageItem.success(message: 'Copied to clipboard'));
             });
           },
@@ -306,9 +258,9 @@ class _SecondCardState extends State<SecondCard> with TickerProviderStateMixin, 
   }
 
   InputBorder get textInputBorder => OutlineInputBorder(
-        borderSide: BorderSide(width: 1.5, color: Theme.of(context).textTheme.bodyLarge!.color!),
-        borderRadius: BorderRadius.circular(7),
-      );
+    borderSide: BorderSide(width: 1.5, color: Theme.of(context).textTheme.bodyLarge!.color!),
+    borderRadius: BorderRadius.circular(7),
+  );
 
   @override
   String callbackValue() {

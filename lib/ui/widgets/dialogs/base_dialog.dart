@@ -54,26 +54,17 @@ abstract class BaseDialogState<T extends BaseDialog> extends State<T> {
 
   int get maxHeaderLines => 1;
 
-  double dialogWidth(BuildContext context) => bootStrapValueBasedOnSize(
-        sizes: {
-          'xl': 700.0,
-          'lg': 600.0,
-          'md': 500.0,
-          'sm': 400.0,
-          '': 400.0,
-        },
-        context: context,
-      );
+  double dialogWidth(BuildContext context) => bootStrapDoubleBasedOnSize(
+    sizes: {'xl': 700.0, 'lg': 600.0, 'md': 500.0, 'sm': 400.0, '': 400.0},
+    context: context,
+  );
 
   double dialogHeight(BuildContext context) => 500.0;
 
   Widget body(BuildContext context) => const SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [],
-          ),
-        ),
-      );
+    child: Padding(
+      padding: EdgeInsets.all(16.0),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: []),
+    ),
+  );
 }
