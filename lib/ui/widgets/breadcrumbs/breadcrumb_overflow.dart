@@ -66,7 +66,7 @@ class WrapOverflow extends BreadCrumbOverflow {
 
     if (divider != null) {
       for (var item in items) {
-        widgetItems.add(BreadCrumbTile(breadCrumbItem: item));
+        widgetItems.add(BreadCrumbTile(breadCrumbItem: item, underline: item.underline));
         widgetItems.add(divider);
       }
       if (!keepLastDivider) {
@@ -170,7 +170,7 @@ class ScrollableOverflow extends BreadCrumbOverflow {
 
     if (divider != null) {
       for (var item in items) {
-        widgetItems.add(BreadCrumbTile(breadCrumbItem: item));
+        widgetItems.add(BreadCrumbTile(breadCrumbItem: item, underline: item.underline));
         widgetItems.add(divider);
       }
       if (!keepLastDivider) {

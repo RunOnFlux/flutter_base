@@ -13,12 +13,13 @@ class BreadCrumbItem {
     this.disabledTextColor,
     this.borderRadius = BorderRadius.zero,
     this.border = BorderSide.none,
+    this.underline = false,
   });
 
   final Widget content;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
-  final VoidCallback? onTap;
+  final void Function(TapDownDetails)? onTap;
   final Color color;
   final Color disableColor;
   final Color splashColor;
@@ -26,6 +27,7 @@ class BreadCrumbItem {
   final Color? disabledTextColor;
   final BorderRadiusGeometry borderRadius;
   final BorderSide border;
+  final bool underline;
 
   bool get isEnable => onTap != null;
 
