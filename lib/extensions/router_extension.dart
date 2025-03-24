@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'back_navigation/web.dart' if (dart.library.io) 'back_navigation/native.dart' as platform;
+import 'back_navigation/native.dart' if (dart.library.js_util) 'back_navigation/web.dart' as platform;
 
 extension GoRouterContextExtension on BuildContext {
   /// go to a sub route of the current route
@@ -9,10 +9,7 @@ extension GoRouterContextExtension on BuildContext {
   /// .i.e. if the current route is '/home' and you want to go to '/home/settings'
   /// you can use this method with 'settings' as the location
   void goRelative(String location, {Object? extra}) {
-    assert(
-      !location.startsWith('/'),
-      "Relative locations must not start with a '/'.",
-    );
+    assert(!location.startsWith('/'), "Relative locations must not start with a '/'.");
 
     final path = GoRouter.of(this).routerDelegate.currentConfiguration.uri.path;
 
@@ -31,10 +28,7 @@ extension GoRouterContextExtension on BuildContext {
   }
 
   Future<T?> pushRelative<T>(String location, {Object? extra}) {
-    assert(
-      !location.startsWith('/'),
-      "Relative locations must not start with a '/'.",
-    );
+    assert(!location.startsWith('/'), "Relative locations must not start with a '/'.");
     final path = GoRouter.of(this).routerDelegate.currentConfiguration.uri.path;
 
     String newPath = '$path/$location';
@@ -95,14 +89,14 @@ extension GoRouterExtension on GoRouter {
     }
   }
 
-// void goPreviousPath() {
-//   final pathSegments = routerDelegate.currentConfiguration.uri.pathSegments;
-//   if (pathSegments.isNotEmpty) {
-//     final newPath =
-//         pathSegments.sublist(0, pathSegments.length - 1).join('/');
-//     go('/$newPath');
-//   }
-// }
+  // void goPreviousPath() {
+  //   final pathSegments = routerDelegate.currentConfiguration.uri.pathSegments;
+  //   if (pathSegments.isNotEmpty) {
+  //     final newPath =
+  //         pathSegments.sublist(0, pathSegments.length - 1).join('/');
+  //     go('/$newPath');
+  //   }
+  // }
 }
 
 extension StatefulNavigationShellExtension on StatefulNavigationShellState {

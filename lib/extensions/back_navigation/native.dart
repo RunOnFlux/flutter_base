@@ -1,7 +1,5 @@
-void goBack({void Function(bool succeed)? success}) {
-  throw UnimplementedError();
-}
+void goBack({void Function(bool succeed)? callback}) {}
 
 bool goBackIfReferrerIsNotCurrent() {
-  throw UnimplementedError();
+  return true;
 }
