@@ -22,12 +22,7 @@ class AuthScreen extends StatelessWidget {
   final bool isPopup;
   final bool zelCore;
 
-  const AuthScreen({
-    super.key,
-    required this.child,
-    this.isPopup = false,
-    this.zelCore = true,
-  });
+  const AuthScreen({super.key, required this.child, this.isPopup = false, this.zelCore = true});
 
   @override
   Widget build(BuildContext context) {
@@ -44,26 +39,14 @@ class AuthScreen extends StatelessWidget {
           //wrapper = (child) => _DialogWrapperWidget(child: child);
         }
         return Provider<AuthScreenConfig>(
-          create: (BuildContext context) => AuthScreenConfig(
-            isPopup: isPopup,
-            zelCore: zelCore,
-          ),
-          child: _AuthWrapperWidget(
-            child: Container(
-              color: Theme.of(context).primaryColorDark,
-              child: wrapper(child),
-            ),
-          ),
+          create: (BuildContext context) => AuthScreenConfig(isPopup: isPopup, zelCore: zelCore),
+          child: _AuthWrapperWidget(child: Container(color: Theme.of(context).primaryColorDark, child: wrapper(child))),
         );
       },
     );
   }
 
-  static void goToAuthRoute(
-    BuildContext context,
-    AuthFluxBranchRoute route, {
-    bool keepParameters = true,
-  }) {
+  static void goToAuthRoute(BuildContext context, AuthFluxBranchRoute route, {bool keepParameters = true}) {
     bool isPopup = context.read<AuthScreenConfig>().isPopup;
     if (isPopup) {
       context.read<AuthBloc>().setCurrentRoute(route);
@@ -84,9 +67,7 @@ class AuthScreen extends StatelessWidget {
 }
 
 class _DefaultWrapperWidget extends StatelessWidget {
-  const _DefaultWrapperWidget({
-    required this.child,
-  });
+  const _DefaultWrapperWidget({required this.child});
   final Widget child;
 
   @override
@@ -109,10 +90,10 @@ class _DefaultWrapperWidget extends StatelessWidget {
                     content: authOptions.rightChild(context),
                   ),
                 ),
-              Expanded(child: _AuthWrapperRightSide(child: this.child))
+              Expanded(child: _AuthWrapperRightSide(child: this.child)),
             ],
           ),
-          _AuthScreenCloseButton(invertColor: smallScreen)
+          _AuthScreenCloseButton(invertColor: smallScreen),
         ],
       ),
     );
@@ -141,19 +122,15 @@ class _AuthWrapperWidget extends StatelessWidget {
         listener: (BuildContext context, AuthState state) {
           log('hasError? ${state.hasError}', name: 'Auth Screen');
           if (state.hasError) {
-            PopupMessage.of(context).addMessage(
-              PopupMessageItem.error(message: state.authError!.type.errorMessage(false)),
-            );
+            PopupMessage.of(
+              context,
+            ).addMessage(PopupMessageItem.error(message: state.authError!.type.errorMessage(false)));
           }
         },
         listenWhen: (previous, current) => previous.hasError != current.hasError,
         buildWhen: (previous, current) => previous.loading != current.loading,
         builder: (context, state) {
-          return LoadingOverlay(
-            loading: state.loading,
-            colorBarrier: Colors.black54,
-            child: child,
-          );
+          return LoadingOverlay(loading: state.loading, colorBarrier: Colors.black54, child: child);
         },
       ),
     );
@@ -163,10 +140,7 @@ class _AuthWrapperWidget extends StatelessWidget {
 class _AuthWrapperLeftSide extends StatelessWidget {
   final Widget image;
   final Widget content;
-  const _AuthWrapperLeftSide({
-    required this.image,
-    required this.content,
-  });
+  const _AuthWrapperLeftSide({required this.image, required this.content});
 
   @override
   Widget build(BuildContext context) {
@@ -175,15 +149,17 @@ class _AuthWrapperLeftSide extends StatelessWidget {
       children: [
         ColoredBox(color: Theme.of(context).primaryColorDark),
         ShaderMask(
-          shaderCallback: (bounds) => LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [
-            const Color(0xFF0E3672).withValues(alpha: 0.51),
-            const Color(0xFF242E61).withValues(alpha: 0.62),
-            const Color(0xFF040913).withValues(alpha: 0.80)
-          ], stops: const [
-            0,
-            0.401,
-            1
-          ]).createShader(bounds),
+          shaderCallback:
+              (bounds) => LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  const Color(0xFF0E3672).withValues(alpha: 0.51),
+                  const Color(0xFF242E61).withValues(alpha: 0.62),
+                  const Color(0xFF040913).withValues(alpha: 0.80),
+                ],
+                stops: const [0, 0.401, 1],
+              ).createShader(bounds),
           blendMode: BlendMode.srcATop,
           child: image,
         ),
@@ -202,10 +178,7 @@ class _AuthWrapperRightSide extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        ScrollConfiguration(
-          behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-          child: child,
-        ),
+        ScrollConfiguration(behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false), child: child),
         const Positioned(
           right: 30,
           top: 16,
@@ -222,9 +195,7 @@ class _AuthWrapperRightSide extends StatelessWidget {
 }
 
 class _AuthScreenCloseButton extends StatelessWidget {
-  const _AuthScreenCloseButton({
-    this.invertColor = false,
-  });
+  const _AuthScreenCloseButton({this.invertColor = false});
   final bool invertColor;
 
   @override
@@ -233,20 +204,21 @@ class _AuthScreenCloseButton extends StatelessWidget {
       top: 16,
       left: 16,
       child: Consumer<AuthScreenConfig>(
-        builder: (BuildContext context, AuthScreenConfig config, Widget? child) => CloseButton(
-          color: invertColor ? Theme.of(context).colorScheme.onSurface : Colors.white,
-          onPressed: () {
-            debugPrint(context.canPop().toString());
-            debugPrint(GoRouter.of(context).routerDelegate.currentConfiguration.toString());
-            context.read<AuthBloc>().add(const ClearChallengeEvent());
-            context.read<AuthBloc>().config.signInCancelled();
-            if (config.isPopup) {
-              context.pop();
-            } else {
-              close(context);
-            }
-          },
-        ),
+        builder:
+            (BuildContext context, AuthScreenConfig config, Widget? child) => CloseButton(
+              color: invertColor ? Theme.of(context).colorScheme.onSurface : Colors.white,
+              onPressed: () {
+                debugPrint(context.canPop().toString());
+                debugPrint(GoRouter.of(context).routerDelegate.currentConfiguration.toString());
+                context.read<AuthBloc>().add(const ClearChallengeEvent());
+                context.read<AuthBloc>().config.signInCancelled();
+                if (config.isPopup) {
+                  context.pop();
+                } else {
+                  close(context);
+                }
+              },
+            ),
       ),
     );
   }
@@ -257,6 +229,7 @@ class _AuthScreenCloseButton extends StatelessWidget {
       if (context.canPop()) {
         context.pop(false);
       } else {
+        debugPrint('calling historyBack');
         context.historyBack((success) {
           if (!success) {
             context.goInitialBranch();
@@ -268,30 +241,30 @@ class _AuthScreenCloseButton extends StatelessWidget {
 }
 
 class DefaultAuthPageTextField extends StatelessWidget {
-  const DefaultAuthPageTextField(
-      {super.key,
-      TextEditingController? controller,
-      this.hintText,
-      this.errorMaxLines = 1,
-      String? text,
-      this.labelText,
-      this.showClearButton = true,
-      this.obscureText = false,
-      this.inputFormatters = const [],
-      this.onFieldSubmitted,
-      this.readOnly = false,
-      this.autoFocus = false,
-      this.maxLength = 100,
-      this.showCopyButton = false,
-      this.collapsed = false,
-      this.keyboardType,
-      this.textInputAction = TextInputAction.next,
-      this.validator,
-      this.scrollPadding,
-      this.onChanged})
-      : assert(text != null || controller != null),
-        _text = text,
-        _controller = controller;
+  const DefaultAuthPageTextField({
+    super.key,
+    TextEditingController? controller,
+    this.hintText,
+    this.errorMaxLines = 1,
+    String? text,
+    this.labelText,
+    this.showClearButton = true,
+    this.obscureText = false,
+    this.inputFormatters = const [],
+    this.onFieldSubmitted,
+    this.readOnly = false,
+    this.autoFocus = false,
+    this.maxLength = 100,
+    this.showCopyButton = false,
+    this.collapsed = false,
+    this.keyboardType,
+    this.textInputAction = TextInputAction.next,
+    this.validator,
+    this.scrollPadding,
+    this.onChanged,
+  }) : assert(text != null || controller != null),
+       _text = text,
+       _controller = controller;
 
   final String? _text;
   final bool readOnly;
@@ -322,20 +295,21 @@ class DefaultAuthPageTextField extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (collapsed == false && labelText != null) ...[
-          Text(labelText,
-              style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                letterSpacing: 0.9,
-                fontSize: 12,
-                fontFamily: 'Montserrat',
-                package: 'flutter_base',
-              )),
-          const SizedBox(
-            height: 8,
+          Text(
+            labelText,
+            style: const TextStyle(
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.9,
+              fontSize: 12,
+              fontFamily: 'Montserrat',
+              package: 'flutter_base',
+            ),
           ),
+          const SizedBox(height: 8),
         ],
-        StatefulBuilder(builder: (context, setState) {
-          return TextFormField(
+        StatefulBuilder(
+          builder: (context, setState) {
+            return TextFormField(
               autofocus: autoFocus,
               initialValue: _text,
               autocorrect: false,
@@ -357,32 +331,13 @@ class DefaultAuthPageTextField extends StatelessWidget {
               maxLines: 1,
               textAlignVertical: TextAlignVertical.center,
               decoration: InputDecoration(
-                  counterText: '',
-                  suffixIcon: _controller == null
-                      ? Row(mainAxisSize: MainAxisSize.min, children: [
-                          if (showCopyButton) CopyButton(text: _text!),
-                          if (this.obscureText)
-                            IconButton(
-                              focusNode: SkipFocusNode(),
-                              onPressed: () {
-                                setState(() {
-                                  obscureText = !obscureText;
-                                });
-                              },
-                              icon: obscureText ? const Icon(Icons.visibility_off) : const Icon(Icons.remove_red_eye),
-                            ),
-                        ])
-                      : ListenableBuilder(
-                          listenable: _controller,
-                          builder: (context, child) {
-                            return _controller.text.isEmpty ? const SizedBox.shrink() : child!;
-                          },
-                          child: Row(mainAxisSize: MainAxisSize.min, children: [
-                            if (showCopyButton)
-                              CopyButton(
-                                text: _controller.text,
-                                focusNode: SkipFocusNode(),
-                              ),
+                counterText: '',
+                suffixIcon:
+                    _controller == null
+                        ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (showCopyButton) CopyButton(text: _text!),
                             if (this.obscureText)
                               IconButton(
                                 focusNode: SkipFocusNode(),
@@ -393,43 +348,68 @@ class DefaultAuthPageTextField extends StatelessWidget {
                                 },
                                 icon: obscureText ? const Icon(Icons.visibility_off) : const Icon(Icons.remove_red_eye),
                               ),
-                            if (showClearButton)
-                              IconButton(
-                                focusNode: SkipFocusNode(),
-                                onPressed: () {
-                                  _controller.clear();
-                                },
-                                icon: const Icon(Icons.clear),
-                              )
-                          ])),
-                  isCollapsed: collapsed,
-                  errorMaxLines: errorMaxLines,
-                  errorStyle: const TextStyle(
-                    fontSize: 12,
-                    fontFamily: 'Montserrat',
-                    package: 'flutter_base',
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                  enabledBorder: collapsed
-                      ? InputBorder.none
-                      : OutlineInputBorder(
+                          ],
+                        )
+                        : ListenableBuilder(
+                          listenable: _controller,
+                          builder: (context, child) {
+                            return _controller.text.isEmpty ? const SizedBox.shrink() : child!;
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (showCopyButton) CopyButton(text: _controller.text, focusNode: SkipFocusNode()),
+                              if (this.obscureText)
+                                IconButton(
+                                  focusNode: SkipFocusNode(),
+                                  onPressed: () {
+                                    setState(() {
+                                      obscureText = !obscureText;
+                                    });
+                                  },
+                                  icon:
+                                      obscureText ? const Icon(Icons.visibility_off) : const Icon(Icons.remove_red_eye),
+                                ),
+                              if (showClearButton)
+                                IconButton(
+                                  focusNode: SkipFocusNode(),
+                                  onPressed: () {
+                                    _controller.clear();
+                                  },
+                                  icon: const Icon(Icons.clear),
+                                ),
+                            ],
+                          ),
+                        ),
+                isCollapsed: collapsed,
+                errorMaxLines: errorMaxLines,
+                errorStyle: const TextStyle(fontSize: 12, fontFamily: 'Montserrat', package: 'flutter_base'),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                enabledBorder:
+                    collapsed
+                        ? InputBorder.none
+                        : OutlineInputBorder(
                           gapPadding: 0,
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide(width: 1.2, color: Theme.of(context).borderColor),
                         ),
-                  border: collapsed
-                      ? InputBorder.none
-                      : OutlineInputBorder(
+                border:
+                    collapsed
+                        ? InputBorder.none
+                        : OutlineInputBorder(
                           gapPadding: 0,
                           borderRadius: BorderRadius.circular(8),
                           borderSide: BorderSide(width: 1.2, color: Theme.of(context).borderColor),
                         ),
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  hintText: hintText),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                hintText: hintText,
+              ),
               obscureText: obscureText,
               scrollPadding: scrollPadding ?? const EdgeInsets.all(20.0),
-              validator: validator);
-        }),
+              validator: validator,
+            );
+          },
+        ),
       ],
     );
   }
@@ -453,15 +433,19 @@ class AuthChallengeWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
-        buildWhen: (previous, current) => previous.challenge != current.challenge,
-        builder: (context, state) {
-          log('challenge: ${state.challenge.toString()}', name: 'Auth Challenge');
-          final showMain = state.challenge == null || state.challenge!.type == AuthChallengeType.reauthentication;
-          return Stack(fit: StackFit.expand, children: [
+      buildWhen: (previous, current) => previous.challenge != current.challenge,
+      builder: (context, state) {
+        log('challenge: ${state.challenge.toString()}', name: 'Auth Challenge');
+        final showMain = state.challenge == null || state.challenge!.type == AuthChallengeType.reauthentication;
+        return Stack(
+          fit: StackFit.expand,
+          children: [
             if (splashScreen != null && state.challenge == null && !showMain) splashScreen!,
-            if (showMain) child else if (state.challenge != null) _buildChallenge(state, context)
-          ]);
-        });
+            if (showMain) child else if (state.challenge != null) _buildChallenge(state, context),
+          ],
+        );
+      },
+    );
   }
 
   Widget _buildChallenge(AuthState state, BuildContext context) {
