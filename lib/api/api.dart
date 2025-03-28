@@ -26,16 +26,9 @@ abstract class Api {
   String get backend;
 
   static Dio _createDio() {
-    var dio = Dio(
-      BaseOptions(
-        sendTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
-      ),
-    );
+    var dio = Dio(BaseOptions(sendTimeout: const Duration(seconds: 30), receiveTimeout: const Duration(seconds: 30)));
 
-    dio.interceptors.addAll({
-      Logging(dio),
-    });
+    dio.interceptors.addAll({Logging(dio)});
 
     return dio;
   }
@@ -62,13 +55,10 @@ abstract class Api {
             }
             if (kIsWeb) {
               if (backendImpl.startsWith('http://')) {
-                backendImpl = 'https://corsanywhere.app.runonflux.io/$backendImpl';
+                backendImpl = 'https://proxy.app.runonflux.io/$backendImpl';
               }
             }
-            result = await client.get(
-              Uri.parse('$backendImpl$url'),
-              headers: requestHeaders,
-            );
+            result = await client.get(Uri.parse('$backendImpl$url'), headers: requestHeaders);
             break;
           }
         case RequestType.post:
@@ -118,10 +108,7 @@ abstract class Api {
                 headers[key] = value;
               });
             }
-            Options dioOptions = Options(
-              headers: headers,
-              sendTimeout: const Duration(seconds: 1),
-            );
+            Options dioOptions = Options(headers: headers, sendTimeout: const Duration(seconds: 1));
             if (options != null) {
               dioOptions.contentType = options.contentType;
               dioOptions.responseType = options.responseType;
@@ -134,7 +121,7 @@ abstract class Api {
             }
             if (kIsWeb) {
               if (backendImpl.startsWith('http://')) {
-                backendImpl = 'https://corsanywhere.app.runonflux.io/$backendImpl';
+                backendImpl = 'https://proxy.app.runonflux.io/$backendImpl';
               }
             }
             result = await _dio.get(
@@ -189,9 +176,10 @@ abstract class Api {
               });
             }
             Options dioOptions = Options(
-                headers: headers,
-                receiveTimeout: const Duration(seconds: 15),
-                sendTimeout: const Duration(seconds: 3600));
+              headers: headers,
+              receiveTimeout: const Duration(seconds: 15),
+              sendTimeout: const Duration(seconds: 3600),
+            );
             if (options != null) {
               dioOptions.contentType = options.contentType;
               dioOptions.responseType = options.responseType;
@@ -202,8 +190,12 @@ abstract class Api {
                 dioOptions.sendTimeout = options.sendTimeout;
               }
             }
-            result =
-                await _dio.post('$backendImpl$url', data: body, options: dioOptions, onSendProgress: onSendProgress);
+            result = await _dio.post(
+              '$backendImpl$url',
+              data: body,
+              options: dioOptions,
+              onSendProgress: onSendProgress,
+            );
             break;
           }
         case RequestType.del:
@@ -236,16 +228,14 @@ abstract class Api {
   }
 
   Map<String, String> get header => {
-        'Content-type': 'application/json',
-        'Accept': 'application/json',
-        //'client-id': 'FluxCloud',
-        //'package-name': 'io.runonflux.fluxcloud',
-        //'platform': PlatformInfo().getCurrentPlatformType().toString(),
-      };
-
-  final Map<String, String> simpleHeaders = {
-    'Content-type': 'text/plain',
+    'Content-type': 'application/json',
+    'Accept': 'application/json',
+    //'client-id': 'FluxCloud',
+    //'package-name': 'io.runonflux.fluxcloud',
+    //'platform': PlatformInfo().getCurrentPlatformType().toString(),
   };
+
+  final Map<String, String> simpleHeaders = {'Content-type': 'text/plain'};
 
   Future<void> stream(
     String url, {
@@ -257,10 +247,7 @@ abstract class Api {
     Function(String)? onError,
   }) async {
     assert(requestType == RequestType.get || requestType == RequestType.post);
-    final client = FetchClient(
-      mode: RequestMode.cors,
-      streamRequests: true,
-    );
+    final client = FetchClient(mode: RequestMode.cors, streamRequests: true);
     final uri = Uri.parse(url);
     final request = http.Request(requestType == RequestType.post ? 'POST' : 'GET', uri);
     if (headers != null) {
@@ -290,11 +277,7 @@ class ApiException {
   String? name;
   String? message;
 
-  ApiException({
-    this.code,
-    this.name,
-    this.message,
-  });
+  ApiException({this.code, this.name, this.message});
 
   @override
   String toString() {
@@ -313,9 +296,7 @@ class Logging extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    debugPrint(
-      'RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}',
-    );
+    debugPrint('RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}');
     super.onResponse(response, handler);
   }
 
