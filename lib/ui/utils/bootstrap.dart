@@ -632,6 +632,10 @@ bool bootStrapBoolBasedOnSize({required Map<String, bool> sizes, required BuildC
   return _bootStrapValueBasedOnSize(sizes: sizes, context: context);
 }
 
+dynamic bootStrapDynamicBasedOnSize({required Map<String, dynamic> sizes, required BuildContext context}) {
+  return _bootStrapValueBasedOnSize(sizes: sizes, context: context);
+}
+
 dynamic _bootStrapValueBasedOnSize({required Map<String, dynamic> sizes, required BuildContext context}) {
   //
   // Get the prefix for the definition, based on the available width
