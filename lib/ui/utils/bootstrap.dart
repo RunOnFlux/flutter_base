@@ -200,7 +200,8 @@ class BootstrapRow extends StatelessWidget {
         // We need to iterate through all the children and consider any potential order
         //
         // ignore: no_leading_underscores_for_local_identifiers
-        List<BootstrapCol> _children = List.from(children);
+        List<BootstrapCol> _children =
+            List<BootstrapCol>.from(children).where((element) => !(element.hiddenPerSize[pfx] ?? false)).toList();
         _children.sort((a, b) => (a.orderPerSize[pfx] ?? 0) - (b.orderPerSize[pfx] ?? 0));
 
         return Container(
@@ -226,7 +227,7 @@ class BootstrapCol extends StatelessWidget {
     super.key,
     required this.child,
     this.fit = FlexFit.loose,
-    this.absoluteSizes = true,
+    this.absoluteSizes = false,
     String sizes = "",
     String offsets = "",
     String orders = "",
