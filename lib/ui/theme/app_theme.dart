@@ -12,11 +12,12 @@ class AppThemeImpl {
     return options as ThemeOptions;
   }
 
-  ChipThemeData chipThemeData(
-      {required Color styleBackgroundColor,
-      required Color textColor,
-      required Color shadowColor,
-      Color? selectedColor}) {
+  ChipThemeData chipThemeData({
+    required Color styleBackgroundColor,
+    required Color textColor,
+    required Color shadowColor,
+    Color? selectedColor,
+  }) {
     return ChipThemeData(
       backgroundColor: styleBackgroundColor,
       labelStyle: TextStyle(
@@ -51,60 +52,34 @@ class AppThemeImpl {
           ),
         ),
         bottomNavigationBarTheme: ThemeData.light().bottomNavigationBarTheme.copyWith(
-              selectedItemColor: primaryColor,
-              backgroundColor: scaffoldBackgroundLight,
-              selectedIconTheme: IconThemeData(color: primaryColor),
-            ),
+          selectedItemColor: primaryColor,
+          backgroundColor: scaffoldBackgroundLight,
+          selectedIconTheme: IconThemeData(color: primaryColor),
+        ),
         brightness: Brightness.light,
         canvasColor: Colors.white,
         cardColor: cardColorLight,
         cardTheme: ThemeData.light().cardTheme.copyWith(
-              shadowColor: const Color.fromARGB(20, 43, 97, 209),
-              color: cardColorLight,
-            ),
+          shadowColor: const Color.fromARGB(20, 43, 97, 209),
+          color: cardColorLight,
+        ),
         checkboxTheme: CheckboxThemeData(
-          side: WidgetStateBorderSide.resolveWith(
-            (states) {
-              if (states.contains(WidgetState.selected)) {
-                return const BorderSide(
-                  color: Color(0xFF0255FE),
-                  width: 1,
-                );
-              } else {
-                return const BorderSide(
-                  color: Color(0xFFD0D5DD),
-                  width: 1,
-                );
-              }
-            },
-          ),
+          side: WidgetStateBorderSide.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return const BorderSide(color: Color(0xFF0255FE), width: 1);
+            } else {
+              return const BorderSide(color: Color(0xFFD0D5DD), width: 1);
+            }
+          }),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
           fillColor: WidgetStateProperty.all(Colors.transparent),
           checkColor: WidgetStateProperty.all(const Color(0xFF0255FE)),
         ),
-        chipTheme: ChipThemeData(
-          backgroundColor: const Color.fromARGB(255, 230, 233, 238),
-          disabledColor: Colors.white,
-          selectedColor: const Color(0xFF2463EB),
-          secondarySelectedColor: const Color(0xFF2463EB),
-          padding: const EdgeInsets.all(8),
-          side: BorderSide.none,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide.none),
-          secondaryLabelStyle: const TextStyle(
-            color: Colors.white,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            fontFamily: 'Montserrat',
-            package: 'flutter_base',
-          ),
-          brightness: Brightness.light,
+        chipTheme: chipThemeData(
+          styleBackgroundColor: const Color.fromARGB(255, 230, 233, 238),
+          textColor: Colors.grey,
           shadowColor: primaryColorLight.withValues(alpha: 0.35),
-          labelStyle: const TextStyle(
-            color: Colors.grey, // Set the text color to grey
-            fontFamily: 'Montserrat',
-            package: 'flutter_base',
-          ),
-          elevation: 7.5,
+          selectedColor: const Color(0xFF2463EB),
         ),
         colorScheme: ColorScheme.fromSeed(
           surface: Colors.white,
@@ -116,45 +91,29 @@ class AppThemeImpl {
         ),
         dataTableTheme: DataTableThemeData(
           checkboxHorizontalMargin: 15,
-          dataRowColor: WidgetStateProperty.resolveWith(
-            (states) {
-              if (states.contains(WidgetState.selected)) {
-                return const Color(0xffFFFBF5);
-              }
-              if (states.contains(WidgetState.hovered)) {
-                return const Color.fromARGB(255, 248, 249, 250);
-              }
-              if (states.contains(WidgetState.pressed)) {
-                return const Color.fromARGB(255, 242, 243, 245);
-              }
-              return null;
-            },
-          ),
+          dataRowColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return const Color(0xffFFFBF5);
+            }
+            if (states.contains(WidgetState.hovered)) {
+              return const Color.fromARGB(255, 248, 249, 250);
+            }
+            if (states.contains(WidgetState.pressed)) {
+              return const Color.fromARGB(255, 242, 243, 245);
+            }
+            return null;
+          }),
         ),
         dialogTheme: const DialogTheme(
-          titleTextStyle: TextStyle(
-            fontSize: 18,
-            fontFamily: 'Montserrat',
-            package: 'flutter_base',
-            color: Color(0xFF303B52),
-            fontWeight: FontWeight.w600,
-          ),
           elevation: 2,
+          backgroundColor: Color.fromRGBO(252, 250, 251, 1),
           shape: RoundedRectangleBorder(
-            side: BorderSide(
-              width: 0.6,
-              color: Color.fromRGBO(184, 195, 225, 0.5),
-            ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(8),
-            ),
+            side: BorderSide(width: 0.6, color: Color.fromRGBO(184, 195, 225, 0.5)),
+            borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
         ),
         dividerColor: const Color(0xFFEAEAEA),
-        dividerTheme: const DividerThemeData(
-          color: Color(0xFFE9EAF3),
-          thickness: 1,
-        ),
+        dividerTheme: const DividerThemeData(color: Color(0xFFE9EAF3), thickness: 1),
         drawerTheme: const DrawerThemeData(
           surfaceTintColor: Colors.white,
           scrimColor: Colors.transparent,
@@ -169,53 +128,44 @@ class AppThemeImpl {
         dropdownMenuTheme: DropdownMenuThemeData(
           menuStyle: const MenuStyle(
             elevation: WidgetStatePropertyAll(2),
-            shape: WidgetStatePropertyAll(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(12),
-                ),
-              ),
-            ),
-            backgroundColor: WidgetStatePropertyAll(
-              Color(0xFFEBEEFF),
-            ),
+            shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12)))),
+            backgroundColor: WidgetStatePropertyAll(Color(0xFFEBEEFF)),
           ),
           inputDecorationTheme: InputDecorationTheme(
             fillColor: const Color.fromARGB(255, 247, 248, 252),
             suffixIconColor: const Color(0xff1E2329),
             disabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Color.fromRGBO(184, 195, 225, 0.5), width: 1),
-                borderRadius: BorderRadius.circular(10)),
+              borderSide: const BorderSide(color: Color.fromRGBO(184, 195, 225, 0.5), width: 1),
+              borderRadius: BorderRadius.circular(10),
+            ),
             focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Color.fromRGBO(184, 195, 225, 0.5), width: 1),
-                borderRadius: BorderRadius.circular(10)),
+              borderSide: const BorderSide(color: Color.fromRGBO(184, 195, 225, 0.5), width: 1),
+              borderRadius: BorderRadius.circular(10),
+            ),
             outlineBorder: const BorderSide(color: Color.fromRGBO(184, 195, 225, 0.5), width: 1),
             enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Color.fromRGBO(184, 195, 225, 0.5), width: 1),
-                borderRadius: BorderRadius.circular(10)),
+              borderSide: const BorderSide(color: Color.fromRGBO(184, 195, 225, 0.5), width: 1),
+              borderRadius: BorderRadius.circular(10),
+            ),
             border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Color.fromRGBO(184, 195, 225, 0.5), width: 1),
-                borderRadius: BorderRadius.circular(10)),
+              borderSide: const BorderSide(color: Color.fromRGBO(184, 195, 225, 0.5), width: 1),
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white, // change background color of button
             backgroundColor: primaryColorLight, // change text color of button
-            textStyle: TextStyle(
-              fontSize: 14,
-              color: lightText,
-              fontFamily: 'Montserrat',
-              package: 'flutter_base',
-            ),
+            textStyle: TextStyle(fontSize: 14, color: lightText, fontFamily: 'Montserrat', package: 'flutter_base'),
           ),
         ),
         expansionTileTheme: ThemeData.light().expansionTileTheme.copyWith(
-              backgroundColor: scaffoldBackgroundLight,
-              collapsedBackgroundColor: cardColorLight,
-              iconColor: darkText,
-              textColor: darkText,
-            ),
+          backgroundColor: scaffoldBackgroundLight,
+          collapsedBackgroundColor: cardColorLight,
+          iconColor: darkText,
+          textColor: darkText,
+        ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: primaryColorDark,
           foregroundColor: darkText,
@@ -224,26 +174,15 @@ class AppThemeImpl {
         iconTheme: ThemeData.light().iconTheme.copyWith(color: lightText),
         iconButtonTheme: IconButtonThemeData(
           style: ButtonStyle(
-            foregroundColor: WidgetStateProperty.resolveWith<Color?>(
-              (Set<WidgetState> states) {
-                return lightText; //<-- SEE HERE
-              },
-            ),
+            foregroundColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+              return lightText; //<-- SEE HERE
+            }),
           ),
         ),
         indicatorColor: primaryColorDark,
         inputDecorationTheme: InputDecorationTheme(
-          labelStyle: TextStyle(
-            fontSize: 13,
-            color: darkText,
-            fontFamily: 'Montserrat',
-            package: 'flutter_base',
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: primaryColor,
-            ),
-          ),
+          labelStyle: TextStyle(fontSize: 13, color: darkText, fontFamily: 'Montserrat', package: 'flutter_base'),
+          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: primaryColor)),
           contentPadding: const EdgeInsets.all(5),
           isDense: true,
         ),
@@ -262,74 +201,56 @@ class AppThemeImpl {
         shadowColor: Colors.black,
         splashFactory: InkRipple.splashFactory,
         textTheme: ThemeData.light().textTheme.copyWith(
-              titleLarge: TextStyle(
-                decorationColor: Colors.white,
-                fontSize: 24,
-                color: lightText,
-                fontFamily: 'Montserrat',
-                package: 'flutter_base',
-              ),
-              titleMedium: TextStyle(
-                decorationColor: Colors.white,
-                fontSize: 20,
-                color: lightText,
-                fontFamily: 'Montserrat',
-                package: 'flutter_base',
-              ),
-              titleSmall: TextStyle(
-                decorationColor: Colors.white,
-                fontSize: 16,
-                color: lightText,
-                fontFamily: 'Montserrat',
-                package: 'flutter_base',
-              ),
-              headlineLarge: TextStyle(
-                fontSize: 28,
-                color: lightText,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Montserrat',
-                package: 'flutter_base',
-              ),
-              headlineMedium: TextStyle(
-                fontSize: 18,
-                color: lightText,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Montserrat',
-                package: 'flutter_base',
-              ),
-              headlineSmall: TextStyle(
-                fontSize: 14,
-                color: lightText,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Montserrat',
-                package: 'flutter_base',
-              ),
-              bodyLarge: TextStyle(
-                fontSize: 18,
-                color: lightText,
-                fontFamily: 'Montserrat',
-                package: 'flutter_base',
-              ),
-              bodyMedium: TextStyle(
-                fontSize: 14,
-                color: lightText,
-                fontFamily: 'Montserrat',
-                package: 'flutter_base',
-              ),
-              bodySmall: TextStyle(
-                fontSize: 12,
-                color: lightText,
-                fontFamily: 'Montserrat',
-                package: 'flutter_base',
-              ),
-            ),
+          titleLarge: TextStyle(
+            decorationColor: Colors.white,
+            fontSize: 24,
+            color: lightText,
+            fontFamily: 'Montserrat',
+            package: 'flutter_base',
+          ),
+          titleMedium: TextStyle(
+            decorationColor: Colors.white,
+            fontSize: 20,
+            color: lightText,
+            fontFamily: 'Montserrat',
+            package: 'flutter_base',
+          ),
+          titleSmall: TextStyle(
+            decorationColor: Colors.white,
+            fontSize: 16,
+            color: lightText,
+            fontFamily: 'Montserrat',
+            package: 'flutter_base',
+          ),
+          headlineLarge: TextStyle(
+            fontSize: 28,
+            color: lightText,
+            fontWeight: FontWeight.w600,
+            fontFamily: 'Montserrat',
+            package: 'flutter_base',
+          ),
+          headlineMedium: TextStyle(
+            fontSize: 18,
+            color: lightText,
+            fontWeight: FontWeight.w600,
+            fontFamily: 'Montserrat',
+            package: 'flutter_base',
+          ),
+          headlineSmall: TextStyle(
+            fontSize: 14,
+            color: lightText,
+            fontWeight: FontWeight.w600,
+            fontFamily: 'Montserrat',
+            package: 'flutter_base',
+          ),
+          bodyLarge: TextStyle(fontSize: 18, color: lightText, fontFamily: 'Montserrat', package: 'flutter_base'),
+          bodyMedium: TextStyle(fontSize: 14, color: lightText, fontFamily: 'Montserrat', package: 'flutter_base'),
+          bodySmall: TextStyle(fontSize: 12, color: lightText, fontFamily: 'Montserrat', package: 'flutter_base'),
+        ),
         tooltipTheme: TooltipThemeData(
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(
-              color: const Color.fromRGBO(184, 195, 225, 0.5),
-              width: 1,
-            ),
+            border: Border.all(color: const Color.fromRGBO(184, 195, 225, 0.5), width: 1),
             borderRadius: BorderRadius.circular(4),
           ),
           textStyle: const TextStyle(
@@ -351,218 +272,171 @@ class AppThemeImpl {
   Color get cardColorDark => const Color.fromARGB(29, 56, 56, 61);
 
   AppTheme get dark => AppTheme(
-        id: 'dark',
-        description: 'Dark Mode',
-        data: ThemeData(
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.transparent,
-            foregroundColor: Colors.white,
-            elevation: 0,
-            iconTheme: IconThemeData(color: Colors.white),
-            titleTextStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              fontFamily: 'Montserrat',
-              package: 'flutter_base',
-            ),
-          ),
-          bottomNavigationBarTheme: ThemeData.dark().bottomNavigationBarTheme.copyWith(
-                selectedItemColor: primaryColorDark,
-                backgroundColor: Colors.transparent,
-                selectedIconTheme: IconThemeData(color: primaryColorDark),
-              ),
-          brightness: Brightness.dark,
-          cardColor: cardColorDark,
-          cardTheme: ThemeData.light().cardTheme.copyWith(
-                shadowColor: const Color.fromARGB(40, 8, 8, 18),
-                color: cardColorDark,
-              ),
-          checkboxTheme: CheckboxThemeData(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4),
-            ),
-            fillColor: WidgetStateProperty.all(
-              const Color.fromARGB(255, 13, 126, 255),
-            ),
-            checkColor: WidgetStateProperty.all(Colors.white),
-          ),
-          chipTheme: chipThemeData(
-            styleBackgroundColor: Colors.transparent,
-            textColor: darkText,
-            shadowColor: Colors.black.withValues(alpha: 0.35),
-            selectedColor: primaryColorDark,
-          ),
-          colorScheme: const ColorScheme.dark(
-            surfaceTint: Colors.transparent,
-            primary: Colors.white,
-            onPrimary: Colors.white,
-            onSecondary: Colors.white,
-            surface: Color(0xff070F1E),
-            secondary: Color.fromARGB(255, 13, 126, 255),
-          ),
-          dialogTheme: const DialogTheme(
-            elevation: 2,
-            backgroundColor: Color.fromRGBO(20, 21, 41, 1),
-            shape: RoundedRectangleBorder(
-              side: BorderSide(
-                width: 0.6,
-                color: Color.fromRGBO(46, 142, 255, 0.20),
-              ),
-              borderRadius: BorderRadius.all(
-                Radius.circular(8),
-              ),
-            ),
-          ),
-          dividerColor: const Color.fromRGBO(184, 195, 225, 0.25),
-          dividerTheme: const DividerThemeData(
-            color: Color.fromRGBO(184, 195, 225, 0.25),
-            thickness: 1,
-          ),
-          drawerTheme: const DrawerThemeData(
-            surfaceTintColor: Colors.black,
-            scrimColor: Colors.transparent,
-            // borderside only right
-
-            shape: Border(
-                right: BorderSide(width: 1, color: _darkBorderColor),
-                bottom: BorderSide(width: 1, color: _darkBorderColor)),
-            backgroundColor: Color(0xff070F1E),
-            elevation: 2,
-            width: 300,
-          ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white, // change background color of button
-              backgroundColor: primaryColorDark, // change text color of button
-              textStyle: TextStyle(
-                fontSize: 14,
-                color: lightText,
-                fontFamily: 'Montserrat',
-                package: 'flutter_base',
-              ),
-            ),
-          ),
-          expansionTileTheme: ThemeData.dark().expansionTileTheme.copyWith(
-                backgroundColor: Colors.transparent,
-                collapsedBackgroundColor: cardColorDark,
-                iconColor: darkText,
-                textColor: darkText,
-              ),
-          floatingActionButtonTheme: FloatingActionButtonThemeData(
-            backgroundColor: primaryColorDark,
-            foregroundColor: darkText,
-          ),
+    id: 'dark',
+    description: 'Dark Mode',
+    data: ThemeData(
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.white),
+        titleTextStyle: TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
           fontFamily: 'Montserrat',
-          iconTheme: ThemeData.dark().iconTheme.copyWith(color: darkText),
-          iconButtonTheme: IconButtonThemeData(
-            style: ButtonStyle(
-              foregroundColor: WidgetStateProperty.resolveWith<Color?>(
-                (Set<WidgetState> states) {
-                  return darkText;
-                },
-              ),
-            ),
-          ),
-          indicatorColor: primaryColorDark,
-          inputDecorationTheme: InputDecorationTheme(
-            labelStyle: TextStyle(
-              fontSize: 13,
-              color: darkText,
-              fontFamily: 'Montserrat',
-              package: 'flutter_base',
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: primaryColorDark,
-              ),
-            ),
-            contentPadding: const EdgeInsets.all(5),
-            isDense: true,
-          ),
-          primaryColor: primaryColorDark,
-          primaryColorLight: const Color(0xFF1F283A),
-          primaryColorDark: const Color(0xFF2A354E),
-          scaffoldBackgroundColor: Colors.transparent,
-          shadowColor: Colors.black,
-          splashFactory: InkRipple.splashFactory,
-          switchTheme: SwitchThemeData(
-            thumbColor: WidgetStateProperty.all(Colors.white),
-            trackColor: WidgetStateProperty.all(
-              const Color.fromARGB(255, 13, 126, 255),
-            ),
-          ),
-          textTheme: ThemeData.dark().textTheme.copyWith(
-                titleLarge: TextStyle(
-                  decorationColor: Colors.white,
-                  fontSize: 24,
-                  color: darkText,
-                  fontFamily: 'Montserrat',
-                  package: 'flutter_base',
-                ),
-                titleMedium: TextStyle(
-                  decorationColor: Colors.white,
-                  fontSize: 20,
-                  color: darkText,
-                  fontFamily: 'Montserrat',
-                  package: 'flutter_base',
-                ),
-                titleSmall: TextStyle(
-                  decorationColor: Colors.white,
-                  fontSize: 16,
-                  color: darkText,
-                  fontFamily: 'Montserrat',
-                  package: 'flutter_base',
-                ),
-                headlineLarge: TextStyle(
-                  fontSize: 28,
-                  color: darkText,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: 'Montserrat',
-                  package: 'flutter_base',
-                ),
-                headlineMedium: TextStyle(
-                  fontSize: 18,
-                  color: darkText,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: 'Montserrat',
-                  package: 'flutter_base',
-                ),
-                headlineSmall: TextStyle(
-                  fontSize: 14,
-                  color: darkText,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: 'Montserrat',
-                  package: 'flutter_base',
-                ),
-                bodyLarge: TextStyle(
-                  fontSize: 18,
-                  color: darkText,
-                  fontFamily: 'Montserrat',
-                  package: 'flutter_base',
-                ),
-                bodyMedium: TextStyle(
-                  fontSize: 14,
-                  color: darkText,
-                  fontFamily: 'Montserrat',
-                  package: 'flutter_base',
-                ),
-                bodySmall: TextStyle(
-                  fontSize: 12,
-                  color: darkText,
-                  fontFamily: 'Montserrat',
-                  package: 'flutter_base',
-                ),
-              ),
-          useMaterial3: true,
+          package: 'flutter_base',
         ),
-        options: themeOptions,
-      );
+      ),
+      bottomNavigationBarTheme: ThemeData.dark().bottomNavigationBarTheme.copyWith(
+        selectedItemColor: primaryColorDark,
+        backgroundColor: Colors.transparent,
+        selectedIconTheme: IconThemeData(color: primaryColorDark),
+      ),
+      brightness: Brightness.dark,
+      cardColor: cardColorDark,
+      cardTheme: ThemeData.light().cardTheme.copyWith(
+        shadowColor: const Color.fromARGB(40, 8, 8, 18),
+        color: cardColorDark,
+      ),
+      checkboxTheme: CheckboxThemeData(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        fillColor: WidgetStateProperty.all(const Color.fromARGB(255, 13, 126, 255)),
+        checkColor: WidgetStateProperty.all(Colors.white),
+      ),
+      chipTheme: chipThemeData(
+        styleBackgroundColor: Colors.transparent,
+        textColor: darkText,
+        shadowColor: Colors.black.withValues(alpha: 0.35),
+        selectedColor: primaryColorDark,
+      ),
+      colorScheme: const ColorScheme.dark(
+        surfaceTint: Colors.transparent,
+        primary: Colors.white,
+        onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        surface: Color(0xff070F1E),
+        secondary: Color.fromARGB(255, 13, 126, 255),
+      ),
+      dialogTheme: const DialogTheme(
+        elevation: 2,
+        backgroundColor: Color.fromRGBO(20, 21, 41, 1),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(width: 0.6, color: Color.fromRGBO(46, 142, 255, 0.20)),
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+        ),
+      ),
+      dividerColor: const Color.fromRGBO(184, 195, 225, 0.25),
+      dividerTheme: const DividerThemeData(color: Color.fromRGBO(184, 195, 225, 0.25), thickness: 1),
+      drawerTheme: const DrawerThemeData(
+        surfaceTintColor: Colors.black,
+        scrimColor: Colors.transparent,
 
-  ThemeOptions get themeOptions => ThemeOptions(
-        titledCardIconColor: Colors.white,
-        cardBorderRadius: 18.7,
-      );
+        // borderside only right
+        shape: Border(
+          right: BorderSide(width: 1, color: _darkBorderColor),
+          bottom: BorderSide(width: 1, color: _darkBorderColor),
+        ),
+        backgroundColor: Color(0xff070F1E),
+        elevation: 2,
+        width: 300,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white, // change background color of button
+          backgroundColor: primaryColorDark, // change text color of button
+          textStyle: TextStyle(fontSize: 14, color: lightText, fontFamily: 'Montserrat', package: 'flutter_base'),
+        ),
+      ),
+      expansionTileTheme: ThemeData.dark().expansionTileTheme.copyWith(
+        backgroundColor: Colors.transparent,
+        collapsedBackgroundColor: cardColorDark,
+        iconColor: darkText,
+        textColor: darkText,
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: primaryColorDark,
+        foregroundColor: darkText,
+      ),
+      fontFamily: 'Montserrat',
+      iconTheme: ThemeData.dark().iconTheme.copyWith(color: darkText),
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+            return darkText;
+          }),
+        ),
+      ),
+      indicatorColor: primaryColorDark,
+      inputDecorationTheme: InputDecorationTheme(
+        labelStyle: TextStyle(fontSize: 13, color: darkText, fontFamily: 'Montserrat', package: 'flutter_base'),
+        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: primaryColorDark)),
+        contentPadding: const EdgeInsets.all(5),
+        isDense: true,
+      ),
+      primaryColor: primaryColorDark,
+      primaryColorLight: const Color(0xFF1F283A),
+      primaryColorDark: const Color(0xFF2A354E),
+      scaffoldBackgroundColor: Colors.transparent,
+      shadowColor: Colors.black,
+      splashFactory: InkRipple.splashFactory,
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.all(Colors.white),
+        trackColor: WidgetStateProperty.all(const Color.fromARGB(255, 13, 126, 255)),
+      ),
+      textTheme: ThemeData.dark().textTheme.copyWith(
+        titleLarge: TextStyle(
+          decorationColor: Colors.white,
+          fontSize: 24,
+          color: darkText,
+          fontFamily: 'Montserrat',
+          package: 'flutter_base',
+        ),
+        titleMedium: TextStyle(
+          decorationColor: Colors.white,
+          fontSize: 20,
+          color: darkText,
+          fontFamily: 'Montserrat',
+          package: 'flutter_base',
+        ),
+        titleSmall: TextStyle(
+          decorationColor: Colors.white,
+          fontSize: 16,
+          color: darkText,
+          fontFamily: 'Montserrat',
+          package: 'flutter_base',
+        ),
+        headlineLarge: TextStyle(
+          fontSize: 28,
+          color: darkText,
+          fontWeight: FontWeight.w600,
+          fontFamily: 'Montserrat',
+          package: 'flutter_base',
+        ),
+        headlineMedium: TextStyle(
+          fontSize: 18,
+          color: darkText,
+          fontWeight: FontWeight.w600,
+          fontFamily: 'Montserrat',
+          package: 'flutter_base',
+        ),
+        headlineSmall: TextStyle(
+          fontSize: 14,
+          color: darkText,
+          fontWeight: FontWeight.w600,
+          fontFamily: 'Montserrat',
+          package: 'flutter_base',
+        ),
+        bodyLarge: TextStyle(fontSize: 18, color: darkText, fontFamily: 'Montserrat', package: 'flutter_base'),
+        bodyMedium: TextStyle(fontSize: 14, color: darkText, fontFamily: 'Montserrat', package: 'flutter_base'),
+        bodySmall: TextStyle(fontSize: 12, color: darkText, fontFamily: 'Montserrat', package: 'flutter_base'),
+      ),
+      useMaterial3: true,
+    ),
+    options: themeOptions,
+  );
+
+  ThemeOptions get themeOptions => ThemeOptions(titledCardIconColor: Colors.white, cardBorderRadius: 18.7);
 }
 
 class ThemeOptions implements AppThemeOptions {
@@ -584,13 +458,13 @@ class ThemeOptions implements AppThemeOptions {
   List<BoxShadow>? getTitledCardIconShadow(BuildContext context) {
     return (titledCardIconShadow ?? true)
         ? [
-            BoxShadow(
-              spreadRadius: 2,
-              blurRadius: 3,
-              offset: const Offset(3, 3),
-              color: ThemeProvider.themeOf(context).data.cardTheme.shadowColor!,
-            ),
-          ]
+          BoxShadow(
+            spreadRadius: 2,
+            blurRadius: 3,
+            offset: const Offset(3, 3),
+            color: ThemeProvider.themeOf(context).data.cardTheme.shadowColor!,
+          ),
+        ]
         : null;
   }
 
@@ -599,42 +473,46 @@ class ThemeOptions implements AppThemeOptions {
       return null;
     }
     return LinearGradient(
-        stops: const [0.35, 1],
-        tileMode: TileMode.decal,
-        colors: bgDarkGradientColors,
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter);
+      stops: const [0.35, 1],
+      tileMode: TileMode.decal,
+      colors: bgDarkGradientColors,
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+    );
   }
 
   Gradient ellipsisGradient(BuildContext context, Color color) {
     return RadialGradient(
-        radius: 0.4,
-        tileMode: TileMode.decal,
-        colors: Theme.of(context).isDark ? [color, Colors.transparent] : bgLightGradientColors,
-        stops: const [0.25, 1],
-        center: Alignment.center);
+      radius: 0.4,
+      tileMode: TileMode.decal,
+      colors: Theme.of(context).isDark ? [color, Colors.transparent] : bgLightGradientColors,
+      stops: const [0.25, 1],
+      center: Alignment.center,
+    );
   }
 
   LinearGradient textLinearGradient(BuildContext context) {
     return LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: Theme.of(context).isDark
-            ? [
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors:
+          Theme.of(context).isDark
+              ? [
                 const Color(0xFFD2EEFF),
                 const Color(0xFF5CBDFF),
                 const Color(0xFF528EFC),
                 const Color(0xFF8B94F3),
-                const Color(0xFFA08FCE)
+                const Color(0xFFA08FCE),
               ]
-            : [
+              : [
                 const Color(0xFFD2EEFF),
                 const Color(0xFF5CBDFF),
                 const Color(0xFF528EFC),
                 const Color(0xFF8B94F3),
-                const Color(0xFFA08FCE)
+                const Color(0xFFA08FCE),
               ],
-        stops: const [0, 0.2344, 0.5104, 0.724, 1]);
+      stops: const [0, 0.2344, 0.5104, 0.724, 1],
+    );
   }
 
   ThemeOptions({
@@ -650,14 +528,8 @@ class ThemeOptions implements AppThemeOptions {
       (Color.fromRGBO(64, 152, 255, 0.2), Offset(400, -900)),
       (Color.fromRGBO(64, 152, 255, 0.2), Offset(991, 620)),
     ],
-    this.bgDarkGradientColors = const [
-      Color.fromARGB(255, 9, 19, 43),
-      Color.fromARGB(255, 6, 13, 26),
-    ],
-    this.bgLightGradientColors = const [
-      Colors.white,
-      Colors.white,
-    ],
+    this.bgDarkGradientColors = const [Color.fromARGB(255, 9, 19, 43), Color.fromARGB(255, 6, 13, 26)],
+    this.bgLightGradientColors = const [Colors.white, Colors.white],
   });
 }
 
@@ -676,6 +548,9 @@ extension ThemeBits on ThemeData {
   Color get colorBarrier => isDark ? Colors.black12 : Colors.black45;
   BoxShadow get shadow => isDark ? _defaultDarkShadowColor : _defaultLightShadowColor;
   Color get strokeColor => const Color(0xFFB8C3E1);
+
+  Color get darkText => const Color.fromARGB(255, 208, 210, 214);
+  Color get lightText => const Color.fromARGB(255, 48, 59, 82);
 }
 
 const Color kBestScoreColor = Colors.purpleAccent;
