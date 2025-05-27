@@ -104,7 +104,7 @@ class AppThemeImpl {
             return null;
           }),
         ),
-        dialogTheme: const DialogTheme(
+        dialogTheme: const DialogThemeData(
           elevation: 2,
           backgroundColor: Color.fromRGBO(252, 250, 251, 1),
           shape: RoundedRectangleBorder(
@@ -318,7 +318,7 @@ class AppThemeImpl {
         surface: Color(0xff070F1E),
         secondary: Color.fromARGB(255, 13, 126, 255),
       ),
-      dialogTheme: const DialogTheme(
+      dialogTheme: const DialogThemeData(
         elevation: 2,
         backgroundColor: Color.fromRGBO(20, 21, 41, 1),
         shape: RoundedRectangleBorder(

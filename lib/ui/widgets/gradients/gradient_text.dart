@@ -2,24 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/theme/app_theme.dart';
 
 class GradientText extends StatelessWidget implements Text {
-  const GradientText(this.data,
-      {super.key,
-      this.style,
-      this.strutStyle,
-      this.textAlign,
-      this.textDirection,
-      this.locale,
-      this.softWrap,
-      this.overflow,
-      this.textScaleFactor,
-      this.maxLines,
-      this.semanticsLabel,
-      this.textWidthBasis,
-      this.textHeightBehavior,
-      this.selectionColor,
-      this.textScaler,
-      this.textSpan,
-      this.gradient});
+  const GradientText(
+    this.data, {
+    super.key,
+    this.style,
+    this.strutStyle,
+    this.textAlign,
+    this.textDirection,
+    this.locale,
+    this.softWrap,
+    this.overflow,
+    this.textScaleFactor,
+    this.maxLines,
+    this.semanticsLabel,
+    this.semanticsIdentifier,
+    this.textWidthBasis,
+    this.textHeightBehavior,
+    this.selectionColor,
+    this.textScaler,
+    this.textSpan,
+    this.gradient,
+  });
 
   @override
   final String? data;
@@ -44,6 +47,8 @@ class GradientText extends StatelessWidget implements Text {
   @override
   final String? semanticsLabel;
   @override
+  final String? semanticsIdentifier;
+  @override
   final TextWidthBasis? textWidthBasis;
   @override
   final TextHeightBehavior? textHeightBehavior;
@@ -60,20 +65,22 @@ class GradientText extends StatelessWidget implements Text {
     return ShaderMask(
       blendMode: BlendMode.srcIn,
       shaderCallback: (bounds) => gradient.createShader(bounds),
-      child: Text(data!,
-          style: style,
-          strutStyle: strutStyle,
-          textAlign: textAlign,
-          textDirection: textDirection,
-          locale: locale,
-          softWrap: softWrap,
-          overflow: overflow,
-          textScaler: textScaler,
-          maxLines: maxLines,
-          semanticsLabel: semanticsLabel,
-          textWidthBasis: textWidthBasis,
-          textHeightBehavior: textHeightBehavior,
-          selectionColor: selectionColor),
+      child: Text(
+        data!,
+        style: style,
+        strutStyle: strutStyle,
+        textAlign: textAlign,
+        textDirection: textDirection,
+        locale: locale,
+        softWrap: softWrap,
+        overflow: overflow,
+        textScaler: textScaler,
+        maxLines: maxLines,
+        semanticsLabel: semanticsLabel,
+        textWidthBasis: textWidthBasis,
+        textHeightBehavior: textHeightBehavior,
+        selectionColor: selectionColor,
+      ),
     );
   }
 
