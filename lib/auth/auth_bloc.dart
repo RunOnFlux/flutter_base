@@ -21,6 +21,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_ce/hive.dart';
+import 'package:path_provider/path_provider.dart';
 
 export 'package:firebase_auth/firebase_auth.dart'
     hide User
@@ -529,7 +530,11 @@ abstract class FluxAuthLocalStorage {
     return _instance!.close().then((value) => _instance = null);
   }
 
-  static Future<Box> _init() {
+  static Future<Box> _init() async {
+    if (!kIsWeb) {
+      final path = await getApplicationDocumentsDirectory();
+      Hive.init(path.path);
+    }
     return Hive.openBox('flux_auth');
   }
 
