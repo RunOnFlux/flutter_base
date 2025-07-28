@@ -4,10 +4,8 @@ import 'package:flutter_base/blocs/base_repository.dart';
 import 'package:flutter_base/extensions/history_extension.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/widgets/app_screen.dart';
-import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/simple_screen.dart';
 import 'package:flutter_base/utils/platform_info.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class TabSpec {
@@ -57,11 +55,11 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
 
   void assignAppState(String route) {
     var baseRepository = context.read<BaseRepository>();
-    var initialAppScreenInfo = GetIt.I<AppScreenRegistry>().get(
+    var initialAppScreenInfo = baseRepository.appScreenRegistry.value.get(
       tabs[widget.initialPage != null ? widget.initialPage!.page : 0].route,
     );
     if (initialAppScreenInfo != null) {
-      GetIt.I<AppScreenRegistry>().set(widget.stateInfo.route, initialAppScreenInfo);
+      baseRepository.appScreenRegistry.value.set(widget.stateInfo.route, initialAppScreenInfo);
 
       Future.microtask(() {
         baseRepository.screenInfo.value.currentState = initialAppScreenInfo;

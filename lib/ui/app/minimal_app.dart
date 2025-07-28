@@ -23,11 +23,9 @@ import 'package:flutter_base/ui/widgets/auth/auth_screen.dart';
 import 'package:flutter_base/ui/widgets/banner.dart';
 import 'package:flutter_base/ui/widgets/popup/popup_message.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
-import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/utils/platform_info.dart';
 import 'package:flutter_base/utils/settings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:theme_provider/theme_provider.dart';
@@ -59,7 +57,7 @@ abstract class MinimalApp extends StatefulWidget {
 
   MinimalApp({required this.router, required this.settings, super.key}) {
     //GetIt.I.registerSingleton<ScreenInfo>(ScreenInfo());
-    GetIt.I.registerSingleton<AppScreenRegistry>(AppScreenRegistry());
+    //GetIt.I.registerSingleton<AppScreenRegistry>(AppScreenRegistry());
   }
 }
 
@@ -307,7 +305,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
         }
         Future.microtask(() {
           final currentRoute = state.fullPath?.toString() ?? '/'; // use fullPath to support routes with parameters
-          final newState = GetIt.I<AppScreenRegistry>().get(currentRoute);
+          final newState = baseRepo.appScreenRegistry.value.get(currentRoute);
           baseRepo.screenInfo.value.currentState = newState;
           newState?.onEnter?.call(context);
         });

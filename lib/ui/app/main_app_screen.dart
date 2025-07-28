@@ -16,8 +16,6 @@ import 'package:flutter_base/ui/widgets/navbar/navbar.dart';
 import 'package:flutter_base/ui/widgets/responsive_builder.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/utils/platform_info.dart';
-import 'package:get_it/get_it.dart';
-import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -33,8 +31,8 @@ class MainAppScreen extends StatelessWidget {
   }
 }
 
-class AppScreenDelegate extends StatefulWidget with GetItStatefulWidgetMixin {
-  AppScreenDelegate({super.key, required this.config});
+class AppScreenDelegate extends StatefulWidget {
+  const AppScreenDelegate({super.key, required this.config});
 
   final AppConfig config;
 
@@ -42,7 +40,7 @@ class AppScreenDelegate extends StatefulWidget with GetItStatefulWidgetMixin {
   State<AppScreenDelegate> createState() => AppScreenState();
 }
 
-class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveClientMixin, GetItStateMixin {
+class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveClientMixin {
   /*@override
   void initState() {
     super.initState();
@@ -131,7 +129,7 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
       // check the registry
       final currentRoute = GoRouterState.of(context).fullPath;
       if (currentRoute != null) {
-        currentState = GetIt.I<AppScreenRegistry>().get(currentRoute);
+        currentState = baseRepo.appScreenRegistry.value.get(currentRoute);
       }
     }
 
@@ -210,8 +208,8 @@ class AppDrawerScope extends InheritedWidget {
   }
 }
 
-class _AppScreenChildWrapper extends StatefulWidget with GetItStatefulWidgetMixin {
-  _AppScreenChildWrapper({required this.child, required this.state});
+class _AppScreenChildWrapper extends StatefulWidget {
+  const _AppScreenChildWrapper({required this.child, required this.state});
   final Widget child;
   final AppScreenStateInfo? state;
 
@@ -219,7 +217,7 @@ class _AppScreenChildWrapper extends StatefulWidget with GetItStatefulWidgetMixi
   State<_AppScreenChildWrapper> createState() => _AppScreenChildWrapperState();
 }
 
-class _AppScreenChildWrapperState extends State<_AppScreenChildWrapper> with GetItStateMixin {
+class _AppScreenChildWrapperState extends State<_AppScreenChildWrapper> {
   double _endValue = 1.0;
 
   Timer? _timer;
