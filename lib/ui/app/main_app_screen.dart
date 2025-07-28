@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/window.dart';
 import 'package:flutter_acrylic/window_effect.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_base/blocs/base_repository.dart';
 import 'package:flutter_base/ui/app/config/app_config.dart';
 import 'package:flutter_base/ui/app/scope/app_config_scope.dart';
 import 'package:flutter_base/ui/app/showcase.dart';
@@ -21,30 +22,19 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class MainAppScreen extends StatelessWidget {
-  const MainAppScreen({
-    super.key,
-    required this.child,
-    required this.config,
-    this.stateInfo,
-  });
+  const MainAppScreen({super.key, required this.child, required this.config, this.stateInfo});
   final StatefulNavigationShell child;
   final AppScreenStateInfo? stateInfo;
   final AppConfig config;
 
   @override
   Widget build(BuildContext context) {
-    return Provider.value(
-      value: child,
-      child: AppScreenDelegate(config: config),
-    );
+    return Provider.value(value: child, child: AppScreenDelegate(config: config));
   }
 }
 
 class AppScreenDelegate extends StatefulWidget with GetItStatefulWidgetMixin {
-  AppScreenDelegate({
-    super.key,
-    required this.config,
-  });
+  AppScreenDelegate({super.key, required this.config});
 
   final AppConfig config;
 
@@ -78,11 +68,7 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
   }
 
   void setWindowEffect(WindowEffect? value) {
-    Window.setEffect(
-      effect: value!,
-      color: color,
-      dark: brightness == InterfaceBrightness.dark,
-    );
+    Window.setEffect(effect: value!, color: color, dark: brightness == InterfaceBrightness.dark);
     if (!PlatformInfo().isWeb() && Platform.isMacOS) {
       if (brightness != InterfaceBrightness.auto) {
         Window.overrideMacOSBrightness(dark: brightness == InterfaceBrightness.dark);
@@ -133,9 +119,13 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
 
   @override
   Widget build(BuildContext context) {
+    final baseRepo = context.read<BaseRepository>();
     super.build(context);
     _isSmallScreen = context.isSmallWidth();
-    var currentState = watchOnly((ScreenInfo info) => info.currentState);
+    baseRepo.screenInfo.addListener(() {
+      setState(() {});
+    });
+    var currentState = baseRepo.screenInfo.value.currentState;
 
     if (currentState == null) {
       // check the registry
@@ -145,12 +135,10 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
       }
     }
 
-    var sideBar = const NavBar().animate(target: _isCollapsed ? 1 : 0)
-      ..fadeOut()
-      ..slideX(
-        begin: 0,
-        end: -1,
-      );
+    var sideBar =
+        const NavBar().animate(target: _isCollapsed ? 1 : 0)
+          ..fadeOut()
+          ..slideX(begin: 0, end: -1);
     final child = context.watch<StatefulNavigationShell>();
     return AppDrawerScope(
       state: this,
@@ -161,55 +149,44 @@ class AppScreenState extends State<AppScreenDelegate> with AutomaticKeepAliveCli
           backgroundColor: Colors.transparent,
           drawerScrimColor: _isSmallScreen ? Colors.black54 : null,
           key: _scaffoldKey,
-          appBar: _isSmallScreen
-              ? AppBar(
-                  elevation: 0,
-                  centerTitle: false,
-                  // ignore: prefer_const_constructors
-                  leading: SideBarButton(),
-                  title: AppConfigScope.of(context)?.buildAppBarTitle(context),
-                  actions: [
-                    ...AppConfigScope.of(context)?.buildTitleActionButtons(context) ?? [],
-                  ],
-                )
-              : AppConfigScope.of(context)?.hasTitleBar ?? false
+          appBar:
+              _isSmallScreen
                   ? AppBar(
-                      centerTitle: false,
-                      elevation: 0,
-                      title: AppConfigScope.of(context)?.buildAppBarTitle(context),
-                      actions: [
-                        ...AppConfigScope.of(context)?.buildTitleActionButtons(context) ?? [],
-                      ],
-                    )
+                    elevation: 0,
+                    centerTitle: false,
+                    // ignore: prefer_const_constructors
+                    leading: SideBarButton(),
+                    title: AppConfigScope.of(context)?.buildAppBarTitle(context),
+                    actions: [...AppConfigScope.of(context)?.buildTitleActionButtons(context) ?? []],
+                  )
+                  : AppConfigScope.of(context)?.hasTitleBar ?? false
+                  ? AppBar(
+                    centerTitle: false,
+                    elevation: 0,
+                    title: AppConfigScope.of(context)?.buildAppBarTitle(context),
+                    actions: [...AppConfigScope.of(context)?.buildTitleActionButtons(context) ?? []],
+                  )
                   : null,
           body: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (!_isSmallScreen)
-                sideBar
-                  ..swap(
-                    builder: (context, child) => const CollapsedSidebar(),
-                  ),
-              Expanded(
-                child: _AppScreenChildWrapper(
-                  state: currentState,
-                  child: child,
-                ),
-              ),
+              if (!_isSmallScreen) sideBar..swap(builder: (context, child) => const CollapsedSidebar()),
+              Expanded(child: _AppScreenChildWrapper(state: currentState, child: child)),
             ],
           ),
           drawer: _isSmallScreen ? sideBar : null,
-          floatingActionButton: (currentState?.fabIcon != null)
-              ? FloatingActionMenu(
-                  icon: currentState?.fabIcon ?? Icons.refresh,
-                  onPressed: () {
-                    if (currentState != null && currentState.onFAB != null) {
-                      currentState.onFAB!();
-                    }
-                  },
-                  items: currentState?.items,
-                )
-              : null,
+          floatingActionButton:
+              (currentState?.fabIcon != null)
+                  ? FloatingActionMenu(
+                    icon: currentState?.fabIcon ?? Icons.refresh,
+                    onPressed: () {
+                      if (currentState != null && currentState.onFAB != null) {
+                        currentState.onFAB!();
+                      }
+                    },
+                    items: currentState?.items,
+                  )
+                  : null,
         ),
       ),
     );
@@ -234,10 +211,7 @@ class AppDrawerScope extends InheritedWidget {
 }
 
 class _AppScreenChildWrapper extends StatefulWidget with GetItStatefulWidgetMixin {
-  _AppScreenChildWrapper({
-    required this.child,
-    required this.state,
-  });
+  _AppScreenChildWrapper({required this.child, required this.state});
   final Widget child;
   final AppScreenStateInfo? state;
 
@@ -286,7 +260,9 @@ class _AppScreenChildWrapperState extends State<_AppScreenChildWrapper> with Get
     final smallScreen = context.isSmallWidth();
     final isCollapsed = AppDrawerScope.of(context)?.isCollapsed ?? true;
 
-    registerHandler((ScreenInfo s) => s.state, (context, value, cancel) {
+    final screenInfo = context.read<BaseRepository>().screenInfo;
+    screenInfo.addListener(() {
+      final value = screenInfo.value.currentState;
       if (value == null || value.refreshInterval == null) {
         _timer?.cancel();
         return;
@@ -295,6 +271,15 @@ class _AppScreenChildWrapperState extends State<_AppScreenChildWrapper> with Get
         startTimer();
       }
     });
+    /*registerHandler((ScreenInfo s) => s.state, (context, value, cancel) {
+      if (value == null || value.refreshInterval == null) {
+        _timer?.cancel();
+        return;
+      }
+      if (value.refreshInterval != null && value.refreshInterval! > 0) {
+        startTimer();
+      }
+    });*/
 
     final child = Stack(
       children: [
@@ -329,11 +314,9 @@ class _AppScreenChildWrapperState extends State<_AppScreenChildWrapper> with Get
             TweenAnimationBuilder<double>(
               tween: Tween<double>(begin: 0.0, end: _endValue),
               duration: Duration(seconds: widget.state!.refreshInterval!),
-              builder: (context, value, _) => LinearProgressIndicator(
-                value: value,
-                color: Theme.of(context).primaryColor,
-                minHeight: 1,
-              ),
+              builder:
+                  (context, value, _) =>
+                      LinearProgressIndicator(value: value, color: Theme.of(context).primaryColor, minHeight: 1),
               onEnd: () {
                 if (widget.state?.onRefresh != null) {
                   widget.state?.onRefresh!();
@@ -349,9 +332,6 @@ class _AppScreenChildWrapperState extends State<_AppScreenChildWrapper> with Get
       return child;
     }
     //return child.animate(target: isCollapsed ? 0 : 1).scaleX(begin: 1, end: 0.97).scaleY(begin: 1, end: 0.97);
-    return Transform.scale(
-      scale: isCollapsed ? 1 : 0.97,
-      child: child,
-    );
+    return Transform.scale(scale: isCollapsed ? 1 : 0.97, child: child);
   }
 }

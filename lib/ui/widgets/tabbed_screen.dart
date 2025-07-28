@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_base/blocs/base_repository.dart';
 import 'package:flutter_base/extensions/history_extension.dart';
 import 'package:flutter_base/ui/app/minimal_app.dart';
 import 'package:flutter_base/ui/widgets/app_screen.dart';
@@ -44,7 +45,8 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
       initialIndex: widget.initialPage != null ? widget.initialPage!.page : 0,
     );
     tabController.addListener(() {
-      GetIt.I<ScreenInfo>().currentState = tabs[tabController.index].child.stateInfo;
+      var baseRepository = context.read<BaseRepository>();
+      baseRepository.screenInfo.value.currentState = tabs[tabController.index].child.stateInfo;
     });
     if (PlatformInfo().isWeb()) {
       tabController.addListener(() {
@@ -54,6 +56,7 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
   }
 
   void assignAppState(String route) {
+    var baseRepository = context.read<BaseRepository>();
     var initialAppScreenInfo = GetIt.I<AppScreenRegistry>().get(
       tabs[widget.initialPage != null ? widget.initialPage!.page : 0].route,
     );
@@ -61,7 +64,7 @@ class TabbedScreenState<T extends TabbedScreen> extends AppScreenState<T> with T
       GetIt.I<AppScreenRegistry>().set(widget.stateInfo.route, initialAppScreenInfo);
 
       Future.microtask(() {
-        GetIt.I<ScreenInfo>().currentState = initialAppScreenInfo;
+        baseRepository.screenInfo.value.currentState = initialAppScreenInfo;
       });
     }
   }

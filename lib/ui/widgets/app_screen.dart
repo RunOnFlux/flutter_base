@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/blocs/base_repository.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -13,12 +15,15 @@ abstract class AppScreenState<T extends AppContentScreen> extends State<T> {
   @override
   void initState() {
     super.initState();
+    var baseRepository = context.read<BaseRepository>();
     var state = GetIt.I<AppScreenRegistry>().get(widget.stateInfo.route);
     state ??= widget.stateInfo;
     state.onFAB = onFAB;
     state.onRefresh = onRefresh;
     GetIt.I<AppScreenRegistry>().set(widget.stateInfo.route, state);
-    Future.microtask(() => GetIt.I<ScreenInfo>().currentState = state);
+    Future.microtask(() {
+      return baseRepository.screenInfo.value.currentState = state;
+    });
   }
 
   @override

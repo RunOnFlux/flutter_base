@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:flutter_base/auth/auth_bloc.dart';
 import 'package:flutter_base/auth/auth_routes.dart';
+import 'package:flutter_base/blocs/base_repository.dart';
 import 'package:flutter_base/blocs/loading_bloc.dart';
 import 'package:flutter_base/ui/app/app_route.dart';
 import 'package:flutter_base/ui/app/config/app_config.dart';
@@ -57,13 +58,8 @@ abstract class MinimalApp extends StatefulWidget {
   final Settings settings;
 
   MinimalApp({required this.router, required this.settings, super.key}) {
-    GetIt.I.registerSingleton<ScreenInfo>(ScreenInfo());
+    //GetIt.I.registerSingleton<ScreenInfo>(ScreenInfo());
     GetIt.I.registerSingleton<AppScreenRegistry>(AppScreenRegistry());
-    registerTheme();
-  }
-
-  registerTheme() {
-    GetIt.I.registerSingleton<AppThemeImpl>(AppThemeImpl());
   }
 }
 
@@ -74,8 +70,10 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
   String get initialWindowTitle => 'FluxOS - checking access...';
   String get windowTitle => 'Window Title';
 
-  AppTheme get light => GetIt.I<AppThemeImpl>().light;
-  AppTheme get dark => GetIt.I<AppThemeImpl>().dark;
+  final themes = AppThemeImpl();
+
+  //AppTheme get light => GetIt.I<AppThemeImpl>().light;
+  //AppTheme get dark => GetIt.I<AppThemeImpl>().dark;
 
   @override
   Widget build(BuildContext context) {
@@ -96,13 +94,12 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
       child: BlocBuilder<LoadingBloc, LoadingState>(builder: handleLoadingState),
     );
     var repos = createRootRepositories(context);
-    // Can't use an empty list with MultiRepositoryProvider
-    if (repos.isNotEmpty) {
-      child = MultiRepositoryProvider(providers: repos, child: child);
-    }
+    repos.insert(0, RepositoryProvider<BaseRepository>(create: (_) => BaseRepository()));
+    child = MultiRepositoryProvider(providers: repos, child: child);
     return ThemeProvider(
-      defaultThemeId: widget.settings.getBool(Setting.darkMode.name, defaultValue: true) ? dark.id : light.id,
-      themes: <AppTheme>[light, dark],
+      defaultThemeId:
+          widget.settings.getBool(Setting.darkMode.name, defaultValue: true) ? themes.dark.id : themes.light.id,
+      themes: <AppTheme>[themes.light, themes.dark],
       child: ThemeConsumer(child: authWrapper(child)),
     );
   }
@@ -303,14 +300,15 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
         ),
       ],
       redirect: (context, state) {
-        var currentState = GetIt.I<ScreenInfo>().currentState;
+        final baseRepo = context.read<BaseRepository>();
+        var currentState = baseRepo.screenInfo.value.currentState;
         if (currentState != null) {
           currentState.onExit?.call(context);
         }
         Future.microtask(() {
           final currentRoute = state.fullPath?.toString() ?? '/'; // use fullPath to support routes with parameters
           final newState = GetIt.I<AppScreenRegistry>().get(currentRoute);
-          GetIt.I<ScreenInfo>().currentState = newState;
+          baseRepo.screenInfo.value.currentState = newState;
           newState?.onEnter?.call(context);
         });
 
@@ -333,6 +331,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
   bool get redirectToRootAfterLogin => true;
 
   Widget buildMainApp(BuildContext context) {
+    final baseRepo = context.read<BaseRepository>();
     if (!PlatformInfo().isWeb() && PlatformInfo().isDesktopOS()) {
       setWindowTitle(windowTitle);
     }
@@ -347,7 +346,7 @@ abstract class MinimalAppState<T extends MinimalApp> extends State<T> {
     );
 
     if (initialNavRoute != null) {
-      Future.microtask(() => GetIt.I<ScreenInfo>().currentState = initialNavRoute.body!.stateInfo);
+      Future.microtask(() => baseRepo.screenInfo.value.currentState = initialNavRoute.body!.stateInfo);
     }
 
     return AppConfigScope(
