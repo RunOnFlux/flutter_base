@@ -2,19 +2,20 @@ import 'dart:developer';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/ui/app/showcase.dart';
 import 'package:flutter_base/ui/utils/bootstrap.dart';
 import 'package:flutter_base/ui/widgets/app_screen.dart';
+import 'package:flutter_base/ui/widgets/breadcrumbs/breadcrumb.dart';
+import 'package:flutter_base/ui/widgets/breadcrumbs/breadcrumb_item.dart';
+import 'package:flutter_base/ui/widgets/breadcrumbs/breadcrumb_overflow.dart';
 import 'package:flutter_base/ui/widgets/popup/popup_message_item.dart';
 import 'package:flutter_base/ui/widgets/screen_info.dart';
 import 'package:flutter_base/ui/widgets/screen_title_header.dart';
 import 'package:flutter_base/ui/widgets/simple_screen.dart';
 import 'package:flutter_base/ui/widgets/titled_card.dart';
 import 'package:flutter_base_example/ui/app/showcase.dart';
-import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:showcaseview/showcaseview.dart';
 
-class HomeScreen extends SimpleScreen with GetItStatefulWidgetMixin {
+class HomeScreen extends SimpleScreen {
   HomeScreen({Key? key})
     : super(
         key: key,
@@ -28,7 +29,7 @@ class HomeScreen extends SimpleScreen with GetItStatefulWidgetMixin {
   State<HomeScreen> createState() => HomeScreenState();
 }
 
-class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin {
+class HomeScreenState extends SimpleScreenState<HomeScreen> {
   bool clicked = false;
 
   @override
@@ -40,7 +41,7 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
     widget.stateInfo.onEnter = (p0) => log('entered home screen', name: 'Home Screen');
     widget.stateInfo.onExit = (p0) => log('exited home screen', name: 'Home Screen');
     bootstrapGridParameters(gutterSize: 0);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    /*WidgetsBinding.instance.addPostFrameCallback((_) {
       ShowCaseScope.of(context)?.startShowcase(context, [
         MyAppShowCaseKeys.hideMenu,
         MyAppShowCaseKeys.sideMenu,
@@ -49,7 +50,7 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
         MyAppShowCaseKeys.homeFAB,
         MyAppShowCaseKeys.homeToggle,
       ]);
-    });
+    });*/
   }
 
   @override
@@ -69,6 +70,7 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
   @override
   Widget buildChild(BuildContext context) {
     MyAppShowCaseKeys.homeFAB = GlobalKey();
+    final breadcrumbs = ['My files', 'Unity', 'MegaSplat', 'a long folder name', 'another really long folder name'];
     return Column(
       children: [
         BootstrapContainer(
@@ -78,13 +80,27 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
             BootstrapRow(
               children: [
                 BootstrapCol(
+                  child: BreadCrumb.builder(
+                    itemCount: breadcrumbs.length,
+                    builder: (int index) {
+                      return BreadCrumbItem(
+                        content: Text(breadcrumbs[index]),
+                        onTap: (details) {},
+                        underline: index != breadcrumbs.length - 1,
+                      );
+                    },
+                    divider: const Icon(Icons.chevron_right_outlined),
+                    overflow: ScrollableOverflow(),
+                  ),
+                ),
+                BootstrapCol(
                   fit: FlexFit.tight,
                   sizes: 'col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7',
                   child: SizedBox(
                     height: 300,
                     child: UntitledCard(
                       padding: EdgeInsets.all(
-                        bootStrapValueBasedOnSize(
+                        bootStrapDoubleBasedOnSize(
                           sizes: {'': 5.0, 'sm': 5.0, 'md': 10.0, 'lg': 10.0, 'xl': 10.0, 'xxl': 10.0},
                           context: context,
                         ),
@@ -171,7 +187,7 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                       icon: Icons.access_alarm,
                       cardColor: Colors.transparent,
                       padding: EdgeInsets.all(
-                        bootStrapValueBasedOnSize(
+                        bootStrapDoubleBasedOnSize(
                           sizes: {'': 5.0, 'sm': 5.0, 'md': 10.0, 'lg': 10.0, 'xl': 10.0, 'xxl': 10.0},
                           context: context,
                         ),
@@ -195,7 +211,7 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                       title: 'A TitledCard with a back widget',
                       icon: Icons.backup_table,
                       padding: EdgeInsets.all(
-                        bootStrapValueBasedOnSize(
+                        bootStrapDoubleBasedOnSize(
                           sizes: {'': 5.0, 'sm': 5.0, 'md': 10.0, 'lg': 10.0, 'xl': 10.0, 'xxl': 10.0},
                           context: context,
                         ),
@@ -203,7 +219,7 @@ class HomeScreenState extends SimpleScreenState<HomeScreen> with GetItStateMixin
                       onToggle: (isFront) {
                         log('message ${isFront.toString()}');
                       },
-                      initialViewFront: false,
+                      initialViewFront: true,
                       backChild: const DefaultTabController(
                         length: 3,
                         child: Column(
