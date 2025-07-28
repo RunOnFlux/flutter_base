@@ -17,28 +17,16 @@ import 'package:flutter_base_example/config/constants.dart';
 import 'package:flutter_base_example/config/firebase_configs/firebase_options.dart';
 import 'package:flutter_base_example/ui/app/showcase.dart';
 import 'package:flutter_base_example/ui/routes/routes.dart';
-import 'package:flutter_base_example/ui/theme/app_theme.dart';
 import 'package:flutter_base_example/ui/widgets/footer.dart';
 import 'package:flutter_base_example/utils/settings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 import 'loading.dart';
 
 class FlutterBaseExampleApp extends MinimalApp {
-  FlutterBaseExampleApp({Key? key})
-      : super(
-          key: key,
-          router: ExampleAppRouter(),
-          settings: ExampleSettings(),
-        );
-
-  @override
-  registerTheme() {
-    GetIt.I.registerSingleton<AppThemeImpl>(ExampleAppTheme());
-  }
+  FlutterBaseExampleApp({Key? key}) : super(key: key, router: ExampleAppRouter(), settings: ExampleSettings());
 
   @override
   State<FlutterBaseExampleApp> createState() => _FlutterBaseExampleAppState();
@@ -71,14 +59,12 @@ class _FlutterBaseExampleAppState extends MinimalAppState<FlutterBaseExampleApp>
     //GetIt.I<NodeCollaterals>().collaterals = loadingNotifier.collaterals;
     appRoutingConfig.value = buildRoutingConfig(context);
 
-    Future.microtask(
-      () async {
-        if (context.mounted) {
-          widget.router.buildRoutes(context);
-          appRoutingConfig.value = buildRoutingConfig(context);
-        }
-      },
-    );
+    Future.microtask(() async {
+      if (context.mounted) {
+        widget.router.buildRoutes(context);
+        appRoutingConfig.value = buildRoutingConfig(context);
+      }
+    });
 
     Widget mainApp = super.buildMainApp(context);
 
@@ -131,10 +117,7 @@ class MyLoadingScreen extends StatelessWidget {
             const SizedBox(
               width: 100,
               height: 100,
-              child: LoadingIndicator(
-                indicatorType: Indicator.lineScale,
-                colors: kDefaultRainbowColors,
-              ),
+              child: LoadingIndicator(indicatorType: Indicator.lineScale, colors: kDefaultRainbowColors),
             ),
             BlocBuilder<LoadingBloc, LoadingState>(
               builder: (context, state) {
@@ -143,7 +126,7 @@ class MyLoadingScreen extends StatelessWidget {
                 }
                 return Container();
               },
-            )
+            ),
           ],
         ),
       ),
@@ -187,11 +170,7 @@ class FlutterBaseAppConfig extends AppConfig {
               clickRedirectHomePage: true,
               clickTextRedirectHomePage: true,
             ),
-            Showcase(
-              key: MyAppShowCaseKeys.hideMenu,
-              description: 'Close the side menu',
-              child: const SideBarButton(),
-            ),
+            Showcase(key: MyAppShowCaseKeys.hideMenu, description: 'Close the side menu', child: const SideBarButton()),
           ],
         ),
         const SizedBox(height: 17),
@@ -234,34 +213,34 @@ class FlutterBaseAuthConfig extends AuthConfig {
   }
 
   @override
-  Image getImage(context) => Image.asset(
-        'assets/images/webp/pouw_background.webp',
-        fit: BoxFit.cover,
-      );
+  Image getImage(context) => Image.asset('assets/images/webp/pouw_background.webp', fit: BoxFit.cover);
 
   @override
   Widget rightChild(context) => const FractionallySizedBox(
-        widthFactor: 0.75,
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('Revolutionizing Technology',
-                  textAlign: TextAlign.center,
-                  softWrap: false,
-                  maxLines: 3,
-                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700)),
-              GradientDivider(
-                width: 100,
-                margin: EdgeInsets.symmetric(vertical: 10),
-              ),
-              GradientText(
-                'AuthScreen Example',
-                style: TextStyle(color: Colors.white, fontSize: 80, fontWeight: FontWeight.bold),
-              ),
-            ]),
-          ),
+    widthFactor: 0.75,
+    child: Center(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Revolutionizing Technology',
+              textAlign: TextAlign.center,
+              softWrap: false,
+              maxLines: 3,
+              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+            ),
+            GradientDivider(width: 100, margin: EdgeInsets.symmetric(vertical: 10)),
+            GradientText(
+              'AuthScreen Example',
+              style: TextStyle(color: Colors.white, fontSize: 80, fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
-      );
+      ),
+    ),
+  );
 
   @override
   String get ssoURL => 'https://pouwdev.runonflux.io';
