@@ -6,7 +6,6 @@ import 'package:flutter_base_example/ui/app/showcase.dart';
 import 'package:flutter_base_example/utils/settings.dart';
 import 'package:flutter_base_example/utils/social_media.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get_it/get_it.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:theme_provider/theme_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -28,17 +27,13 @@ class SideBarFooter extends StatelessWidget {
             description: 'Engage with our community',
             child: _buildShareButton(context),
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           Showcase(
             key: MyAppShowCaseKeys.lightMode,
             description: 'Set App Theme',
             child: _buildThemeController(context),
           ),
-          const SizedBox(
-            height: 12,
-          ),
+          const SizedBox(height: 12),
           _buildPoweredBy(context),
         ],
       ),
@@ -49,35 +44,39 @@ class SideBarFooter extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Powered by',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 12, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onBackground)),
-        const SizedBox(
-          width: 5,
+        Text(
+          'Powered by',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: Theme.of(context).colorScheme.onBackground,
+          ),
         ),
-        const Logo(height: 20)
+        const SizedBox(width: 5),
+        const Logo(height: 20),
       ],
     );
   }
 
   Widget _buildShareButton(BuildContext context) {
-    return Column(children: [
-      Text('Join the Community',
+    return Column(
+      children: [
+        Text(
+          'Join the Community',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w700,
             color: Theme.of(context).colorScheme.onBackground,
-          )),
-      const SizedBox(
-        height: 12,
-      ),
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (final share in SocialMediaShare.values)
-            Padding(
+          ),
+        ),
+        const SizedBox(height: 12),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (final share in SocialMediaShare.values)
+              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: MaterialButton(
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -88,10 +87,12 @@ class SideBarFooter extends StatelessWidget {
                     launchUrl(Uri.parse(share.url));
                   },
                   child: SvgPicture.asset(share.icon(context)),
-                ))
-        ],
-      )
-    ]);
+                ),
+              ),
+          ],
+        ),
+      ],
+    );
   }
 
   Widget _buildThemeButton(BuildContext context, Brightness brightness, bool selected) {
@@ -104,41 +105,43 @@ class SideBarFooter extends StatelessWidget {
     }
     final contentColor = selected ? themeState.primaryColor : themeState.disabledColor;
     return Card(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        elevation: elevation,
-        surfaceTintColor: Colors.transparent,
-        clipBehavior: Clip.hardEdge,
-        color: color,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        child: InkWell(
-          onTap: () {
-            ExampleSettings().setBool(Setting.darkMode.name, brightness == Brightness.dark);
-            ThemeProvider.controllerOf(context).setTheme(
-                brightness == Brightness.dark ? GetIt.I<AppThemeImpl>().dark.id : GetIt.I<AppThemeImpl>().light.id);
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: SvgPicture.asset(
-              'assets/images/svg/${brightness == Brightness.light ? 'sun' : 'moon'}.svg',
-              height: 24,
-              colorFilter: ColorFilter.mode(contentColor, BlendMode.srcIn),
-            ),
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      elevation: elevation,
+      surfaceTintColor: Colors.transparent,
+      clipBehavior: Clip.hardEdge,
+      color: color,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      child: InkWell(
+        onTap: () {
+          ExampleSettings().setBool(Setting.darkMode.name, brightness == Brightness.dark);
+          ThemeProvider.controllerOf(
+            context,
+          ).setTheme(brightness == Brightness.dark ? AppThemeImpl().dark.id : AppThemeImpl().light.id);
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: SvgPicture.asset(
+            'assets/images/svg/${brightness == Brightness.light ? 'sun' : 'moon'}.svg',
+            height: 24,
+            colorFilter: ColorFilter.mode(contentColor, BlendMode.srcIn),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget _buildThemeController(BuildContext context) {
     return Container(
       height: 48,
       alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Theme.of(context).headingRowColor,
-        borderRadius: BorderRadius.circular(20),
+      decoration: BoxDecoration(color: Theme.of(context).headingRowColor, borderRadius: BorderRadius.circular(20)),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (final brightness in Brightness.values)
+            _buildThemeButton(context, brightness, Theme.of(context).brightness == brightness),
+        ],
       ),
-      child: Row(mainAxisSize: MainAxisSize.min, children: [
-        for (final brightness in Brightness.values)
-          _buildThemeButton(context, brightness, Theme.of(context).brightness == brightness)
-      ]),
     );
   }
 }
