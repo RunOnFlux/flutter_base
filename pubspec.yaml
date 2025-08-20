@@ -49,7 +49,7 @@ dependencies:
       ref: d3779be7d661481cc0d99090d6356a286ae4f86b
       path: modal_bottom_sheet
   package_info_plus: ^8.0.0
-  path_provider: ^2.0.1
+  path_provider: ^2.1.5
   provider: ^6.0.2
   qr_flutter: ^4.0.0
   responsive_framework: ^1.1.0
